@@ -1,15 +1,39 @@
 import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import mongoose from "mongoose";
+import {accountRoute} from './src/routes/account.route'
 
-dotenv.config();
+require("dotenv").config();
+
 
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(cors());
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
+
 app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
+  res.send('Hello, TypeScript Express!');
 });
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+app.use("/api/account", accountRoute);
+
+
+mongoose.connect(
+    process.env.MONGODB_URI
+    ).then(()=> {
+        console.log('MongoDB connected');
+        app.on('error', (e) => {
+          console.log(e)
+        });
+        app.listen(port, () => {
+          console.log(`TypeScript with Express
+         http://localhost:${port}/`);
+        });
+      });

@@ -1,0 +1,8 @@
+{
+    "env": {
+        "PORT":"8000",
+        "APP_SECRET" : "secret_this_should_be_longer",
+        "APP_ACCESS_TOKEN_EXP_SECS" : "3600"
+        
+    }
+  }
