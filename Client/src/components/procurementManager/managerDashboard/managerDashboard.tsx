@@ -22,7 +22,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ListItem from './listItem'
+import ListItem from './listItem';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Avatar from '@mui/material/Avatar';
@@ -142,7 +142,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function Dashboard({ children }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -223,20 +223,20 @@ export default function Dashboard() {
                 backgroundColor: '#F2EAE1',
               }}
             >
-              <Box  sx={{ flexDirection: 'column' }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/images/avatar/1.jpg"
-                sx={{ width: 86, height: 86 }}
-              />
-            <Box sx={{paddingTop:3}}>
-            <Typography>Full Name</Typography>
-            <Typography>Possition</Typography>
-            </Box>
-            </Box>
+              <Box sx={{ flexDirection: 'column' }}>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="/static/images/avatar/1.jpg"
+                  sx={{ width: 86, height: 86 }}
+                />
+                <Box sx={{ paddingTop: 3 }}>
+                  <Typography>Full Name</Typography>
+                  <Typography>Possition</Typography>
+                </Box>
+              </Box>
             </Stack>
             <List component="nav" sx={{ backgroundColor: '#F2EAE1' }}>
-              <ListItem/>
+              <ListItem />
             </List>
           </Drawer>
         </Box>
@@ -262,7 +262,7 @@ export default function Dashboard() {
                     height: 640,
                   }}
                 >
-                  {/* <Chart /> */}
+                  {children}
                 </Paper>
               </Grid>
             </Grid>
