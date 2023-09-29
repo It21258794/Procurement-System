@@ -12,37 +12,48 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import StarBorder from '@mui/icons-material/StarBorder';
 import List from '@mui/material/List';
-
-
-
-
+import { useNavigate } from 'react-router-dom';
 
 export default function mainListItems() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [open, setOpen] = React.useState(true);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setOpen(!open);
   };
 
-  return(
-<React.Fragment>
-    <ListItemButton >
-      <ListItemIcon>
-        <HomeIcon />
-      </ListItemIcon>
-      <ListItemText primary="Home" />
-    </ListItemButton>
-    <ListItemButton  onClick={handleClick}>
-      <ListItemIcon>
-        <ViewListIcon />
-      </ListItemIcon>
-      <ListItemText primary="Sites" />
-      {open ? <ExpandLess /> : <ExpandMore />}
-    </ListItemButton>
-    <Collapse in={open} timeout="auto" unmountOnExit>
+  return (
+    <React.Fragment>
+      <ListItemButton
+        onClick={() => {
+          navigate('/sites');
+        }}
+      >
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Home" />
+      </ListItemButton>
+      <ListItemButton
+        onClick={() => {
+          navigate('/manager/sites');
+        }}
+      >
+        <ListItemIcon>
+          <ViewListIcon />
+        </ListItemIcon>
+        <ListItemText primary="Sites" />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton
+            sx={{ pl: 4 }}
+            onClick={() => {
+              navigate('/manager/order');
+            }}
+          >
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
@@ -50,25 +61,24 @@ export default function mainListItems() {
           </ListItemButton>
         </List>
       </Collapse>
-    <ListItemButton>
-      <ListItemIcon>
-        <PaidIcon />
-      </ListItemIcon>
-      <ListItemText primary="payment" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <NearMeIcon />
-      </ListItemIcon>
-      <ListItemText primary="Track Order" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <SettingsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Settings" />
-    </ListItemButton>
-  </React.Fragment>
-  )
-} 
-
+      <ListItemButton>
+        <ListItemIcon>
+          <PaidIcon />
+        </ListItemIcon>
+        <ListItemText primary="payment" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <NearMeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Track Order" />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <SettingsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Settings" />
+      </ListItemButton>
+    </React.Fragment>
+  );
+}
