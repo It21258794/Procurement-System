@@ -24,4 +24,40 @@ const insertItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertItem };
+const findItemsByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const itemName = req.params.itemname;
+        const items = yield item_service_1.default.findItemsByName(itemName);
+        res.status(200).json(items);
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const itemId = req.params.itemId;
+        const updatedData = req.body;
+        const updatedItem = yield item_service_1.default.updateItem(itemId, updatedData);
+        res.status(200).json(updatedItem);
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const itemId = req.params.itemId;
+        const isDeleted = yield item_service_1.default.deleteItem(itemId);
+        if (isDeleted) {
+            res.status(200).json({ message: 'Item deleted successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Item not found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+exports.default = { insertItem, updateItem, deleteItem, findItemsByName };
