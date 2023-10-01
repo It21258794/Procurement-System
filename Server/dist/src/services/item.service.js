@@ -33,4 +33,45 @@ function insertItem(dto) {
         }
     });
 }
-exports.default = { insertItem };
+function findItemsByName(itemname) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            console.log("Searching for item with name:", itemname);
+            const items = yield item_model_1.default.find({ itemname: itemname });
+            console.log("Found items:", items);
+            return items;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+function updateItem(itemId, updatedData) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, { new: true });
+            if (!updatedItem) {
+                throw new Error('Item not found');
+            }
+            return updatedItem;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+function deleteItem(itemId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const deletedItem = yield item_model_1.default.findByIdAndDelete(itemId);
+            if (!deletedItem) {
+                throw new Error('Item not found');
+            }
+            return true;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+exports.default = { insertItem, findItemsByName, updateItem, deleteItem };

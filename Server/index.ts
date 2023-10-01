@@ -24,7 +24,6 @@ app.get('/', (req: Request, res: Response) => {
 app.use("/api/account", accountRoute);
 app.use("/api/item",itemRoute);
 
-
 mongoose.connect(
     process.env.MONGODB_URI
     ).then(()=> {

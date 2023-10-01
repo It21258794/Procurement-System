@@ -64,7 +64,7 @@ async function login(email: string, password: string) {
 async function register(dto: IAccount): Promise<any> {
   try {
     const existUser = await accountModel.findOne({ email: dto.email });
-    
+
     console.log(dto);
     if (existUser) {
       throw 'Account already exist for this email address';
