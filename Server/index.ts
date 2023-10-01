@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import mongoose from "mongoose";
 import {accountRoute} from './src/routes/account.route'
+import {itemRoute} from './src/routes/item.route'
 
 require("dotenv").config();
 
@@ -21,7 +22,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use("/api/account", accountRoute);
-
+app.use("/api/item",itemRoute);
 
 mongoose.connect(
     process.env.MONGODB_URI

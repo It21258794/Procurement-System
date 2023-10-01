@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const account_route_1 = require("./src/routes/account.route");
+const item_route_1 = require("./src/routes/item.route");
 require("dotenv").config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
     res.send('Hello, TypeScript Express!');
 });
 app.use("/api/account", account_route_1.accountRoute);
+app.use("/api/item", item_route_1.itemRoute);
 mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
     console.log('MongoDB connected');
     app.on('error', (e) => {
