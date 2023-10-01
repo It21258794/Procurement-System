@@ -10,16 +10,25 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
-import StarBorder from '@mui/icons-material/StarBorder';
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import List from '@mui/material/List';
 import { useNavigate } from 'react-router-dom';
 
-export default function mainListItems() {
+export default function ListItems() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  // if(key == '2'){
+  //   console.log(key)
+  //   setOpen(!open)
+  // }
+  const handleClickOn = () => {
+    setOpen(!open);
+  };
+
+  const handleClickOff = () => {
     setOpen(!open);
   };
 
@@ -44,8 +53,28 @@ export default function mainListItems() {
           <ViewListIcon />
         </ListItemIcon>
         <ListItemText primary="Sites" />
-        {open ? <ExpandLess /> : <ExpandMore />}
+        {open ? (
+          <ExpandLess onClick={handleClickOff} />
+        ) : (
+          <ExpandMore onClick={handleClickOn} />
+        )}
       </ListItemButton>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton
+            sx={{ pl: 4 }}
+            onClick={() => {
+              navigate('/manager/orders');
+            }}
+          >
+            <ListItemIcon>
+              <AirportShuttleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Orders" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+        </List>
+      </Collapse>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton
@@ -55,13 +84,18 @@ export default function mainListItems() {
             }}
           >
             <ListItemIcon>
-              <StarBorder />
+              <AirportShuttleIcon />
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="Order" />
+            {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </List>
       </Collapse>
-      <ListItemButton>
+      <ListItemButton
+        onClick={() => {
+          navigate('/manager/payment');
+        }}
+      >
         <ListItemIcon>
           <PaidIcon />
         </ListItemIcon>

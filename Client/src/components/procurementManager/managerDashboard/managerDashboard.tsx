@@ -12,7 +12,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
@@ -22,7 +21,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ListItem from './listItem';
+import ListItems from './listItem';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Avatar from '@mui/material/Avatar';
@@ -142,7 +141,8 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard({ children }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function ManagerDashboard({ children }: any) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -174,6 +174,7 @@ export default function Dashboard({ children }) {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography
               component="h1"
               variant="h6"
@@ -181,8 +182,9 @@ export default function Dashboard({ children }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Name
             </Typography>
+
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -236,7 +238,7 @@ export default function Dashboard({ children }) {
               </Box>
             </Stack>
             <List component="nav" sx={{ backgroundColor: '#F2EAE1' }}>
-              <ListItem />
+              <ListItems />
             </List>
           </Drawer>
         </Box>
@@ -253,13 +255,13 @@ export default function Dashboard({ children }) {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={22}>
+              <Grid item xs>
                 <Paper
                   sx={{
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 640,
+                    height: 'auto',
                   }}
                 >
                   {children}
