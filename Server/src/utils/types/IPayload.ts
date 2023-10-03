@@ -6,9 +6,16 @@ export interface IPayload {
 
 export enum AuthRole {
   OPEN = 'OPEN',
-  PROCUREMENT_MANAGER ='PROCUREMENT_MANAGER',
+  PROCUREMENT_MANAGER = 'PROCUREMENT_MANAGER',
   PROCUREMENT_ADMIN = 'PROCUREMENT_ADMIN',
   SITE_MANAGER = 'SITE_MANAGER',
   SUPERVISOR = 'SUPERVISOR',
-  SUPLLIER = 'SUPLLIER'
+  SUPLLIER = 'SUPLLIER',
+}
+
+export interface JWT_OPTIONS {
+  algorithm: string;
+  issuer: string;
+  audience: string;
+  expiresIn: any;
 }

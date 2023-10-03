@@ -11,21 +11,21 @@ const ItemSchema = new Schema({
     type: String,
     require: false,
   },
-  img:{
-     type:String,
-     require:true,
+  img: {
+    type: String,
+    require: true,
   },
   quantity: {
     type: Number,
     require: true,
   },
-  supplierid:{
-    type:mongoose.Schema.Types.ObjectId,
-    require:true
+  supplierid: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
   },
-  price:{
-    type:Number,
-    require:true
+  price: {
+    type: Number,
+    require: true,
   },
 });
 

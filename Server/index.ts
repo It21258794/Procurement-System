@@ -3,13 +3,14 @@ import bodyParser from 'body-parser';
 import mongoose from "mongoose";
 import {accountRoute} from './src/routes/account.route'
 import {itemRoute} from './src/routes/item.route'
+import cors from 'cors';
 
 require("dotenv").config();
 
 
 const app: Express = express();
 const port = process.env.PORT;
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

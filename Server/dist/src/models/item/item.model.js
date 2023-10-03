@@ -24,11 +24,11 @@ const ItemSchema = new Schema({
     },
     supplierid: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        require: true
+        require: true,
     },
     price: {
         type: Number,
-        require: true
+        require: true,
     },
 });
 const Item = mongoose_1.default.model('Item', ItemSchema);

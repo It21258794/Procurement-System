@@ -21,7 +21,10 @@ function insertItem(dto) {
             if (!supplier) {
                 throw new Error('Supplier does not exist');
             }
-            const existitem = yield item_model_1.default.findOne({ itemname: dto.itemname, supplierid: dto.supplierid });
+            const existitem = yield item_model_1.default.findOne({
+                itemname: dto.itemname,
+                supplierid: dto.supplierid,
+            });
             if (existitem) {
                 throw new Error('Item already exists');
             }
@@ -36,9 +39,9 @@ function insertItem(dto) {
 function findItemsByName(itemname) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log("Searching for item with name:", itemname);
+            console.log('Searching for item with name:', itemname);
             const items = yield item_model_1.default.find({ itemname: itemname });
-            console.log("Found items:", items);
+            console.log('Found items:', items);
             return items;
         }
         catch (err) {
@@ -49,7 +52,9 @@ function findItemsByName(itemname) {
 function updateItem(itemId, updatedData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, { new: true });
+            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, {
+                new: true,
+            });
             if (!updatedItem) {
                 throw new Error('Item not found');
             }
