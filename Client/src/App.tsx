@@ -5,17 +5,33 @@ import OrderList from './components/procurementManager/pages/orderList';
 import OrderTable from './components/procurementManager/pages/OrderTable';
 import SiteList from './components/procurementManager/pages/siteList';
 import Checkout from './components/procurementManager/pages/checkOut';
+import SignIn from './components/userComponent/SignIn';
+import SignUp from './components/userComponent/SignUp';
+import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
 
 function ProcurementManagerRoute() {
   return (
-    <ManagerDashboard>
+    <ManagerAuthGuard>
+      <ManagerDashboard>
+        <Routes>
+          <Route path="/sites" element={<SiteList />} />
+          <Route path="/orders" element={<OrderList />} />
+          <Route path="/order" element={<OrderTable />} />
+          <Route path="/payment" element={<Checkout />} />
+        </Routes>
+      </ManagerDashboard>
+    </ManagerAuthGuard>
+  );
+}
+
+function GuestRoute() {
+  return (
+    <AuthGuard>
       <Routes>
-        <Route path="/sites" element={<SiteList />} />
-        <Route path="/orders" element={<OrderList />} />
-        <Route path="/order" element={<OrderTable />} />
-        <Route path="/payment" element={<Checkout />} />
+        <Route path="signup" element={<SignUp />} />
+        <Route path="login" element={<SignIn />} />
       </Routes>
-    </ManagerDashboard>
+    </AuthGuard>
   );
 }
 
@@ -24,6 +40,7 @@ function App() {
     <>
       <Routes>
         <Route path="manager/*" element={<ProcurementManagerRoute />} />
+        <Route path="*" element={<GuestRoute />} />
       </Routes>
     </>
   );
