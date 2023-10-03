@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const item_service_1 = __importDefault(require("../services/item.service"));
 const insertItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("itemController");
+        console.log('itemController');
         const dto = req.body;
         const item = yield item_service_1.default.insertItem(dto);
         res.status(200).json(item);

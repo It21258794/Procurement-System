@@ -16,9 +16,9 @@ const account_model_1 = __importDefault(require("../models/account/account.model
 function findAccountByCatogory(catogory) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log("Searching for accounts with the role:", catogory);
+            console.log('Searching for accounts with the role:', catogory);
             const accounts = yield account_model_1.default.find({ role: catogory });
-            console.log("Found items:", accounts);
+            console.log('Found items:', accounts);
             return accounts;
         }
         catch (err) {
@@ -29,10 +29,10 @@ function findAccountByCatogory(catogory) {
 function findItemsByUserName(username) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log("Searching for accounts with the username:", username);
+            console.log('Searching for accounts with the username:', username);
             const { firstName, lastName } = splitFullName(username);
             const accounts = yield account_model_1.default.find({ fname: firstName, lname: lastName });
-            console.log("Found items:", accounts);
+            console.log('Found items:', accounts);
             return accounts;
         }
         catch (err) {
@@ -81,4 +81,9 @@ function splitFullName(fullName) {
         throw new Error('Invalid full name format');
     }
 }
-exports.default = { findAccountByCatogory, findItemsByUserName, deleteAccount, updateAccount };
+exports.default = {
+    findAccountByCatogory,
+    findItemsByUserName,
+    deleteAccount,
+    updateAccount,
+};

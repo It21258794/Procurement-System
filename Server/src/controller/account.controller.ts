@@ -30,7 +30,7 @@ const findItemsByCategory = async (req: Request, res: Response) => {
     const accounts = await accountService.findAccountByCatogory(catogory);
     res.status(200).json(accounts);
   } catch (err: any) {
-    res.status(400).json({ err: err.message }); 
+    res.status(400).json({ err: err.message });
   }
 };
 
@@ -40,16 +40,19 @@ const findItemsByUserName = async (req: Request, res: Response) => {
     const accounts = await accountService.findItemsByUserName(username);
     res.status(200).json(accounts);
   } catch (err: any) {
-    res.status(400).json({ err: err.message }); 
+    res.status(400).json({ err: err.message });
   }
 };
 
 const updateAccount = async (req: Request, res: Response) => {
   try {
-    const accountId = req.params.accountid; 
+    const accountId = req.params.accountid;
     const updatedData = req.body;
-    
-    const updatedAccount = await accountService.updateAccount(accountId, updatedData);
+
+    const updatedAccount = await accountService.updateAccount(
+      accountId,
+      updatedData,
+    );
     console.log(updatedAccount);
     res.status(200).json(updatedAccount);
   } catch (err: any) {
@@ -57,10 +60,9 @@ const updateAccount = async (req: Request, res: Response) => {
   }
 };
 
-
 const deleteAccount = async (req: Request, res: Response) => {
   try {
-    const accountId = req.params.accountid; 
+    const accountId = req.params.accountid;
     const isDeleted = await accountService.deleteAccount(accountId);
     if (isDeleted) {
       res.status(200).json({ message: 'Account deleted successfully' });
@@ -72,4 +74,23 @@ const deleteAccount = async (req: Request, res: Response) => {
   }
 };
 
-export default { signUp, login,findItemsByCategory,findItemsByUserName,updateAccount,deleteAccount};
+const getCurrentUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.currentUser.id;
+
+    const user = await accountmodel.findById(userId);
+    return res.status(200).json({ user: user });
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export default {
+  signUp,
+  login,
+  findItemsByCategory,
+  findItemsByUserName,
+  updateAccount,
+  deleteAccount,
+  getCurrentUser,
+};

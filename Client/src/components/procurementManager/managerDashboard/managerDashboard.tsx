@@ -21,11 +21,14 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ListItems from './listItem';
+import ListItems from './ListItem';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import { useSnackbar } from 'notistack';
+// import axios from 'axios';
+import { AuthContext } from '../../../auth/AuthProvider';
 
 function Copyright(props: any) {
   return (
@@ -144,9 +147,40 @@ const defaultTheme = createTheme();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ManagerDashboard({ children }: any) {
   const [open, setOpen] = React.useState(true);
+  const { enqueueSnackbar } = useSnackbar();
+  const [user, setUser] = React.useState({});
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+
+  const token = data.token;
+
+  console.log(token);
+  const headers = { Authorization: 'Bearer ' + token };
+
+  React.useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:8000/api/account/currentUser',
+          { headers },
+        );
+        const res = await response.json();
+        console.log(res.user);
+        if (response.ok) {
+          setUser(res.user);
+        }
+      } catch (err: any) {
+        // const error = err.response.data.err;
+        enqueueSnackbar(err.message, { variant: 'error' });
+      }
+    };
+    fetchDetails();
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -219,6 +253,7 @@ export default function ManagerDashboard({ children }: any) {
             <Stack
               direction="row"
               sx={{
+                display: 'flex',
                 paddingTop: 5,
                 paddingBottom: 3,
                 justifyContent: 'center',
@@ -232,8 +267,10 @@ export default function ManagerDashboard({ children }: any) {
                   sx={{ width: 86, height: 86 }}
                 />
                 <Box sx={{ paddingTop: 3 }}>
-                  <Typography>Full Name</Typography>
-                  <Typography>Possition</Typography>
+                  <Typography>
+                    {user.fname} {user.lname}
+                  </Typography>
+                  <Typography>{user.role}</Typography>
                 </Box>
               </Box>
             </Stack>
