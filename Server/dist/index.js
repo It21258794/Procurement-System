@@ -8,11 +8,13 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const account_route_1 = require("./src/routes/account.route");
 const item_route_1 = require("./src/routes/item.route");
+const cors_1 = __importDefault(require("cors"));
 const payment_route_1 = require("./src/routes/payment.route");
 const site_route_1 = require("./src/routes/site.route");
 require("dotenv").config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
+app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
     extended: true,

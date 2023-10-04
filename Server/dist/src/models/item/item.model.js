@@ -28,7 +28,7 @@ const ItemSchema = new Schema({
     },
     price: {
         type: Number,
-        require: true
+        require: true,
     },
 });
 const Item = mongoose_1.default.model('Item', ItemSchema);

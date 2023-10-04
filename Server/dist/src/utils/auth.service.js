@@ -48,8 +48,15 @@ function getToken(password, hash, payload) {
 }
 function verifyToken(token) {
     return __awaiter(this, void 0, void 0, function* () {
-        const payload = jsonwebtoken_1.default.verify(token, process.env.APP_SECRET, process.env.APP_ACCESS_TOKEN_EXP_SECS);
-        return payload;
+        try {
+            console.log('token', token);
+            const payload = yield jsonwebtoken_1.default.decode(token);
+            console.log(payload);
+            return payload;
+        }
+        catch (err) {
+            console.log(err);
+        }
     });
 }
 function login(email, password) {

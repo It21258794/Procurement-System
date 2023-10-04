@@ -17,7 +17,7 @@ const account_model_1 = __importDefault(require("../models/account/account.model
 function insertItem(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const supplier = yield account_model_1.default.findById({ _id: dto.supplierid });
+            const supplier = yield account_model_1.default.findById({ _id: dto.supplierId });
             if (!supplier) {
                 throw new Error('Supplier does not exist');
             }
@@ -62,7 +62,9 @@ function getAllItems() {
 function updateItem(itemId, updatedData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, { new: true });
+            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, {
+                new: true,
+            });
             if (!updatedItem) {
                 throw new Error('Item not found');
             }

@@ -21,6 +21,7 @@ const AuthGuard = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
     }
     try {
+        console.log(authToken.split('Bearer ')[1]);
         const payload = yield auth_service_1.default.verifyToken(authToken.split('Bearer ')[1]);
         req.currentUser = payload;
         next();
@@ -31,4 +32,4 @@ const AuthGuard = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
     }
 });
-module.exports = AuthGuard;
+exports.default = AuthGuard;

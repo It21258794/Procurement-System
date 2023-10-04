@@ -1,11 +1,10 @@
 import itemmodel from '../models/item/item.model';
 import Account from '../models/account/account.model';
 
-async function insertItem(dto: any): Promise<any>{
-    try {
+async function insertItem(dto: any): Promise<any> {
+  try {
+    const supplier = await Account.findById({ _id: dto.supplierId });
 
-    const supplier = await Account.findById({ _id:dto.supplierid });
-    
     if(!supplier){
         throw new Error('Supplier does not exist');
     }
@@ -46,7 +45,9 @@ async function getAllItems(): Promise<any[]> {
 
 async function updateItem(itemId: string, updatedData: any): Promise<any> {
   try {
-    const updatedItem = await itemmodel.findByIdAndUpdate(itemId, updatedData, { new: true });
+    const updatedItem = await itemmodel.findByIdAndUpdate(itemId, updatedData, {
+      new: true,
+    });
 
     if (!updatedItem) {
       throw new Error('Item not found');
