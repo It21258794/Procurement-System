@@ -46,8 +46,8 @@ const findItemsByCategory = (req, res) => __awaiter(void 0, void 0, void 0, func
 });
 const findItemsByUserName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const username = req.params.username;
-        const accounts = yield account_service_1.default.findItemsByUserName(username);
+        const userName = req.params.username;
+        const accounts = yield account_service_1.default.findItemsByUserName(userName);
         res.status(200).json(accounts);
     }
     catch (err) {

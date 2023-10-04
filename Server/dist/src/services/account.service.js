@@ -71,6 +71,7 @@ function deleteAccount(userid) {
         }
     });
 }
+//Splits a full name into its constituent first name and last name.
 function splitFullName(fullName) {
     const parts = fullName.split(' ');
     if (parts.length === 2) {

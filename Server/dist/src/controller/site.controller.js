@@ -13,7 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const site_service_1 = __importDefault(require("../services/site.service"));
-const insertsite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Function to insert a new site
+const insertSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("siteController");
         const dto = req.body;
@@ -24,4 +25,4 @@ const insertsite = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertsite };
+exports.default = { insertSite };

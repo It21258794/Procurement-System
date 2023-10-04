@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import siteService from '../services/site.service';
+// Function to insert a new site
 
-const insertsite = async (req: Request, res: Response) => {
+const insertSite = async (req: Request, res: Response) => {
     try {
         console.log("siteController")
       const dto = req.body;
@@ -12,4 +13,4 @@ const insertsite = async (req: Request, res: Response) => {
     }
   };
 
-  export default{insertsite}
+  export default{insertSite}

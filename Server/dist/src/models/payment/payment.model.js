@@ -6,18 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 const PaymentSchema = new Schema({
-    supplierid: {
+    supplierId: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         require: true,
     },
-    procumentStaffid: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        require: false,
-    },
-    amount: {
+    accountNumber: {
         type: Number,
         require: true,
     },
+    accountHolderName: {
+        type: String,
+        require: true,
+    },
+    bankName: {
+        type: String,
+        require: true,
+    }
 });
 const Payment = mongoose_1.default.model('Payment', PaymentSchema);
 exports.default = Payment;

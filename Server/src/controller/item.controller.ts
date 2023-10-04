@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import itemService from  '../services/item.service';
 
-
+// Function to insert a new item
 const insertItem = async (req: Request, res: Response) => {
     try {
         console.log("itemController")
@@ -13,7 +13,7 @@ const insertItem = async (req: Request, res: Response) => {
     }
   };
 
-
+// Function to find items by name
   const findItemsByName = async (req: Request, res: Response) => {
     try {
       const itemName = req.params.itemname as string;
@@ -24,7 +24,7 @@ const insertItem = async (req: Request, res: Response) => {
     }
   };
 
-
+// Function to update an existing item
   const updateItem = async (req: Request, res: Response) => {
     try {
       const itemId = req.params.itemId; 
@@ -36,7 +36,7 @@ const insertItem = async (req: Request, res: Response) => {
     }
   };
   
-
+// Function to delete an item by ID
   const deleteItem = async (req: Request, res: Response) => {
     try {
       const itemId = req.params.itemId; 
@@ -50,6 +50,15 @@ const insertItem = async (req: Request, res: Response) => {
       res.status(400).json({ err: err.message });
     }
   };
-
-
-  export default { insertItem,updateItem,deleteItem,findItemsByName};
+  // Function to get All items
+  const getAllItem = async (req: Request, res: Response) => {
+    try {
+      console.log("itemController")
+      const items = await itemService.getAllItems();
+      res.status(200).json(items);
+    } catch (err: any) {
+      res.status(400).json({ err: err.message }); 
+    }
+  };
+// Export all the controller functions for use in routes
+  export default { insertItem,updateItem,deleteItem,findItemsByName,getAllItem};

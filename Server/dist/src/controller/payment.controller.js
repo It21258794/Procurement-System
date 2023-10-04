@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const payment_service_1 = __importDefault(require("../services/payment.service"));
+// Function to insert a new payment
 const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("itemController");
@@ -24,25 +25,4 @@ const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(400).json({ err: err });
     }
 });
-const getbySupplierid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const supplierid = req.params.supplierid;
-        const payment = yield payment_service_1.default.getbySupplierid(supplierid);
-        res.status(200).json(payment);
-    }
-    catch (err) {
-        res.status(400).json({ err: err.message });
-    }
-});
-const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const itemId = req.params.paymentId;
-        const updatedData = req.body;
-        const updatedItem = yield payment_service_1.default.updatePayment(itemId, updatedData);
-        res.status(200).json(updatedItem);
-    }
-    catch (err) {
-        res.status(400).json({ err: err.message });
-    }
-});
-exports.default = { insertPayment, updateItem, getbySupplierid };
+exports.default = { insertPayment };

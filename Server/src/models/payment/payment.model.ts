@@ -3,18 +3,22 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const PaymentSchema = new Schema({
-  supplierid: {
+  supplierId: {
     type:mongoose.Schema.Types.ObjectId,
     require: true,
   },
-  procumentStaffid: {
-    type:mongoose.Schema.Types.ObjectId,
-    require: false,
+  accountNumber:{
+     type: Number,
+     require: true,
   },
-  amount:{
-     type:Number,
-     require:true,
+  accountHolderName:{
+    type: String,
+    require: true,
   },
+  bankName:{
+    type: String,
+    require: true,
+  }
 });
 
 const Payment= mongoose.model('Payment', PaymentSchema);

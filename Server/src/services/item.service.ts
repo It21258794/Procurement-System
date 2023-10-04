@@ -5,27 +5,38 @@ async function insertItem(dto: any): Promise<any>{
     try {
 
     const supplier = await Account.findById({ _id:dto.supplierid });
-
+    
     if(!supplier){
         throw new Error('Supplier does not exist');
     }
 
-    const existitem = await itemmodel.findOne({ itemname: dto.itemname, supplierid:dto.supplierid });
-    if (existitem) {
+    const existItem = await itemmodel.findOne({ itemName: dto.itemName, supplierId:dto.supplierid });
+    if (existItem) {
      throw new Error('Item already exists');
     }
 
-    const createditem = await itemmodel.create(dto); 
-      return createditem;
+    const createdItem = await itemmodel.create(dto); 
+      return createdItem;
     } catch (err) {
       throw err;
     }
 }
 
-async function findItemsByName(itemname: string): Promise<any[]> {
+async function findItemsByName(itemName: string): Promise<any[]> {
   try {
-    console.log("Searching for item with name:", itemname);
-    const items = await itemmodel.find({ itemname: itemname });
+    console.log("Searching for item with name:", itemName);
+    const items = await itemmodel.find({ itemName: itemName });
+    console.log("Found items:", items);
+    return items;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getAllItems(): Promise<any[]> {
+  console.log("Fetching all items");
+  try {
+    const items = await itemmodel.find({});
     console.log("Found items:", items);
     return items;
   } catch (err) {
@@ -60,4 +71,4 @@ async function deleteItem(itemId: string): Promise<boolean> {
   }
 }
 
-export default { insertItem,findItemsByName,updateItem,deleteItem};
+export default { insertItem,findItemsByName,updateItem,deleteItem,getAllItems};

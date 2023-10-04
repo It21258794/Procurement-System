@@ -17,8 +17,8 @@ const account_model_1 = __importDefault(require("../models/account/account.model
 function insertPayment(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const supplier = yield account_model_1.default.findById({ _id: dto.supplierid });
-            const procumentstaff = yield account_model_1.default.findById({ _id: dto.supplierid });
+            const supplier = yield account_model_1.default.findById({ _id: dto.supplierId });
+            const procumentstaff = yield account_model_1.default.findById({ _id: dto.supplierId });
             if (!supplier) {
                 throw new Error('Supplier does not exist');
             }
@@ -33,31 +33,4 @@ function insertPayment(dto) {
         }
     });
 }
-function getbySupplierid(supplierid) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const payments = yield payment_model_1.default.find({ supplierid: supplierid });
-            return payments;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
-function updatePayment(paymentId, updatedData) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            console.log(paymentId);
-            const updatedpayment = yield payment_model_1.default.findByIdAndUpdate(paymentId, updatedData, { new: true });
-            console.log(updatedpayment);
-            if (!updatedpayment) {
-                throw new Error('payment is not found');
-            }
-            return updatedpayment;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
-exports.default = { insertPayment, getbySupplierid, updatePayment };
+exports.default = { insertPayment };

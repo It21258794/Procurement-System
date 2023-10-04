@@ -36,8 +36,8 @@ const findItemsByCategory = async (req: Request, res: Response) => {
 
 const findItemsByUserName = async (req: Request, res: Response) => {
   try {
-    const username = req.params.username as string;
-    const accounts = await accountService.findItemsByUserName(username);
+    const userName = req.params.username as string;
+    const accounts = await accountService.findItemsByUserName(userName);
     res.status(200).json(accounts);
   } catch (err: any) {
     res.status(400).json({ err: err.message }); 
