@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import {accountRoute} from './src/routes/account.route'
 import {itemRoute} from './src/routes/item.route'
 import cors from 'cors';
+import { paymentRoute } from './src/routes/payment.route';
+import { siteRoute } from './src/routes/site.route';
 
 require("dotenv").config();
 
@@ -24,6 +26,8 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use("/api/account", accountRoute);
 app.use("/api/item",itemRoute);
+app.use("/api/payment",paymentRoute);
+app.use("/api/site",siteRoute);
 
 mongoose.connect(
     process.env.MONGODB_URI

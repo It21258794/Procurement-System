@@ -13,9 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const item_service_1 = __importDefault(require("../services/item.service"));
+// Function to insert a new item
 const insertItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log('itemController');
+        console.log("itemController");
         const dto = req.body;
         const item = yield item_service_1.default.insertItem(dto);
         res.status(200).json(item);
@@ -24,6 +25,7 @@ const insertItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json({ err: err });
     }
 });
+// Function to find items by name
 const findItemsByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const itemName = req.params.itemname;
@@ -34,6 +36,7 @@ const findItemsByName = (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(400).json({ err: err.message });
     }
 });
+// Function to update an existing item
 const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const itemId = req.params.itemId;
@@ -45,6 +48,7 @@ const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json({ err: err.message });
     }
 });
+// Function to delete an item by ID
 const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const itemId = req.params.itemId;
@@ -60,4 +64,16 @@ const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json({ err: err.message });
     }
 });
-exports.default = { insertItem, updateItem, deleteItem, findItemsByName };
+// Function to get All items
+const getAllItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log("itemController");
+        const items = yield item_service_1.default.getAllItems();
+        res.status(200).json(items);
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+// Export all the controller functions for use in routes
+exports.default = { insertItem, updateItem, deleteItem, findItemsByName, getAllItem };

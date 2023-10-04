@@ -12,17 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const payment_service_1 = __importDefault(require("../services/payment.service"));
-// Function to insert a new payment
-const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const site_service_1 = __importDefault(require("../services/site.service"));
+// Function to insert a new site
+const insertSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("itemController");
+        console.log("siteController");
         const dto = req.body;
-        const item = yield payment_service_1.default.insertPayment(dto);
-        res.status(200).json(item);
+        const site = yield site_service_1.default.insertSite(dto);
+        res.status(200).json(site);
     }
     catch (err) {
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertPayment };
+exports.default = { insertSite };

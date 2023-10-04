@@ -71,6 +71,7 @@ function deleteAccount(userid) {
         }
     });
 }
+//Splits a full name into its constituent first name and last name.
 function splitFullName(fullName) {
     const parts = fullName.split(' ');
     if (parts.length === 2) {
@@ -81,9 +82,4 @@ function splitFullName(fullName) {
         throw new Error('Invalid full name format');
     }
 }
-exports.default = {
-    findAccountByCatogory,
-    findItemsByUserName,
-    deleteAccount,
-    updateAccount,
-};
+exports.default = { findAccountByCatogory, findItemsByUserName, deleteAccount, updateAccount };
