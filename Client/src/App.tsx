@@ -8,6 +8,8 @@ import Checkout from './components/procurementManager/pages/checkOut';
 import SignIn from './components/userComponent/SignIn';
 import SignUp from './components/userComponent/SignUp';
 import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
+import { io } from 'socket.io-client';
+import React from 'react';
 
 function ProcurementManagerRoute() {
   return (
@@ -36,6 +38,11 @@ function GuestRoute() {
 }
 
 function App() {
+  React.useEffect(() => {
+    const socket = io('http://localhost:8000');
+    console.log(socket);
+  }, []);
+
   return (
     <>
       <Routes>
