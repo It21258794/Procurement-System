@@ -4,22 +4,22 @@ const Schema = mongoose.Schema;
 
 const PaymentSchema = new Schema({
   supplierId: {
-    type:mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     require: true,
   },
-  accountNumber:{
-     type: Number,
-     require: true,
+  accountNumber: {
+    type: Number,
+    require: true,
   },
-  accountHolderName:{
+  accountHolderName: {
     type: String,
     require: true,
   },
-  bankName:{
+  bankName: {
     type: String,
     require: true,
-  }
+  },
 });
 
-const Payment= mongoose.model('Payment', PaymentSchema);
+const Payment = mongoose.model('Payment', PaymentSchema);
 export default Payment;

@@ -17,16 +17,25 @@ const site_model_1 = __importDefault(require("../models/site/site.model"));
 function insertSite(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const sitemanager = yield account_model_1.default.findById({ _id: dto.sitemanagerid });
+            const sitemanager = yield account_model_1.default.findById({ _id: dto.siteManager_id });
             if (!sitemanager) {
                 throw new Error('Supplier does not exist');
             }
-            const createdpayment = yield site_model_1.default.create(dto);
-            return createdpayment;
+            const createdSite = yield site_model_1.default.create(dto);
+            return createdSite;
         }
         catch (err) {
             throw err;
         }
     });
 }
-exports.default = { insertSite };
+const getSite = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const site = yield site_model_1.default.find();
+        return site;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.default = { insertSite, getSite };

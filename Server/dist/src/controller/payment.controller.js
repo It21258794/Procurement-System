@@ -16,7 +16,7 @@ const payment_service_1 = __importDefault(require("../services/payment.service")
 // Function to insert a new payment
 const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("itemController");
+        console.log('itemController');
         const dto = req.body;
         const item = yield payment_service_1.default.insertPayment(dto);
         res.status(200).json(item);

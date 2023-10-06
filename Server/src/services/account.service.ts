@@ -45,28 +45,35 @@ async function updateAccount(
   }
 }
 
-  async function deleteAccount(userid: string): Promise<boolean> {
-    try {
-      const deletedaccount = await Account.findByIdAndDelete(userid);
-      if (!deletedaccount) {
-        throw new Error('Item not found');
-      }
-      return true;
-    } catch (err) {
-      throw err;
+async function deleteAccount(userid: string): Promise<boolean> {
+  try {
+    const deletedaccount = await Account.findByIdAndDelete(userid);
+    if (!deletedaccount) {
+      throw new Error('Item not found');
     }
+    return true;
+  } catch (err) {
+    throw err;
   }
+}
 
-  //Splits a full name into its constituent first name and last name.
-  function splitFullName(fullName: string): { firstName: string; lastName: string } {
-    const parts = fullName.split(' ');
-    if (parts.length === 2) {
-      const [firstName, lastName] = parts;
-      return { firstName, lastName };
-    } else {
-      throw new Error('Invalid full name format');
-    }
+//Splits a full name into its constituent first name and last name.
+function splitFullName(fullName: string): {
+  firstName: string;
+  lastName: string;
+} {
+  const parts = fullName.split(' ');
+  if (parts.length === 2) {
+    const [firstName, lastName] = parts;
+    return { firstName, lastName };
+  } else {
+    throw new Error('Invalid full name format');
   }
-  
+}
 
-  export default {findAccountByCatogory,findItemsByUserName,deleteAccount,updateAccount};
+export default {
+  findAccountByCatogory,
+  findItemsByUserName,
+  deleteAccount,
+  updateAccount,
+};

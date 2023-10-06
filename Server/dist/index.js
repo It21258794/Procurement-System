@@ -11,7 +11,9 @@ const item_route_1 = require("./src/routes/item.route");
 const cors_1 = __importDefault(require("cors"));
 const payment_route_1 = require("./src/routes/payment.route");
 const site_route_1 = require("./src/routes/site.route");
-require("dotenv").config();
+const socket_io_1 = require("socket.io");
+const order_route_1 = require("./src/routes/order.route");
+require('dotenv').config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use((0, cors_1.default)());
@@ -22,17 +24,26 @@ app.use(body_parser_1.default.urlencoded({
 app.get('/', (req, res) => {
     res.send('Hello, TypeScript Express!');
 });
-app.use("/api/account", account_route_1.accountRoute);
-app.use("/api/item", item_route_1.itemRoute);
-app.use("/api/payment", payment_route_1.paymentRoute);
-app.use("/api/site", site_route_1.siteRoute);
+app.use('/api/account', account_route_1.accountRoute);
+app.use('/api/item', item_route_1.itemRoute);
+app.use('/api/payment', payment_route_1.paymentRoute);
+app.use('/api/site', site_route_1.siteRoute);
+app.use('/api/order', order_route_1.orderRoute);
 mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
     console.log('MongoDB connected');
     app.on('error', (e) => {
         console.log(e);
     });
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         console.log(`TypeScript with Express
          http://localhost:${port}/`);
+        const io = new socket_io_1.Server(server, {
+            cors: {
+                origin: 'http://localhost:5173'
+            }
+        });
+        io.on('connection', (socket) => {
+            console.log('some has connected to socket');
+        });
     });
 });
