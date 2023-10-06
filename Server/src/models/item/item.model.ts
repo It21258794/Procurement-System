@@ -19,9 +19,9 @@ const ItemSchema = new Schema({
     type: Number,
     require: true,
   },
-  supplierId:{
-    type:mongoose.Schema.Types.ObjectId,
-    require:true
+  supplierId: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
   },
   price: {
     type: Number,

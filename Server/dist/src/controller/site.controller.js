@@ -16,7 +16,6 @@ const site_service_1 = __importDefault(require("../services/site.service"));
 // Function to insert a new site
 const insertSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("siteController");
         const dto = req.body;
         const site = yield site_service_1.default.insertSite(dto);
         res.status(200).json(site);
@@ -25,4 +24,13 @@ const insertSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertSite };
+const getSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const sites = yield site_service_1.default.getSite();
+        res.status(200).json(sites);
+    }
+    catch (err) {
+        res.status(400).json({ err: 'Sites not Found' });
+    }
+});
+exports.default = { insertSite, getSite };

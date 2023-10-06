@@ -4,7 +4,7 @@ import itemController from '../controller/item.controller';
 export const itemRoute = Router();
 // Route needed
 itemRoute.post('/createItem', itemController.insertItem);
-itemRoute.get('/getItembyname/:itemName',itemController.findItemsByName);
+itemRoute.get('/getItembyname/:itemName', itemController.findItemsByName);
 itemRoute.put('/updateItem/:itemId', itemController.updateItem);
 itemRoute.delete('/deleteItem/:itemId', itemController.deleteItem);
-itemRoute.get('/getAllItem',itemController.getAllItem);
+itemRoute.get('/getAllItem', itemController.getAllItem);

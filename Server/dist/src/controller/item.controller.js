@@ -16,7 +16,7 @@ const item_service_1 = __importDefault(require("../services/item.service"));
 // Function to insert a new item
 const insertItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("itemController");
+        console.log('itemController');
         const dto = req.body;
         const item = yield item_service_1.default.insertItem(dto);
         res.status(200).json(item);
@@ -67,7 +67,7 @@ const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 // Function to get All items
 const getAllItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("itemController");
+        console.log('itemController');
         const items = yield item_service_1.default.getAllItems();
         res.status(200).json(items);
     }
@@ -76,4 +76,10 @@ const getAllItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 // Export all the controller functions for use in routes
-exports.default = { insertItem, updateItem, deleteItem, findItemsByName, getAllItem };
+exports.default = {
+    insertItem,
+    updateItem,
+    deleteItem,
+    findItemsByName,
+    getAllItem,
+};

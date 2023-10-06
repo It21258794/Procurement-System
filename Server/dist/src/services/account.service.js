@@ -82,4 +82,9 @@ function splitFullName(fullName) {
         throw new Error('Invalid full name format');
     }
 }
-exports.default = { findAccountByCatogory, findItemsByUserName, deleteAccount, updateAccount };
+exports.default = {
+    findAccountByCatogory,
+    findItemsByUserName,
+    deleteAccount,
+    updateAccount,
+};

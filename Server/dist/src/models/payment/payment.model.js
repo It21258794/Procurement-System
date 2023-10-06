@@ -21,7 +21,7 @@ const PaymentSchema = new Schema({
     bankName: {
         type: String,
         require: true,
-    }
+    },
 });
 const Payment = mongoose_1.default.model('Payment', PaymentSchema);
 exports.default = Payment;

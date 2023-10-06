@@ -159,7 +159,6 @@ export default function ManagerDashboard({ children }: any) {
 
   const token = data.token;
 
-  console.log(token);
   const headers = { Authorization: 'Bearer ' + token };
 
   React.useEffect(() => {

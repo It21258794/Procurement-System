@@ -7,7 +7,7 @@ import App from './App.tsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <>
     <SnackbarProvider>
       <BrowserRouter>
         <AuthProviderComponent>
@@ -15,5 +15,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </AuthProviderComponent>
       </BrowserRouter>
     </SnackbarProvider>
-  </React.StrictMode>,
+  </>,
 );
