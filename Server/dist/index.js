@@ -39,8 +39,8 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
          http://localhost:${port}/`);
         const io = new socket_io_1.Server(server, {
             cors: {
-                origin: 'http://localhost:5173'
-            }
+                origin: 'http://localhost:5173',
+            },
         });
         io.on('connection', (socket) => {
             console.log('some has connected to socket');

@@ -7,27 +7,43 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const orderSchema = new mongoose_1.default.Schema({
     orderId: {
         type: String,
-        require: true,
-    },
-    supplierId: {
-        type: String,
-        require: true,
+        required: true,
     },
     address: {
         type: String,
-        require: true,
+        required: true,
     },
     requiredDate: {
         type: Date,
-        require: true,
+        required: true,
     },
-    quantity: {
-        type: Date,
-        require: true,
-    },
+    items: [
+        {
+            itemName: {
+                type: String,
+                required: true,
+            },
+            type: {
+                type: String,
+                required: false,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+            },
+            supplierId: {
+                type: String,
+                required: true,
+            },
+            price: {
+                type: Number,
+                required: true,
+            },
+        },
+    ],
     description: {
         type: Date,
-        require: false,
+        required: false,
     },
 });
 const order = mongoose_1.default.model('order', orderSchema);

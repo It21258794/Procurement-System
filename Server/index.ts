@@ -9,7 +9,6 @@ import { siteRoute } from './src/routes/site.route';
 import { Server } from 'socket.io';
 import { orderRoute } from './src/routes/order.route';
 
-
 require('dotenv').config();
 
 const app: Express = express();
@@ -42,14 +41,14 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log(`TypeScript with Express
          http://localhost:${port}/`);
 
-    const io = new Server(server,{
-      cors:{
-        origin: 'http://localhost:5173'
-      }
+    const io = new Server(server, {
+      cors: {
+        origin: 'http://localhost:5173',
+      },
     });
 
     io.on('connection', (socket) => {
-      console.log('some has connected to socket')
+      console.log('some has connected to socket');
     });
   });
 });

@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import orderModel from '../models/order/order.model';
 
 const sendOrderByEmail = (order_id: string, email: string) => {
   try {
@@ -29,4 +30,22 @@ const sendOrderByEmail = (order_id: string, email: string) => {
   }
 };
 
-export default { sendOrderByEmail };
+async function createOrder(orderDetails: any) {
+  try {
+    const newOrder = await orderDetails.save();
+    return newOrder;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getOrderId() {
+  try {
+    const count = await orderModel.count();
+    return count + 1;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export default { sendOrderByEmail, createOrder, getOrderId };
