@@ -8,6 +8,8 @@ import { paymentRoute } from './src/routes/payment.route';
 import { siteRoute } from './src/routes/site.route';
 import { Server } from 'socket.io';
 import { orderRoute } from './src/routes/order.route';
+import logger from './log/logger'
+import { error } from 'console';
 
 
 require('dotenv').config();
@@ -34,12 +36,12 @@ app.use('/api/site', siteRoute);
 app.use('/api/order', orderRoute);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
-  console.log('MongoDB connected');
-  app.on('error', (e) => {
-    console.log(e);
+  logger.info('MongoDB connected');
+  app.on('error', (err) => {
+    logger.error(err);
   });
   const server = app.listen(port, () => {
-    console.log(`TypeScript with Express
+    logger.info(`TypeScript with Express
          http://localhost:${port}/`);
 
     const io = new Server(server,{
@@ -49,7 +51,11 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     });
 
     io.on('connection', (socket) => {
-      console.log('some has connected to socket')
+      logger.error('some has connected to socket')
+
+      socket.on('disconnect',()=>{
+        logger.error('socket discconected ')
+      })
     });
   });
 });

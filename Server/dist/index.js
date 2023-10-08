@@ -13,6 +13,7 @@ const payment_route_1 = require("./src/routes/payment.route");
 const site_route_1 = require("./src/routes/site.route");
 const socket_io_1 = require("socket.io");
 const order_route_1 = require("./src/routes/order.route");
+const logger_1 = __importDefault(require("./log/logger"));
 require('dotenv').config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -30,12 +31,12 @@ app.use('/api/payment', payment_route_1.paymentRoute);
 app.use('/api/site', site_route_1.siteRoute);
 app.use('/api/order', order_route_1.orderRoute);
 mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
-    console.log('MongoDB connected');
-    app.on('error', (e) => {
-        console.log(e);
+    logger_1.default.info('MongoDB connected');
+    app.on('error', (err) => {
+        logger_1.default.error(err);
     });
     const server = app.listen(port, () => {
-        console.log(`TypeScript with Express
+        logger_1.default.info(`TypeScript with Express
          http://localhost:${port}/`);
         const io = new socket_io_1.Server(server, {
             cors: {
@@ -43,7 +44,10 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
             }
         });
         io.on('connection', (socket) => {
-            console.log('some has connected to socket');
+            logger_1.default.error('some has connected to socket');
+            socket.on('disconnect', () => {
+                logger_1.default.error('socket discconected ');
+            });
         });
     });
 });
