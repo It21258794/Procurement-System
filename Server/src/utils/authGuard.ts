@@ -19,6 +19,7 @@ const AuthGuard = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
+    console.log(authToken.split('Bearer ')[1]);
     const payload = await authService.verifyToken(
       authToken.split('Bearer ')[1],
     );
@@ -31,4 +32,4 @@ const AuthGuard = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-module.exports = AuthGuard;
+export default AuthGuard;

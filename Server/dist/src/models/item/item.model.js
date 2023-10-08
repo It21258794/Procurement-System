@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 const ItemSchema = new Schema({
-    itemname: {
+    itemName: {
         type: String,
         require: true,
     },
@@ -22,13 +22,13 @@ const ItemSchema = new Schema({
         type: Number,
         require: true,
     },
-    supplierid: {
+    supplierId: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        require: true
+        require: true,
     },
     price: {
         type: Number,
-        require: true
+        require: true,
     },
 });
 const Item = mongoose_1.default.model('Item', ItemSchema);

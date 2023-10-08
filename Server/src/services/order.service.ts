@@ -1,13 +1,32 @@
-import Order from '../models/order/order.model';
+import nodemailer from 'nodemailer';
 
-async function createOrderService(orderDetails: any): Promise<any> {
+const sendOrderByEmail = (order_id: string, email: string) => {
   try {
-    const createdItem = await orderDetails.save();
-    return createdItem;
-  } catch (err) {
-    console.error('Error creating order:', err);
-    throw err;
-  }
-}
+    console.log(process.env.EMAIL_PASS);
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.USER_EMAIL,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-export default { createOrderService };
+    let mailOptions = {
+      from: process.env.USER_EMAIL,
+      to: email,
+      subject: `Order No :${order_id}`,
+      text: 'You have recied an Order From Codex Cunstruction Company',
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent : ', info.response);
+      }
+    });
+  } catch (err: any) {
+    console.log(err);
+  }
+};
+
+export default { sendOrderByEmail };

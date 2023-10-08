@@ -12,7 +12,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
@@ -22,11 +21,14 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ListItem from './listItem';
+import ListItems from './ListItem';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import { useSnackbar } from 'notistack';
+// import axios from 'axios';
+import { AuthContext } from '../../../auth/AuthProvider';
 
 function Copyright(props: any) {
   return (
@@ -142,11 +144,42 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard({ children }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function ManagerDashboard({ children }: any) {
   const [open, setOpen] = React.useState(true);
+  const { enqueueSnackbar } = useSnackbar();
+  const [user, setUser] = React.useState({});
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+
+  const token = data.token;
+
+  const headers = { Authorization: 'Bearer ' + token };
+
+  React.useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:8000/api/account/currentUser',
+          { headers },
+        );
+        const res = await response.json();
+        console.log(res.user);
+        if (response.ok) {
+          setUser(res.user);
+        }
+      } catch (err: any) {
+        // const error = err.response.data.err;
+        enqueueSnackbar(err.message, { variant: 'error' });
+      }
+    };
+    fetchDetails();
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -174,6 +207,7 @@ export default function Dashboard({ children }) {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography
               component="h1"
               variant="h6"
@@ -181,8 +215,9 @@ export default function Dashboard({ children }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Name
             </Typography>
+
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -217,6 +252,7 @@ export default function Dashboard({ children }) {
             <Stack
               direction="row"
               sx={{
+                display: 'flex',
                 paddingTop: 5,
                 paddingBottom: 3,
                 justifyContent: 'center',
@@ -230,13 +266,15 @@ export default function Dashboard({ children }) {
                   sx={{ width: 86, height: 86 }}
                 />
                 <Box sx={{ paddingTop: 3 }}>
-                  <Typography>Full Name</Typography>
-                  <Typography>Possition</Typography>
+                  <Typography>
+                    {user.fname} {user.lname}
+                  </Typography>
+                  <Typography>{user.role}</Typography>
                 </Box>
               </Box>
             </Stack>
             <List component="nav" sx={{ backgroundColor: '#F2EAE1' }}>
-              <ListItem />
+              <ListItems />
             </List>
           </Drawer>
         </Box>
@@ -253,13 +291,13 @@ export default function Dashboard({ children }) {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={22}>
+              <Grid item xs>
                 <Paper
                   sx={{
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 640,
+                    height: 'auto',
                   }}
                 >
                   {children}

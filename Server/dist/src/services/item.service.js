@@ -17,28 +17,44 @@ const account_model_1 = __importDefault(require("../models/account/account.model
 function insertItem(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const supplier = yield account_model_1.default.findById({ _id: dto.supplierid });
+            const supplier = yield account_model_1.default.findById({ _id: dto.supplierId });
             if (!supplier) {
                 throw new Error('Supplier does not exist');
             }
-            const existitem = yield item_model_1.default.findOne({ itemname: dto.itemname, supplierid: dto.supplierid });
-            if (existitem) {
+            const existItem = yield item_model_1.default.findOne({
+                itemName: dto.itemName,
+                supplierId: dto.supplierid,
+            });
+            if (existItem) {
                 throw new Error('Item already exists');
             }
-            const createditem = yield item_model_1.default.create(dto);
-            return createditem;
+            const createdItem = yield item_model_1.default.create(dto);
+            return createdItem;
         }
         catch (err) {
             throw err;
         }
     });
 }
-function findItemsByName(itemname) {
+function findItemsByName(itemName) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log("Searching for item with name:", itemname);
-            const items = yield item_model_1.default.find({ itemname: itemname });
-            console.log("Found items:", items);
+            console.log('Searching for item with name:', itemName);
+            const items = yield item_model_1.default.find({ itemName: itemName });
+            console.log('Found items:', items);
+            return items;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+function getAllItems() {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log('Fetching all items');
+        try {
+            const items = yield item_model_1.default.find({});
+            console.log('Found items:', items);
             return items;
         }
         catch (err) {
@@ -49,7 +65,9 @@ function findItemsByName(itemname) {
 function updateItem(itemId, updatedData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, { new: true });
+            const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, {
+                new: true,
+            });
             if (!updatedItem) {
                 throw new Error('Item not found');
             }
@@ -74,4 +92,10 @@ function deleteItem(itemId) {
         }
     });
 }
-exports.default = { insertItem, findItemsByName, updateItem, deleteItem };
+exports.default = {
+    insertItem,
+    findItemsByName,
+    updateItem,
+    deleteItem,
+    getAllItems,
+};

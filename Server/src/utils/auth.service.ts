@@ -35,13 +35,14 @@ async function getToken(password: string, hash: string, payload: IPayload) {
 }
 
 async function verifyToken(token: any) {
-  const payload = jwt.verify(
-    token,
-    process.env.APP_SECRET,
-    process.env.APP_ACCESS_TOKEN_EXP_SECS,
-  );
-
-  return payload;
+  try {
+    console.log('token', token);
+    const payload = await jwt.decode(token);
+    console.log(payload);
+    return payload;
+  } catch (err: any) {
+    console.log(err);
+  }
 }
 
 async function login(email: string, password: string) {

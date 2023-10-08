@@ -1,15 +1,17 @@
-import express, { Request, Response } from 'express';
-import Order from '../models/order/order.model';
+import { Request, Response } from 'express';
 import orderService from '../services/order.service';
 
-const createOrder = async (req: Request, res: Response) => {
+const sendOrder = (req: Request, res: Response) => {
   try {
-    const orderDetails = new Order(req.body);
-    const savedOrder = await orderService.createOrderService(orderDetails);
-    res.status(201).json({ isSuccessful: true, order: savedOrder });
-  } catch (error: any) {
-    res.status(400).json({ error: error.message });
+    const { order_id, email } = req.body;
+
+    console.log(order_id, email);
+    orderService.sendOrderByEmail(order_id, email);
+
+    res.status(401).send('Order Send via Email');
+  } catch (err: any) {
+    res.status(401).send({ err: err });
   }
 };
 
-export default { createOrder };
+export default { sendOrder };

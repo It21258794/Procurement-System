@@ -12,17 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const payment_service_1 = __importDefault(require("../services/payment.service"));
-// Function to insert a new payment
-const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const account_model_1 = __importDefault(require("../models/account/account.model"));
+const site_model_1 = __importDefault(require("../models/site/site.model"));
+function insertSite(dto) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const sitemanager = yield account_model_1.default.findById({ _id: dto.siteManager_id });
+            if (!sitemanager) {
+                throw new Error('Supplier does not exist');
+            }
+            const createdSite = yield site_model_1.default.create(dto);
+            return createdSite;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+const getSite = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log('itemController');
-        const dto = req.body;
-        const item = yield payment_service_1.default.insertPayment(dto);
-        res.status(200).json(item);
+        const site = yield site_model_1.default.find();
+        return site;
     }
     catch (err) {
-        res.status(400).json({ err: err });
+        throw err;
     }
 });
-exports.default = { insertPayment };
+exports.default = { insertSite, getSite };
