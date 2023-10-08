@@ -1,11 +1,11 @@
 import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import mongoose from "mongoose";
-import {accountRoute} from './src/routes/account.route'
-import {itemRoute} from './src/routes/item.route'
+import mongoose from 'mongoose';
+import { accountRoute } from './src/routes/account.route';
+import { itemRoute } from './src/routes/item.route';
+import { orderRoute } from './src/routes/order.route';
 
-require("dotenv").config();
-
+require('dotenv').config();
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -21,18 +21,17 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript Express!');
 });
 
-app.use("/api/account", accountRoute);
-app.use("/api/item",itemRoute);
+app.use('/api/account', accountRoute);
+app.use('/api/item', itemRoute);
+app.use('/api/order', orderRoute);
 
-mongoose.connect(
-    process.env.MONGODB_URI
-    ).then(()=> {
-        console.log('MongoDB connected');
-        app.on('error', (e) => {
-          console.log(e)
-        });
-        app.listen(port, () => {
-          console.log(`TypeScript with Express
+mongoose.connect(process.env.MONGODB_URI).then(() => {
+  console.log('MongoDB connected');
+  app.on('error', (e) => {
+    console.log(e);
+  });
+  app.listen(port, () => {
+    console.log(`TypeScript with Express
          http://localhost:${port}/`);
-        });
-      });
+  });
+});
