@@ -11,7 +11,6 @@ import { orderRoute } from './src/routes/order.route';
 import logger from './log/logger'
 import { error } from 'console';
 
-
 require('dotenv').config();
 
 const app: Express = express();
@@ -44,10 +43,10 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info(`TypeScript with Express
          http://localhost:${port}/`);
 
-    const io = new Server(server,{
-      cors:{
-        origin: 'http://localhost:5173'
-      }
+    const io = new Server(server, {
+      cors: {
+        origin: 'http://localhost:5173',
+      },
     });
 
     io.on('connection', (socket) => {
