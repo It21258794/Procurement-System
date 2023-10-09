@@ -41,6 +41,10 @@ const orderSchema = new mongoose.Schema({
       },
     },
   ],
+  status:{
+    type :String,
+    required: true,
+  },
   description: {
     type: String,
     required: false,

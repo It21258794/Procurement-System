@@ -45,6 +45,10 @@ const orderSchema = new mongoose_1.default.Schema({
             },
         },
     ],
+    status: {
+        type: String,
+        required: true,
+    },
     description: {
         type: String,
         required: false,
