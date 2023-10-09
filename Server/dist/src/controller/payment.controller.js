@@ -25,4 +25,24 @@ const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertPayment };
+const getPayemtDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { supplierId } = req.params;
+        const item = yield payment_service_1.default.getPayemtDetailsBySupplier(supplierId);
+        res.status(200).json(item);
+    }
+    catch (err) {
+        res.status(400).json({ err: err });
+    }
+});
+const createPaymentItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const dto = req.body;
+        const paymentItem = yield payment_service_1.default.createPayment(dto);
+        res.status(200).json(paymentItem);
+    }
+    catch (err) {
+        res.status(400).json({ err: err });
+    }
+});
+exports.default = { insertPayment, getPayemtDetails, createPaymentItem };

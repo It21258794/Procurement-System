@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const order_model_1 = __importDefault(require("../models/order/order.model"));
+const site_model_1 = __importDefault(require("../models/site/site.model"));
 const sendOrderByEmail = (order_id, email) => {
     try {
         console.log(process.env.EMAIL_PASS);
@@ -61,9 +62,13 @@ const getOrderId = () => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-const getOrderBySupplier = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { supplierId: id } } });
+        const site = yield site_model_1.default.findById(id);
+        if (!site) {
+            throw 'Site not Found';
+        }
+        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { siteId: id } } });
         return orderDetail;
     }
     catch (err) {
@@ -79,4 +84,4 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySupplier, getOrderById };
+exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySite, getOrderById };

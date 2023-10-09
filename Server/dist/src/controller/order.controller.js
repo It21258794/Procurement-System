@@ -37,10 +37,10 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(401).send({ err: err });
     }
 });
-const getOrderBySupplier = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getOrderBySite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { supplierId } = req.params;
-        const order = yield order_service_1.default.getOrderBySupplier(supplierId);
+        const { siteId } = req.params;
+        const order = yield order_service_1.default.getOrderBySite(siteId);
         res.status(200).json(order);
     }
     catch (err) {
@@ -57,4 +57,4 @@ const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(401).send({ err: err });
     }
 });
-exports.default = { sendOrder, createOrder, getOrderBySupplier, getOrderById };
+exports.default = { sendOrder, createOrder, getOrderBySite, getOrderById };

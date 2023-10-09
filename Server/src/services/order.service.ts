@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import orderModel from '../models/order/order.model';
+import siteModel from '../models/site/site.model';
 
 const sendOrderByEmail = (order_id: string, email: string) => {
   try {
@@ -49,6 +50,10 @@ const getOrderId = async () => {
 };
 const getOrderBySite = async (id: string) => {
   try {
+    const site = await siteModel.findById(id);
+    if(!site){
+      throw 'Site not Found'
+    }
     const orderDetail = await orderModel.find({ items: {$elemMatch :{siteId:id} }});
     return orderDetail;
   } catch (err: any) {
