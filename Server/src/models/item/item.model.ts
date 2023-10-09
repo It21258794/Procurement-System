@@ -27,7 +27,7 @@ const ItemSchema = new Schema({
     type: Number,
     require: true,
   },
-});
+},{timestamps:true});
 
 const Item = mongoose.model('Item', ItemSchema);
 export default Item;

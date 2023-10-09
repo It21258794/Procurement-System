@@ -27,4 +27,28 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
-export default { sendOrder, createOrder };
+const getOrderBySite = async (req:Request, res:Response) => {
+  try{
+
+    const {siteId}  = req.params;
+
+    const order = await orderService.getOrderBySite(siteId);
+    res.status(200).json(order);
+
+  }catch(err:any){
+    res.status(401).send({ err: err });
+  }
+}
+
+const getOrderById = async (req:Request, res:Response) =>{
+  try{
+    const {orderId} = req.params;
+
+    const foundOrder = await orderService.getOrderById(orderId);
+    res.status(200).json(foundOrder);
+  }catch(err:any){
+    res.status(401).send({ err: err });
+  }
+}
+
+export default { sendOrder, createOrder ,getOrderBySite,getOrderById};

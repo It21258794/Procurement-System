@@ -43,26 +43,40 @@ const sendOrderByEmail = (order_id, email) => {
         console.log(err);
     }
 };
-function createOrder(orderDetails) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const newOrder = yield orderDetails.save();
-            return newOrder;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
-function getOrderId() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const count = yield order_model_1.default.count();
-            return count + 1;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
-exports.default = { sendOrderByEmail, createOrder, getOrderId };
+const createOrder = (orderDetails) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const newOrder = yield orderDetails.save();
+        return newOrder;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const getOrderId = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const count = yield order_model_1.default.count();
+        return count + 1;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const getOrderBySupplier = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { supplierId: id } } });
+        return orderDetail;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const orderItem = yield order_model_1.default.findById(id);
+        return orderItem;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySupplier, getOrderById };

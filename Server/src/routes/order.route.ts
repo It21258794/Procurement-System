@@ -6,3 +6,5 @@ export const orderRoute = Router();
 
 orderRoute.post('/sendOrderEmail', orderController.sendOrder);
 orderRoute.post('/createOrder', orderController.createOrder);
+orderRoute.get('/getSiteOrder/:siteId', orderController.getOrderBySite);
+orderRoute.get('/getOrderById/:orderId', orderController.getOrderById);
