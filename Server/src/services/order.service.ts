@@ -30,22 +30,41 @@ const sendOrderByEmail = (order_id: string, email: string) => {
   }
 };
 
-async function createOrder(orderDetails: any) {
+const createOrder = async (orderDetails: any) => {
   try {
     const newOrder = await orderDetails.save();
     return newOrder;
   } catch (err) {
     throw err;
   }
-}
+};
 
-async function getOrderId() {
+const getOrderId = async () => {
   try {
     const count = await orderModel.count();
     return count + 1;
   } catch (err) {
     throw err;
   }
+};
+const getOrderBySite = async (id: string) => {
+  try {
+    const orderDetail = await orderModel.find({ items: {$elemMatch :{siteId:id} }});
+    return orderDetail;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+const getOrderById = async(id:string) =>{
+  try{
+    const orderItem = await orderModel.findById(id)
+    return orderItem
+
+  }catch(err:any){
+    throw err
+  }
+
 }
 
 
@@ -85,4 +104,4 @@ async function rejectOrder(orderId: string): Promise<boolean> {
   }
 }
 
-export default { sendOrderByEmail, createOrder, getOrderId,rejectOrder, approveOrder,getAllApprovedOrders };
+export default { sendOrderByEmail, createOrder, getOrderId, getOrderBySite,getOrderById,rejectOrder, approveOrder,getAllApprovedOrders };

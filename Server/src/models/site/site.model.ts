@@ -15,7 +15,7 @@ const SiteSchema = new Schema({
     type: Number,
     require: true,
   },
-});
+},{timestamps:true});
 
 const Site = mongoose.model('Site', SiteSchema);
 export default Site;

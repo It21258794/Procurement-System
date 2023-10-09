@@ -30,6 +30,6 @@ const ItemSchema = new Schema({
         type: Number,
         require: true,
     },
-});
+}, { timestamps: true });
 const Item = mongoose_1.default.model('Item', ItemSchema);
 exports.default = Item;

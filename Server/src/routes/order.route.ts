@@ -13,3 +13,5 @@ orderRoute.post('/approve/:id', orderController.budgetApprove);
 // All approved orders
 orderRoute.get('/approved', orderController.getAllApprovedOrders);
 
+orderRoute.get('/getSiteOrder/:siteId', orderController.getOrderBySite);
+orderRoute.get('/getOrderById/:orderId', orderController.getOrderById);
