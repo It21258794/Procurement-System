@@ -61,9 +61,9 @@ const getOrderId = () => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-const getOrderBySupplier = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { supplierId: id } } });
+        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { siteId: id } } });
         return orderDetail;
     }
     catch (err) {
@@ -79,4 +79,46 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySupplier, getOrderById };
+//http://localhost:8000/api/order/approveOrder
+function approveOrder(orderId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const updatedOrder = yield order_model_1.default.findByIdAndUpdate(orderId, { approved: true });
+            if (!updatedOrder) {
+                throw new Error('Order not found');
+            }
+            return true;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+//http://localhost:8000/api/order/getAllApprovedOrders
+function getAllApprovedOrders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const approvedOrders = yield order_model_1.default.find({ approved: true });
+            return approvedOrders;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+//http://localhost:8000/api/order/rejectOrder
+function rejectOrder(orderId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const deletedOrder = yield order_model_1.default.findByIdAndDelete(orderId);
+            if (!deletedOrder) {
+                throw new Error('Order not found');
+            }
+            return true;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySite, getOrderById, rejectOrder, approveOrder, getAllApprovedOrders };

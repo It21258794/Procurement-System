@@ -67,4 +67,41 @@ const getOrderById = async(id:string) =>{
 
 }
 
-export default { sendOrderByEmail, createOrder, getOrderId, getOrderBySite,getOrderById };
+
+//http://localhost:8000/api/order/approveOrder
+async function approveOrder(orderId: string): Promise<boolean> {
+  try {
+      const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { approved: true });
+      if (!updatedOrder) {
+          throw new Error('Order not found');
+      }
+      return true;
+  } catch (err) {
+      throw err;
+  }
+}
+
+//http://localhost:8000/api/order/getAllApprovedOrders
+async function getAllApprovedOrders(): Promise<any[]> {
+  try {
+      const approvedOrders = await orderModel.find({ approved: true });
+      return approvedOrders;
+  } catch (err) {
+      throw err;
+  }
+}
+
+//http://localhost:8000/api/order/rejectOrder
+async function rejectOrder(orderId: string): Promise<boolean> {
+  try {
+      const deletedOrder = await orderModel.findByIdAndDelete(orderId);
+      if (!deletedOrder) {
+          throw new Error('Order not found');
+      }
+      return true;
+  } catch (err) {
+      throw err;
+  }
+}
+
+export default { sendOrderByEmail, createOrder, getOrderId, getOrderBySite,getOrderById,rejectOrder, approveOrder,getAllApprovedOrders };

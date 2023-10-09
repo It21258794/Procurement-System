@@ -9,6 +9,10 @@ const orderSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    siteId: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        required: true,
+    },
     address: {
         type: String,
         required: true,
@@ -41,6 +45,10 @@ const orderSchema = new mongoose_1.default.Schema({
             },
         },
     ],
+    status: {
+        type: String,
+        required: true,
+    },
     description: {
         type: String,
         required: false,
