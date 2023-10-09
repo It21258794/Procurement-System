@@ -15,3 +15,4 @@ orderRoute.get('/approved', orderController.getAllApprovedOrders);
 
 orderRoute.get('/getSiteOrder/:siteId', orderController.getOrderBySite);
 orderRoute.get('/getOrderById/:orderId', orderController.getOrderById);
+orderRoute.put('/setStatus', orderController.changeStatus);

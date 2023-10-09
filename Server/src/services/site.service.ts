@@ -1,4 +1,6 @@
 import Account from '../models/account/account.model';
+import { IBudget } from '../models/budgetForm/IBudget';
+import budgetFormModel from '../models/budgetForm/budgetForm';
 import siteModel from '../models/site/site.model';
 
 async function insertSite(dto: any): Promise<any> {
@@ -24,4 +26,19 @@ const getSite = async () => {
   }
 };
 
-export default { insertSite, getSite };
+const Increasebugest = async (dto: IBudget) => {
+  try {
+    const site = await siteModel.findById(dto.site_id);
+
+    if (!site) {
+      throw 'Site not found';
+    }
+
+    const budgetItem = await budgetFormModel.create(dto);
+    return budgetItem;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export default { insertSite, getSite, Increasebugest };

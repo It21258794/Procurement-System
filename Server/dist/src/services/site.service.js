@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const account_model_1 = __importDefault(require("../models/account/account.model"));
+const budgetForm_1 = __importDefault(require("../models/budgetForm/budgetForm"));
 const site_model_1 = __importDefault(require("../models/site/site.model"));
 function insertSite(dto) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -38,4 +39,17 @@ const getSite = () => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-exports.default = { insertSite, getSite };
+const Increasebugest = (dto) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const site = yield site_model_1.default.findById(dto.site_id);
+        if (!site) {
+            throw 'Site not found';
+        }
+        const budgetItem = yield budgetForm_1.default.create(dto);
+        return budgetItem;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.default = { insertSite, getSite, Increasebugest };

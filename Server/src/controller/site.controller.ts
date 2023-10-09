@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import siteService from '../services/site.service';
+import { error } from 'winston';
 // Function to insert a new site
 
 const insertSite = async (req: Request, res: Response) => {
@@ -17,8 +18,18 @@ const getSite = async (req: Request, res: Response) => {
     const sites = await siteService.getSite();
     res.status(200).json(sites);
   } catch (err: any) {
-    res.status(400).json({ err: 'Sites not Found' });
+    res.status(400).json({ err: error });
   }
 };
 
-export default { insertSite, getSite };
+const bugestRequest = async (req: Request, res: Response) => {
+  try {
+    const dto = req.body;
+    const item = await siteService.Increasebugest(dto);
+    res.status(200).json(item);
+  } catch (err: any) {
+    res.status(400).json({ err: err });
+  }
+};
+
+export default { insertSite, getSite, bugestRequest };

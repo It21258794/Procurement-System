@@ -11,3 +11,4 @@ exports.siteRoute = (0, express_1.Router)();
 // Route needed
 exports.siteRoute.post('/createsite', site_controller_1.default.insertSite);
 exports.siteRoute.get('/getSites', authGuard_1.default, site_controller_1.default.getSite);
+exports.siteRoute.post('/budgetRequest', site_controller_1.default.bugestRequest);

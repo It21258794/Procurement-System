@@ -68,7 +68,9 @@ const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
         if (!site) {
             throw 'Site not Found';
         }
-        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { siteId: id } } });
+        const orderDetail = yield order_model_1.default.find({
+            items: { $elemMatch: { siteId: id } },
+        });
         return orderDetail;
     }
     catch (err) {
@@ -88,7 +90,9 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 function approveOrder(orderId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const updatedOrder = yield order_model_1.default.findByIdAndUpdate(orderId, { approved: true });
+            const updatedOrder = yield order_model_1.default.findByIdAndUpdate(orderId, {
+                approved: true,
+            });
             if (!updatedOrder) {
                 throw new Error('Order not found');
             }
@@ -126,4 +130,23 @@ function rejectOrder(orderId) {
         }
     });
 }
-exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySite, getOrderById, rejectOrder, approveOrder, getAllApprovedOrders };
+const changeOrderStatus = (orderId, status) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const order = yield order_model_1.default.updateOne({ _id: orderId }, { status: status });
+        return { res: 'Updated' };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.default = {
+    sendOrderByEmail,
+    createOrder,
+    getOrderId,
+    getOrderBySite,
+    getOrderById,
+    rejectOrder,
+    approveOrder,
+    getAllApprovedOrders,
+    changeOrderStatus,
+};

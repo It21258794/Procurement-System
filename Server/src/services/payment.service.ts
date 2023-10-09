@@ -22,34 +22,32 @@ async function insertPayment(dto: any): Promise<any> {
   }
 }
 
-const getPayemtDetailsBySupplier =async  (id:string) =>{
-  try{
-
+const getPayemtDetailsBySupplier = async (id: string) => {
+  try {
     const supplier = await accountModel.findById({ _id: id });
     if (!supplier) {
       throw new Error('Supplier not found');
     }
-    const paymentDetails = await paymentModel.findOne({supplierId : id})
+    const paymentDetails = await paymentModel.findOne({ supplierId: id });
     return paymentDetails;
-
-  }catch(err:any){
+  } catch (err: any) {
     throw err;
   }
-}
+};
 
-const createPayment = async (dto:IPaymentItem) =>{
-  try{
-    const orderItem = await orderModel.findOne({orderId:dto.order_id});
+const createPayment = async (dto: IPaymentItem) => {
+  try {
+    const orderItem = await orderModel.findOne({ orderId: dto.order_id });
 
-    if(!orderItem){
+    if (!orderItem) {
       throw 'Order not found';
     }
 
-    const payItem =  await paymentItemModel.create(dto);
+    const payItem = await paymentItemModel.create(dto);
     return payItem;
-  }catch(err:any){
+  } catch (err: any) {
     throw err;
   }
-}
+};
 
 export default { insertPayment, getPayemtDetailsBySupplier, createPayment };
