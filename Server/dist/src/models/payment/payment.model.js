@@ -22,6 +22,6 @@ const PaymentSchema = new Schema({
         type: String,
         require: true,
     },
-});
+}, { timestamps: true });
 const Payment = mongoose_1.default.model('Payment', PaymentSchema);
 exports.default = Payment;

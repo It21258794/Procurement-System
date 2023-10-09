@@ -42,9 +42,9 @@ const orderSchema = new mongoose_1.default.Schema({
         },
     ],
     description: {
-        type: Date,
+        type: String,
         required: false,
     },
-});
+}, { timestamps: true });
 const order = mongoose_1.default.model('order', orderSchema);
 exports.default = order;

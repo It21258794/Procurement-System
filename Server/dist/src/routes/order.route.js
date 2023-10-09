@@ -9,3 +9,5 @@ const order_controller_1 = __importDefault(require("../controller/order.controll
 exports.orderRoute = (0, express_1.Router)();
 exports.orderRoute.post('/sendOrderEmail', order_controller_1.default.sendOrder);
 exports.orderRoute.post('/createOrder', order_controller_1.default.createOrder);
+exports.orderRoute.get('/getSupplierOrder/:supplierId', order_controller_1.default.getOrderBySupplier);
+exports.orderRoute.get('/getOrderById/:orderId', order_controller_1.default.getOrderById);

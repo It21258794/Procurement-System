@@ -5,6 +5,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  siteId:{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   address: {
     type: String,
     required: true,
@@ -38,10 +42,10 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   description: {
-    type: Date,
+    type: String,
     required: false,
   },
-});
+},{timestamps:true});
 
 const order = mongoose.model('order', orderSchema);
 export default order;

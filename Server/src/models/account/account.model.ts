@@ -27,7 +27,7 @@ const AccountSchema = new Schema({
     type: String,
     require: true,
   },
-});
+},{timestamps:true});
 
 const Account = mongoose.model('Account', AccountSchema);
 export default Account;

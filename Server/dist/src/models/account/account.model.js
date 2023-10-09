@@ -30,6 +30,6 @@ const AccountSchema = new Schema({
         type: String,
         require: true,
     },
-});
+}, { timestamps: true });
 const Account = mongoose_1.default.model('Account', AccountSchema);
 exports.default = Account;
