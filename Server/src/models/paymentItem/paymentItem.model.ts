@@ -2,35 +2,31 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const AccountSchema = new Schema(
+const PaymentItemSchema = new Schema(
   {
-    fname: {
+    order_id: {
       type: String,
       require: true,
     },
-    lname: {
+    accountNumber: {
       type: String,
       require: true,
     },
-    mobile: {
+    accountHolderName: {
+      type: String,
+      require: true,
+    },
+    bankName: {
+      type: String,
+      require: true,
+    },
+    price: {
       type: Number,
-      require: true,
-    },
-    email: {
-      type: String,
-      require: true,
-    },
-    password: {
-      type: String,
-      require: true,
-    },
-    role: {
-      type: String,
       require: true,
     },
   },
   { timestamps: true },
 );
 
-const Account = mongoose.model('Account', AccountSchema);
-export default Account;
+const PaymentItem = mongoose.model('PaymentItem', PaymentItemSchema);
+export default PaymentItem;

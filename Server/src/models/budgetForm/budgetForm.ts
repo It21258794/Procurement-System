@@ -1,28 +1,33 @@
 import mongoose from 'mongoose';
+import { BudgetStatus } from './IBudget';
 
 const Schema = mongoose.Schema;
 
-const PaymentSchema = new Schema(
+const BudgetFormSchema = new Schema(
   {
-    supplierId: {
+    site_id: {
       type: mongoose.Schema.Types.ObjectId,
       require: true,
     },
-    accountNumber: {
+    amount: {
       type: Number,
       require: true,
     },
-    accountHolderName: {
+    location: {
       type: String,
       require: true,
     },
-    bankName: {
+    description: {
       type: String,
       require: true,
+    },
+    status: {
+      type: String,
+      default: BudgetStatus.PENDING,
     },
   },
   { timestamps: true },
 );
 
-const Payment = mongoose.model('Payment', PaymentSchema);
-export default Payment;
+const BudgetForm = mongoose.model('BudgetForm', BudgetFormSchema);
+export default BudgetForm;

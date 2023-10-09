@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const order_model_1 = __importDefault(require("../models/order/order.model"));
+const site_model_1 = __importDefault(require("../models/site/site.model"));
 const sendOrderByEmail = (order_id, email) => {
     try {
         console.log(process.env.EMAIL_PASS);
@@ -63,7 +64,13 @@ const getOrderId = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const orderDetail = yield order_model_1.default.find({ items: { $elemMatch: { siteId: id } } });
+        const site = yield site_model_1.default.findById(id);
+        if (!site) {
+            throw 'Site not Found';
+        }
+        const orderDetail = yield order_model_1.default.find({
+            items: { $elemMatch: { siteId: id } },
+        });
         return orderDetail;
     }
     catch (err) {
@@ -83,7 +90,9 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 function approveOrder(orderId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const updatedOrder = yield order_model_1.default.findByIdAndUpdate(orderId, { approved: true });
+            const updatedOrder = yield order_model_1.default.findByIdAndUpdate(orderId, {
+                approved: true,
+            });
             if (!updatedOrder) {
                 throw new Error('Order not found');
             }
@@ -121,4 +130,23 @@ function rejectOrder(orderId) {
         }
     });
 }
-exports.default = { sendOrderByEmail, createOrder, getOrderId, getOrderBySite, getOrderById, rejectOrder, approveOrder, getAllApprovedOrders };
+const changeOrderStatus = (orderId, status) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const order = yield order_model_1.default.updateOne({ _id: orderId }, { status: status });
+        return { res: 'Updated' };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.default = {
+    sendOrderByEmail,
+    createOrder,
+    getOrderId,
+    getOrderBySite,
+    getOrderById,
+    rejectOrder,
+    approveOrder,
+    getAllApprovedOrders,
+    changeOrderStatus,
+};

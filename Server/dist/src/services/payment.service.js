@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const payment_model_1 = __importDefault(require("../models/payment/payment.model"));
 const account_model_1 = __importDefault(require("../models/account/account.model"));
+const order_model_1 = __importDefault(require("../models/order/order.model"));
+const paymentItem_model_1 = __importDefault(require("../models/paymentItem/paymentItem.model"));
 function insertPayment(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -33,4 +35,30 @@ function insertPayment(dto) {
         }
     });
 }
-exports.default = { insertPayment };
+const getPayemtDetailsBySupplier = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const supplier = yield account_model_1.default.findById({ _id: id });
+        if (!supplier) {
+            throw new Error('Supplier not found');
+        }
+        const paymentDetails = yield payment_model_1.default.findOne({ supplierId: id });
+        return paymentDetails;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const createPayment = (dto) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const orderItem = yield order_model_1.default.findOne({ orderId: dto.order_id });
+        if (!orderItem) {
+            throw 'Order not found';
+        }
+        const payItem = yield paymentItem_model_1.default.create(dto);
+        return payItem;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.default = { insertPayment, getPayemtDetailsBySupplier, createPayment };
