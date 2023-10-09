@@ -1,3 +1,5 @@
+// OrderList.tsx
+
 import * as React from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import Paper from '@mui/material/Paper';
@@ -8,10 +10,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Box, Typography, Button } from '@mui/material'; // Import Button
+import { Box, Typography } from '@mui/material';
 
 interface Column {
-  id: 'orderId' | 'siteId' | 'address' | 'requiredDate' | 'description'|'action'; // Added 'actions'
+  id: 'name' | 'code' | 'population' | 'size' | 'density' | 'actions'; // Added 'actions'
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -19,27 +21,31 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'orderId', label: 'Order ID', minWidth: 170 },
-  { id: 'siteId', label: 'site ID', minWidth: 100 },
+  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
-    id: 'address',
-    label: 'Address',
-    minWidth: 170,
-  },
-  {
-    id: 'requiredDate',
-    label: 'Required Date',
+    id: 'population',
+    label: 'Population',
     minWidth: 170,
     align: 'right',
-    // format: (value: Date) => value.toLocaleString('en-US'),
+    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
-    id: 'description',
-    label: 'Description',
+    id: 'size',
+    label: 'Size\u00a0(km\u00b2)',
     minWidth: 170,
+    align: 'right',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
-    id: 'action', // Added 'actions' column
+    id: 'density',
+    label: 'Density',
+    minWidth: 170,
+    align: 'right',
+    format: (value: number) => value.toFixed(2),
+  },
+  {
+    id: 'actions', // Added 'actions' column
     label: 'Actions',
     minWidth: 100,
     align: 'center', // Center align for action buttons
@@ -47,29 +53,29 @@ const columns: readonly Column[] = [
 ];
 
 interface Data {
-  orderId: number;
-  siteId: number;
-  address: string;
-  requiredDate: string;
-  description: string;
+  name: string;
+  code: string;
+  population: number;
+  size: number;
+  density: number;
 }
 
 function createData(
-  orderId: number,
-  siteId: number,
-  address: string,
-  requiredDate: string,
-  description: string,
+  name: string,
+  code: string,
+  population: number,
+  size: number,
 ): Data {
-  return { orderId, siteId, address, requiredDate, description };
+  const density = population / size;
+  return { name, code, population, size, density };
 }
 
 const rows = [
-  createData(201, 20301, 'kandy', '21/09/2023', 'box'),
+  createData('India', 'IN', 1324171354, 3287263),
   // ... (other rows)
 ];
 
-export default function ApproveOrderList() {
+export default function OrderList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -86,7 +92,7 @@ export default function ApproveOrderList() {
 
   return (
     <>
-      <Typography>Budget Increase Requests</Typography>
+      <Typography>Site Name</Typography>
       <Box sx={{ paddingTop: 5, paddingBottom: 10 }}>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -113,20 +119,15 @@ export default function ApproveOrderList() {
                         hover
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.description}
+                        key={row.code}
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
-                          if (column.id === 'action') {
+                          if (column.id === 'actions') {
                             return (
-                              <TableCell
-                                key={column.id}
-                                align={column.align}
-                              >
-                                <Link to={`../orderapprove/${row.orderId}`}>
-                                  <Button variant="contained">
-                                    View Order
-                                  </Button>
+                              <TableCell key={column.id} align={column.align}>
+                                <Link to={`/orderapprove/${row.code}`}>
+                                  <button>View Order</button>
                                 </Link>
                               </TableCell>
                             );
