@@ -44,4 +44,48 @@ const bugestRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertSite, getSite, bugestRequest };
+const budgetApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { site_id, budget_id, status, budget } = req.body;
+        const isApproved = yield site_service_1.default.approveBudget(site_id, budget_id, status, budget);
+        if (isApproved) {
+            res.status(200).json({ message: 'Budget approved successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Budget not found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+const getAllApprovedBudget = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const approvedBudget = yield site_service_1.default.getAllApprovedBudget();
+        if (approvedBudget && approvedBudget.length > 0) {
+            res.status(200).json({ approvedBudget });
+        }
+        else {
+            res.status(404).json({ message: 'No approved budget found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+const budgetReject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const isRejected = yield site_service_1.default.rejectBudget(id);
+        if (isRejected) {
+            res.status(200).json({ message: 'Budget rejected successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Budget not found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err });
+    }
+});
+exports.default = { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget };
