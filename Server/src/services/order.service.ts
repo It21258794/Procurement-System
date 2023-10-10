@@ -69,9 +69,9 @@ const getOrderById = async(id:string) =>{
 
 
 //http://localhost:8000/api/order/approveOrder
-async function approveOrder(orderId: string): Promise<boolean> {
+async function approveOrder(siteId: string): Promise<boolean> {
   try {
-      const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { approved: true });
+      const updatedOrder = await orderModel.findByIdAndUpdate(siteId, { approved: true });
       if (!updatedOrder) {
           throw new Error('Order not found');
       }
@@ -92,9 +92,9 @@ async function getAllApprovedOrders(): Promise<any[]> {
 }
 
 //http://localhost:8000/api/order/rejectOrder
-async function rejectOrder(orderId: string): Promise<boolean> {
+async function rejectOrder(siteId: string): Promise<boolean> {
   try {
-      const deletedOrder = await orderModel.findByIdAndDelete(orderId);
+      const deletedOrder = await orderModel.findByIdAndDelete(siteId);
       if (!deletedOrder) {
           throw new Error('Order not found');
       }

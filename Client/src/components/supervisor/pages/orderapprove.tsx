@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -30,22 +30,41 @@ interface Row {
   price: number;
 }
 
-const rows = [
-  createRow('Paperclips (Box)', 100, 1.15),
-];
+interface ApproveOrderPageProps {
+  siteId: number; // Receive the site ID as a prop
+}
 
-const invoiceSubtotal = rows.reduce((sum, row) => sum + row.price, 0);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-export default function ApproveOrderPage() {
+export default function ApproveOrderPage({ siteId }: ApproveOrderPageProps) {
+  const [siteDetails, setSiteDetails] = useState<Row | null>(null); // Define a state to store site details
   const [orderStatus, setOrderStatus] = useState<string | null>(null);
 
+  // Simulate fetching site details based on siteId (replace with your actual fetch logic)
+  const fetchSiteDetails = async () => {
+    try {
+      // Replace this with your actual API request to fetch site details using the siteId
+      // For now, we're using a static object as an example
+      const response = await fetch(`/api/sites/${siteId}`);
+      const data = await response.json();
+      setSiteDetails(data);
+    } catch (error) {
+      console.error('Error fetching site details:', error);
+    }
+  };
+
+  // Fetch site details when the component mounts
+  useEffect(() => {
+    fetchSiteDetails();
+  }, [siteId]);
+
   const handleApprove = () => {
+    // Handle the approval logic here (e.g., send an API request)
+    // Update orderStatus based on the response
     setOrderStatus('Approved');
   };
 
   const handleReject = () => {
+    // Handle the rejection logic here (e.g., send an API request)
+    // Update orderStatus based on the response
     setOrderStatus('Rejected');
   };
 
@@ -70,31 +89,33 @@ export default function ApproveOrderPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.desc}>
-                  <TableCell>{row.desc}</TableCell>
-                  <TableCell align="right">{row.qty}</TableCell>
-                  <TableCell align="right">{row.unit}</TableCell>
-                  <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+              {siteDetails && ( // Render site details if available
+                <TableRow>
+                  <TableCell>{siteDetails.desc}</TableCell>
+                  <TableCell align="right">{siteDetails.qty}</TableCell>
+                  <TableCell align="right">{siteDetails.unit}</TableCell>
+                  <TableCell align="right">{ccyFormat(siteDetails.price)}</TableCell>
                 </TableRow>
-              ))}
+              )}
               <TableRow>
                 <TableCell rowSpan={3} />
                 <TableCell colSpan={2}>Subtotal</TableCell>
                 <TableCell align="right">
-                  {ccyFormat(invoiceSubtotal)}
+                  {ccyFormat(siteDetails ? siteDetails.price : 0)}
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Tax</TableCell>
-                <TableCell align="right">{`${(TAX_RATE * 100).toFixed(
-                  0
-                )} %`}</TableCell>
-                <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
+                <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
+                <TableCell align="right">
+                  {ccyFormat(siteDetails ? TAX_RATE * siteDetails.price : 0)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell colSpan={2}>Total</TableCell>
-                <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+                <TableCell align="right">
+                  {ccyFormat(siteDetails ? (1 + TAX_RATE) * siteDetails.price : 0)}
+                </TableCell>
               </TableRow>
               {orderStatus === null ? (
                 <TableRow>
