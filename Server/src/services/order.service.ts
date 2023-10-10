@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer';
 import orderModel from '../models/order/order.model';
+import siteModel from '../models/site/site.model';
+import { OrderStatus } from '../models/order/OrderStatus';
 
 const sendOrderByEmail = (order_id: string, email: string) => {
   try {
@@ -49,59 +51,46 @@ const getOrderId = async () => {
 };
 const getOrderBySite = async (id: string) => {
   try {
-    const orderDetail = await orderModel.find({ items: {$elemMatch :{siteId:id} }});
+    const site = await siteModel.findById(id);
+    if (!site) {
+      throw 'Site not Found';
+    }
+    const orderDetail = await orderModel.find({
+      items: { $elemMatch: { siteId: id } },
+    });
     return orderDetail;
   } catch (err: any) {
     throw err;
   }
 };
 
-const getOrderById = async(id:string) =>{
-  try{
-    const orderItem = await orderModel.findById(id)
-    return orderItem
-
-  }catch(err:any){
-    throw err
-  }
-
-}
-
-
-//http://localhost:8000/api/order/approveOrder
-async function approveOrder(siteId: string): Promise<boolean> {
+const getOrderById = async (id: string) => {
   try {
-      const updatedOrder = await orderModel.findByIdAndUpdate(siteId, { approved: true });
-      if (!updatedOrder) {
-          throw new Error('Order not found');
-      }
-      return true;
-  } catch (err) {
-      throw err;
+    const orderItem = await orderModel.findById(id);
+    return orderItem;
+  } catch (err: any) {
+    throw err;
   }
-}
+};
 
-//http://localhost:8000/api/order/getAllApprovedOrders
-async function getAllApprovedOrders(): Promise<any[]> {
+
+const changeOrderStatus = async (orderId: string, status: OrderStatus) => {
   try {
-      const approvedOrders = await orderModel.find({ approved: true });
-      return approvedOrders;
-  } catch (err) {
-      throw err;
+    const order = await orderModel.updateOne(
+      { _id: orderId },
+      { status: status },
+    );
+    return { res: 'Updated' };
+  } catch (err: any) {
+    throw err;
   }
-}
+};
 
-//http://localhost:8000/api/order/rejectOrder
-async function rejectOrder(siteId: string): Promise<boolean> {
-  try {
-      const deletedOrder = await orderModel.findByIdAndDelete(siteId);
-      if (!deletedOrder) {
-          throw new Error('Order not found');
-      }
-      return true;
-  } catch (err) {
-      throw err;
-  }
-}
-
-export default { sendOrderByEmail, createOrder, getOrderId, getOrderBySite,getOrderById,rejectOrder, approveOrder,getAllApprovedOrders };
+export default {
+  sendOrderByEmail,
+  createOrder,
+  getOrderId,
+  getOrderBySite,
+  getOrderById,
+  changeOrderStatus,
+};

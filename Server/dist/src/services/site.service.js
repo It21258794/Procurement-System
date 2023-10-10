@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const account_model_1 = __importDefault(require("../models/account/account.model"));
+const budgetForm_1 = __importDefault(require("../models/budgetForm/budgetForm"));
 const site_model_1 = __importDefault(require("../models/site/site.model"));
 function insertSite(dto) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -38,4 +39,61 @@ const getSite = () => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-exports.default = { insertSite, getSite };
+const Increasebugest = (dto) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const site = yield site_model_1.default.findById(dto.site_id);
+        if (!site) {
+            throw 'Site not found';
+        }
+        const budgetItem = yield budgetForm_1.default.create(dto);
+        return budgetItem;
+    }
+    catch (err) {
+        throw err;
+    }
+});
+//http://localhost:8000/api/site/approveBudget
+function approveBudget(site_id, budget_id, status, budget) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const updateBudget = yield budgetForm_1.default.updateOne({ _id: budget_id }, { status: status });
+            console.log(updateBudget);
+            if (!updateBudget) {
+                throw 'budget not updated.';
+            }
+            yield site_model_1.default.updateOne({ _id: site_id }, { budget: budget });
+            return true;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+//http://localhost:8000/api/site/getAllApprovedOrders
+function getAllApprovedBudget() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const approvedBudget = yield budgetForm_1.default.find({ status: 'confirmed' });
+            return approvedBudget;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+//http://localhost:8000/api/site/rejectOrder
+function rejectBudget(site_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const rejectBudget = yield budgetForm_1.default.findByIdAndUpdate(site_id, { status: 'rejected' });
+            if (!rejectBudget) {
+                throw new Error('budget not found');
+            }
+            return true;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
+exports.default = { insertSite, getSite, Increasebugest, rejectBudget, approveBudget, getAllApprovedBudget };

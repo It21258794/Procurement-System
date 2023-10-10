@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const site_service_1 = __importDefault(require("../services/site.service"));
+const winston_1 = require("winston");
 // Function to insert a new site
 const insertSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -30,7 +31,61 @@ const getSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(sites);
     }
     catch (err) {
-        res.status(400).json({ err: 'Sites not Found' });
+        res.status(400).json({ err: winston_1.error });
     }
 });
-exports.default = { insertSite, getSite };
+const bugestRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const dto = req.body;
+        const item = yield site_service_1.default.Increasebugest(dto);
+        res.status(200).json(item);
+    }
+    catch (err) {
+        res.status(400).json({ err: err });
+    }
+});
+const budgetApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { site_id, budget_id, status, budget } = req.body;
+        const isApproved = yield site_service_1.default.approveBudget(site_id, budget_id, status, budget);
+        if (isApproved) {
+            res.status(200).json({ message: 'Budget approved successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Budget not found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+const getAllApprovedBudget = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const approvedBudget = yield site_service_1.default.getAllApprovedBudget();
+        if (approvedBudget && approvedBudget.length > 0) {
+            res.status(200).json({ approvedBudget });
+        }
+        else {
+            res.status(404).json({ message: 'No approved budget found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+});
+const budgetReject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const isRejected = yield site_service_1.default.rejectBudget(id);
+        if (isRejected) {
+            res.status(200).json({ message: 'Budget rejected successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Budget not found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err });
+    }
+});
+exports.default = { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget };
