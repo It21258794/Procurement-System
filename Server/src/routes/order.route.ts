@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import orderController from '../controller/order.controller';
 import AuthGuard from '../utils/authGuard';
+import orderService from '../services/order.service';
 
 export const orderRoute = Router();
 
@@ -16,3 +17,4 @@ orderRoute.get('/approved', orderController.getAllApprovedOrders);
 orderRoute.get('/getSiteOrder/:siteId', orderController.getOrderBySite);
 orderRoute.get('/getOrderById/:orderId', orderController.getOrderById);
 orderRoute.put('/setStatus', orderController.changeStatus);
+orderRoute.get('/getOrderBudget/:orderId', orderController.getOrderAndBudget);

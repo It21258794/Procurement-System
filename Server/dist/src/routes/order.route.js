@@ -16,3 +16,4 @@ exports.orderRoute.get('/approved', order_controller_1.default.getAllApprovedOrd
 exports.orderRoute.get('/getSiteOrder/:siteId', order_controller_1.default.getOrderBySite);
 exports.orderRoute.get('/getOrderById/:orderId', order_controller_1.default.getOrderById);
 exports.orderRoute.put('/setStatus', order_controller_1.default.changeStatus);
+exports.orderRoute.get('/getOrderBudget/:orderId', order_controller_1.default.getOrderAndBudget);

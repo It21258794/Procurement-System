@@ -104,6 +104,17 @@ const changeStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getOrderAndBudget = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+
+    const { orderItem, budget } = await orderService.getOrderAndBudget(orderId);
+    res.status(200).json({ orderItem, budget });
+  } catch (err: any) {
+    res.status(401).send({ err: err });
+  }
+};
+
 export default {
   sendOrder,
   createOrder,
@@ -113,4 +124,5 @@ export default {
   getOrderBySite,
   getOrderById,
   changeStatus,
+  getOrderAndBudget,
 };

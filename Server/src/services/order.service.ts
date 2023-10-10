@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import orderModel from '../models/order/order.model';
 import siteModel from '../models/site/site.model';
 import { OrderStatus } from '../models/order/OrderStatus';
+import { ISite } from '../models/site/ISite';
 
 const sendOrderByEmail = (order_id: string, email: string) => {
   try {
@@ -123,6 +124,61 @@ const changeOrderStatus = async (orderId: string, status: OrderStatus) => {
   }
 };
 
+const getOrderAndBudget = async (id: string) => {
+  try {
+    const orderItem = await orderModel.findById(id);
+
+    if (!orderItem) {
+      throw 'order not Found';
+    }
+    const budget = await getBudgetByMonth(orderItem.siteId.toString());
+    return { orderItem, budget };
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+const getBudgetByMonth = async (id: string) => {
+  try {
+    let priceList = [];
+    let totalPrice = 0;
+    let remBudget = 0;
+    const date = new Date();
+    const currMonth = date.getMonth() + 1;
+    const currYear = date.getFullYear();
+    const year_month = currMonth + '_' + currYear;
+
+    const siteItem = await siteModel.findById(id);
+
+    if (!siteItem) {
+      throw 'Site Budget not Found';
+    }
+
+    const siteBudget = siteItem.budget as number;
+
+    priceList = await orderModel.find({
+      siteId: id,
+      month_year: year_month,
+      status: 'confirmed',
+    });
+
+    console.log(priceList);
+
+    priceList.forEach((item) => {
+      totalPrice = totalPrice + item.total_cost;
+    });
+    remBudget = siteBudget - totalPrice;
+
+    return {
+      siteBudget: siteBudget,
+      totalPrice: totalPrice,
+      remBudget: remBudget,
+    };
+  } catch (err: any) {
+    throw err;
+  }
+};
+
 export default {
   sendOrderByEmail,
   createOrder,
@@ -133,4 +189,5 @@ export default {
   approveOrder,
   getAllApprovedOrders,
   changeOrderStatus,
+  getOrderAndBudget,
 };

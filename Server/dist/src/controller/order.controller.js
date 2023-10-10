@@ -111,6 +111,16 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(401).send({ err: err });
     }
 });
+const getOrderAndBudget = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const { orderItem, budget } = yield order_service_1.default.getOrderAndBudget(orderId);
+        res.status(200).json({ orderItem, budget });
+    }
+    catch (err) {
+        res.status(401).send({ err: err });
+    }
+});
 exports.default = {
     sendOrder,
     createOrder,
@@ -120,4 +130,5 @@ exports.default = {
     getOrderBySite,
     getOrderById,
     changeStatus,
+    getOrderAndBudget,
 };

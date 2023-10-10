@@ -15,6 +15,9 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    month_year: {
+      type: String,
+    },
     requiredDate: {
       type: Date,
       required: true,
@@ -43,6 +46,10 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
+    total_cost: {
+      type: Number,
+      required: true,
+    },
     status: {
       type: String,
       default: OrderStatus.PENDING,
