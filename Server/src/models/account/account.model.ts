@@ -28,6 +28,9 @@ const AccountSchema = new Schema(
       type: String,
       require: true,
     },
+    profileImage: {
+      type: String, // Store the path to the image file on your server
+    }
   },
   { timestamps: true },
 );

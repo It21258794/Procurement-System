@@ -1,22 +1,24 @@
 import itemmodel from '../models/item/item.model';
 import Account from '../models/account/account.model';
+import accountService from './account.service';
 
 async function insertItem(dto: any): Promise<any> {
   try {
-    const supplier = await Account.findById({ _id: dto.supplierId });
-
+    console.log(dto.supplierName)
+    const supplier =await accountService.findItemsByUserName(dto.supplierUsername);
+    console.log(supplier)
     if (!supplier) {
       throw new Error('Supplier does not exist');
     }
-
+    
     const existItem = await itemmodel.findOne({
       itemName: dto.itemName,
-      supplierId: dto.supplierid,
+      supplierName: dto.supplierUsername,
     });
     if (existItem) {
       throw new Error('Item already exists');
     }
-
+    console.log(dto.itemName)
     const createdItem = await itemmodel.create(dto);
     return createdItem;
   } catch (err) {
