@@ -53,7 +53,20 @@ function SupervisorRoute(){
 
     );
 }
-
+function AdminRoute() {
+  return (
+    // <ManagerAuthGuard>
+      <ManagerDashboard>
+        <Routes>
+          <Route path="/sites" element={<SiteList />} />
+          <Route path="/orders" element={<OrderList />} />
+          <Route path="/order" element={<OrderTable />} />
+          <Route path="/item" element={<Checkout />} />
+        </Routes>
+      </ManagerDashboard>
+    // </ManagerAuthGuard>
+  );
+}
 function App() {
   React.useEffect(() => {
     const socket = io('http://localhost:8000');
@@ -66,6 +79,7 @@ function App() {
         <Route path="manager/*" element={<ProcurementManagerRoute />} />
         <Route path="*" element={<GuestRoute />} />
         <Route path="supervisor/*" element={<SupervisorRoute />} />
+        <Route path="admin/*" element={<AdminRoute />} />
       </Routes>
     </>
   );
