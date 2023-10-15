@@ -9,9 +9,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Typography, Select, MenuItem, FormControl, InputLabel, IconButton } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -51,11 +50,9 @@ export default function AccountListView() {
       });
 
       if (response.ok) {
-        // Handle success, e.g., show a success message and update the account list
         enqueueSnackbar('Account deleted successfully', { variant: 'success' });
         fetchData(); // Refresh the account list after deletion
       } else {
-        // Handle the error, e.g., show an error message
         enqueueSnackbar('Account deletion failed', { variant: 'error' });
       }
     } catch (error) {
@@ -65,7 +62,7 @@ export default function AccountListView() {
 
   const handleEditAccount = (account) => {
     setSelectedAccount(account);
-    setUpdatedAccount(account); // Pre-fill the update form with the selected account
+    setUpdatedAccount({ ...account }); // Create a copy of the account for editing
     setEditDialogOpen(true);
   };
 
@@ -80,12 +77,10 @@ export default function AccountListView() {
       });
 
       if (response.ok) {
-        // Handle success, e.g., show a success message and update the account list
         enqueueSnackbar('Account updated successfully', { variant: 'success' });
         setEditDialogOpen(false); // Close the edit dialog
         fetchData(); // Refresh the account list after the update
       } else {
-        // Handle the error, e.g., show an error message
         enqueueSnackbar('Account update failed', { variant: 'error' });
       }
     } catch (error) {
@@ -125,12 +120,15 @@ export default function AccountListView() {
           label="Account Type"
           onChange={handleChangeType}
         >
+          <MenuItem value="Procument_manager">Procument Manager</MenuItem>
+          <MenuItem value="Supervisor">Supervisor</MenuItem>
           <MenuItem value="supplier">Supplier</MenuItem>
-          <MenuItem value="customer">Customer</MenuItem>
+          <MenuItem value="Procument_admin">Procument Admin</MenuItem>
+          <MenuItem value="Site_Manager" >Site Manager</MenuItem>
           {/* Add more options for other account types as needed */}
         </Select>
       </FormControl>
-      <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'transparent' }}>
+      <Paper sx={{ width: '120%', overflow: 'hidden', backgroundColor: 'transparent' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -167,7 +165,7 @@ export default function AccountListView() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[10, 50, 100]}
           component="div"
           count={accounts.length}
           rowsPerPage={rowsPerPage}
@@ -176,6 +174,109 @@ export default function AccountListView() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        sx={{
+          '& .MuiDialog-paper': {
+            width: '400px',
+            maxWidth: '120%',
+          },
+        }}
+      >
+<DialogTitle>Edit Account</DialogTitle>
+<DialogContent sx={{ maxHeight: '500px' }}>
+  <Box sx={{ marginBottom: 2 }}>
+    <TextField
+      label="First Name"
+      fullWidth
+      value={updatedAccount ? updatedAccount.fname : ''}
+      onChange={(e) =>
+        setUpdatedAccount({
+          ...updatedAccount,
+          fname: e.target.value,
+        })
+      }
+      disabled  // Disable this field
+      sx={{ margin: '16px 0' }} 
+    />
+  </Box>
+  <Box sx={{ marginBottom: 2 }}>
+    <TextField
+      label="Last Name"
+      fullWidth
+      value={updatedAccount ? updatedAccount.lname : ''}
+      onChange={(e) =>
+        setUpdatedAccount({
+          ...updatedAccount,
+          lname: e.target.value,
+        })
+      }
+      disabled  // Disable this field
+    />
+  </Box>
+  <Box sx={{ marginBottom: 2 }}>
+  <TextField
+    label="Mobile"
+    fullWidth
+    value={updatedAccount ? updatedAccount.mobile : ''}
+    onChange={(e) =>
+      setUpdatedAccount({
+        ...updatedAccount,
+        mobile: e.target.value,
+      })
+    }
+    sx={{ marginBottom: '16px' }}
+    inputProps={{
+      pattern: '\\d{10}', // This enforces 10 digits
+      title: 'Mobile number should be 10 digits',
+    }}
+    error={updatedAccount && !/^\d{10}$/.test(updatedAccount.mobile)}
+    helperText={
+      updatedAccount && !/^\d{10}$/.test(updatedAccount.mobile)
+        ? 'Mobile number should be 10 digits'
+        : ''
+    }
+  />
+</Box>
+  <Box sx={{ marginBottom: 2 }}>
+    <TextField
+      label="Email"
+      fullWidth
+      value={updatedAccount ? updatedAccount.email : ''}
+      onChange={(e) =>
+        setUpdatedAccount({
+          ...updatedAccount,
+          email: e.target.value,
+        })
+      }
+      disabled  // Disable this field
+    />
+  </Box>
+  <Box sx={{ marginBottom: 2 }}>
+    <TextField
+      label="Role"
+      fullWidth
+      value={updatedAccount ? updatedAccount.role : ''}
+      onChange={(e) =>
+        setUpdatedAccount({
+          ...updatedAccount,
+          role: e.target.value,
+        })
+      }
+      disabled  // Disable this field
+    />
+  </Box>
+</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleUpdateAccount} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

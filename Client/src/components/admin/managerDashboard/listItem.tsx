@@ -4,115 +4,75 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import PaidIcon from '@mui/icons-material/Paid';
-import NearMeIcon from '@mui/icons-material/NearMe';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddLocationIcon from '@mui/icons-material/AddLocation';
 import List from '@mui/material/List';
+import Collapse from '@mui/material/Collapse';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
-
-export default function ListItems() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'; 
+import Add from '@mui/icons-material/Add';
+import BuildCircleIcon from '@mui/icons-material/BuildCircle';
+export default function ListItemss({ userRole }) {
   const [open, setOpen] = React.useState(false);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
-  // if(key == '2'){
-  //   console.log(key)
-  //   setOpen(!open)
-  // }
-  const handleClickOn = () => {
-    setOpen(!open);
-  };
-
-  const handleClickOff = () => {
+  const handleClick = () => {
     setOpen(!open);
   };
 
   return (
     <React.Fragment>
-      <ListItemButton
-        onClick={() => {
-          navigate('/sites');
-        }}
-      >
+      <ListItemButton onClick={() => navigate('/admin/items')}>
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItemButton>
-      <ListItemButton
-        onClick={() => {
-          navigate('/manager/sites');
-        }}
-      >
+      <ListItemButton onClick={() => navigate('/admin/items')}>
         <ListItemIcon>
           <ViewListIcon />
         </ListItemIcon>
-        <ListItemText primary="Sites" />
-        {open ? (
-          <ExpandLess onClick={handleClickOff} />
-        ) : (
-          <ExpandMore onClick={handleClickOn} />
-        )}
+        <ListItemText primary="Item Details" />
+      </ListItemButton>
+      <ListItemButton onClick={() => navigate('/admin/accountList')}>
+        <ListItemIcon>
+          <PersonOutlineIcon />
+        </ListItemIcon>
+        <ListItemText primary="Account Details" />
+      </ListItemButton>
+      <ListItemButton onClick={handleClick}>
+        <ListItemIcon>
+          <AddCircleIcon /> {/* Replace with the desired icon */}
+        </ListItemIcon>
+        <ListItemText primary="Insert" />
+        {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton
-            sx={{ pl: 4 }}
-            onClick={() => {
-              navigate('/manager/orders');
-            }}
-          >
+          <ListItemButton onClick={() => navigate('/admin/insertItem')}>
             <ListItemIcon>
-              <AirportShuttleIcon />
+              <BuildCircleIcon /> {/* Replace with the desired icon */}
             </ListItemIcon>
-            <ListItemText primary="Orders" />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary="Insert Item" />
           </ListItemButton>
+          <ListItemButton onClick={() => navigate('/admin/insertSite')}>
+            <ListItemIcon>
+              <AddLocationIcon /> {/* Replace with the desired icon */}
+            </ListItemIcon>
+            <ListItemText primary="Insert Site" />
+          </ListItemButton>
+          <ListItemButton onClick={() => navigate('/admin/createAccount')}>
+            <ListItemIcon>
+              <PersonAddIcon/> {/* Replace with the desired icon */}
+            </ListItemIcon>
+            <ListItemText primary="Insert Account" />
+          </ListItemButton>
+          {/* Add more insert buttons as needed with appropriate icons */}
         </List>
       </Collapse>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton
-            sx={{ pl: 4 }}
-            onClick={() => {
-              navigate('/manager/order');
-            }}
-          >
-            <ListItemIcon>
-              <AirportShuttleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Order" />
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-        </List>
-      </Collapse>
-      <ListItemButton
-        onClick={() => {
-          navigate('/admin/payment');
-        }}
-      >
-        <ListItemIcon>
-          <PaidIcon />
-        </ListItemIcon>
-        <ListItemText primary="payment" />
-      </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon>
-          <NearMeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Track Order" />
-      </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon>
-          <SettingsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Settings" />
-      </ListItemButton>
     </React.Fragment>
   );
 }

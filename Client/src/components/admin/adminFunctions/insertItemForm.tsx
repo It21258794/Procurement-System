@@ -3,9 +3,9 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import { useSnackbar } from 'notistack';
 interface ItemDetails {
-  itemname: string;
+  itemName: string;
   type: string;
   quantity: string;
   price: string;
@@ -14,13 +14,13 @@ interface ItemDetails {
 
 export default function ItemForm() {
   const [itemDetails, setItemDetails] = React.useState<ItemDetails>({
-    itemname: '',
+    itemName: '',
     type: '',
     quantity: '',
     price: '',
     supplierUsername: '',
   });
-
+  const { enqueueSnackbar } = useSnackbar();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setItemDetails({
@@ -41,10 +41,11 @@ export default function ItemForm() {
     })
       .then((response) => {
         if (response.ok) {
+          enqueueSnackbar('Item created successfully', { variant: 'success' });
           console.log('Item created successfully');
           // Reset the form fields if needed
           setItemDetails({
-            itemname: '',
+            itemName: '',
             type: '',
             quantity: '',
             price: '',
@@ -68,10 +69,10 @@ export default function ItemForm() {
         <Grid item xs={12} md={6}>
           <TextField
             required
-            id="itemname"
+            id="itemName"
             label="Item Name"
             fullWidth
-            value={itemDetails.itemname}
+            value={itemDetails.itemName}
             onChange={handleInputChange}
           />
         </Grid>

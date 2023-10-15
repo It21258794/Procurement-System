@@ -21,7 +21,6 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ListItems from './ListItem';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Avatar from '@mui/material/Avatar';
@@ -29,6 +28,8 @@ import Stack from '@mui/material/Stack';
 import { useSnackbar } from 'notistack';
 // import axios from 'axios';
 import { AuthContext } from '../../../auth/AuthProvider';
+import SiteForm from './components/admin/adminFunctions/insertSiteForm';
+import AdminListItem from './listItem.tsx'
 
 function Copyright(props: any) {
   return (
@@ -145,7 +146,7 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ManagerDashboard({ children }: any) {
+export default function AdminDashboard({ children }: any) {
   const [open, setOpen] = React.useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = React.useState({});
@@ -274,7 +275,7 @@ export default function ManagerDashboard({ children }: any) {
               </Box>
             </Stack>
             <List component="nav" sx={{ backgroundColor: '#F2EAE1' }}>
-              <ListItems />
+              <AdminListItem />
             </List>
           </Drawer>
         </Box>
