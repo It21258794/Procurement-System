@@ -7,8 +7,10 @@ siteRoute.post('/createsite', siteController.insertSite);
 siteRoute.get('/getSites', AuthGuard, siteController.getSite);
 siteRoute.post('/budgetRequest', siteController.bugestRequest);
 
-siteRoute.put('/reject/:id', siteController.budgetReject);
+
+siteRoute.delete('/reject/:id', siteController.budgetReject);
 siteRoute.put('/approve', siteController.budgetApprove);
 
 // All approved budgets
 siteRoute.get('/approved', siteController.getAllApprovedBudget);
+siteRoute.get('/requst', siteController.getAllBudgetRequests);

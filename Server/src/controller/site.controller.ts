@@ -33,6 +33,24 @@ const bugestRequest = async (req: Request, res: Response) => {
   }
 };
 
+
+
+const getAllBudgetRequests = async (req: Request, res: Response) => {
+  try {
+
+    const budgetRequests = await siteService.getAllBudgetRequests();
+
+    if (budgetRequests && budgetRequests.length > 0) {
+      res.status(200).json({ budgetRequests });
+    } else {
+      res.status(404).json({ message: 'No budget requests found' });
+    }
+  } catch (err: any) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
+
 const budgetApprove = async (req: Request, res: Response) => {
   try {
     const { site_id, budget_id, status, budget } = req.body;
@@ -66,26 +84,21 @@ const getAllApprovedBudget = async (req: Request, res: Response) => {
     res.status(400).json({ err: err.message });
   }
 };
-
 const budgetReject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const isRejected = await siteService.rejectBudget(id);
-    if (isRejected) {
-      res.status(200).json({ message: 'Budget rejected successfully' });
+    const isDeleted = await siteService.rejectBudget(id); // Modify this to match your actual service function
+
+    if (isDeleted) {
+      res.status(200).json({ message: 'Budget request deleted successfully' });
     } else {
-      res.status(404).json({ message: 'Budget not found' });
+      res.status(404).json({ message: 'Budget request not found' });
     }
   } catch (err: any) {
-    res.status(400).json({ err: err });
+    res.status(400).json({ err: err.message });
   }
 };
 
-export default {
-  insertSite,
-  getSite,
-  bugestRequest,
-  budgetReject,
-  budgetApprove,
-  getAllApprovedBudget,
-};
+
+
+export default { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget,getAllBudgetRequests };
