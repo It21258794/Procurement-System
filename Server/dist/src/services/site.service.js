@@ -69,6 +69,18 @@ function approveBudget(site_id, budget_id, status, budget) {
         }
     });
 }
+// http://localhost:8000/api/site/getAllBudgetRequests
+function getAllBudgetRequests() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const budgetRequests = yield budgetForm_1.default.find({ status: 'pending' });
+            return budgetRequests;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
 //http://localhost:8000/api/site/getAllApprovedOrders
 function getAllApprovedBudget() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -85,9 +97,9 @@ function getAllApprovedBudget() {
 function rejectBudget(site_id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const rejectBudget = yield budgetForm_1.default.findByIdAndUpdate(site_id, { status: 'rejected' });
-            if (!rejectBudget) {
-                throw new Error('budget not found');
+            const deletedBudget = yield budgetForm_1.default.findByIdAndDelete(site_id);
+            if (!deletedBudget) {
+                throw new Error('Budget request not found');
             }
             return true;
         }
@@ -96,4 +108,4 @@ function rejectBudget(site_id) {
         }
     });
 }
-exports.default = { insertSite, getSite, Increasebugest, rejectBudget, approveBudget, getAllApprovedBudget };
+exports.default = { insertSite, getSite, Increasebugest, rejectBudget, approveBudget, getAllApprovedBudget, getAllBudgetRequests };
