@@ -8,9 +8,13 @@ import Checkout from './components/procurementManager/pages/checkOut';
 import SignIn from './components/userComponent/SignIn';
 import SignUp from './components/userComponent/SignUp';
 import SupervisorDashboard from './components/supervisor//supervisorDashboard/supervisorDashboard';
-import ApproveOrderPage from './components/supervisor/pages/orderapprove';
-import ApproveOrderList from './components/supervisor/pages/orders';
-import AllApprovedOrders from './components/supervisor/pages/allApprovedOrders';
+import ApproveOrderList from './components/supervisor/pages/BudgetRequestList';
+import AllApprovedOrders from './components/supervisor/pages/approvedBudgetList';
+import SupplierDashboard from './components/supplier/supplierDashboard/supplierrDashboard';
+import OrderViewPage from './components/supplier/pages/viewOrder';
+import CreateDeliveryNotice from './components/supplier/pages/addNote';
+import DeliveryNote from './components/supplier/pages/deliveryNotes';
+
 import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React from 'react';
@@ -45,13 +49,26 @@ function SupervisorRoute(){
   return(
     <SupervisorDashboard>
     <Routes>
-            <Route path="/orderapprove" element={<ApproveOrderPage />} />
             <Route path="/orders" element={<ApproveOrderList />} />
             <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
     </Routes>
     </SupervisorDashboard>
 
     );
+}
+
+function SupplierRoute() {
+  return (
+    // <ManagerAuthGuard>
+      <SupplierDashboard>
+        <Routes>
+          <Route path="/viewOrders" element={<OrderViewPage/>} />
+          <Route path="/addNote" element={<CreateDeliveryNotice />} />
+          <Route path="/viewNotes" element={<DeliveryNote />} />
+        </Routes>
+      </SupplierDashboard>
+    // </ManagerAuthGuard>
+  );
 }
 
 function App() {
@@ -66,6 +83,8 @@ function App() {
         <Route path="manager/*" element={<ProcurementManagerRoute />} />
         <Route path="*" element={<GuestRoute />} />
         <Route path="supervisor/*" element={<SupervisorRoute />} />
+        <Route path="supplier/*" element={<SupplierRoute />} />
+
       </Routes>
     </>
   );
