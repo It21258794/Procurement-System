@@ -13,21 +13,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const item_model_1 = __importDefault(require("../models/item/item.model"));
-const account_model_1 = __importDefault(require("../models/account/account.model"));
+const account_service_1 = __importDefault(require("./account.service"));
 function insertItem(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const supplier = yield account_model_1.default.findById({ _id: dto.supplierId });
+            console.log(dto.supplierName);
+            const supplier = yield account_service_1.default.findItemsByUserName(dto.supplierUsername);
+            console.log(supplier);
             if (!supplier) {
                 throw new Error('Supplier does not exist');
             }
             const existItem = yield item_model_1.default.findOne({
                 itemName: dto.itemName,
-                supplierId: dto.supplierid,
+                supplierName: dto.supplierUsername,
             });
             if (existItem) {
                 throw new Error('Item already exists');
             }
+            console.log(dto.itemName);
             const createdItem = yield item_model_1.default.create(dto);
             return createdItem;
         }
