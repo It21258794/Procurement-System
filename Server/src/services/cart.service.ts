@@ -30,8 +30,22 @@ async function clearCart(itemId: string): Promise<boolean> {
   }
 }
 
+async function updateCartItem(itemId: string, updatedData: any): Promise<any> {
+  try {
+    const updatedItem = await cartModel.findByIdAndUpdate(itemId, updatedData);
+
+    if (!updatedItem) {
+      throw new Error('Item not found in cart');
+    }
+    return updatedItem;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export default {
   createCart,
   getCartItems,
   clearCart,
+  updateCartItem,
 };

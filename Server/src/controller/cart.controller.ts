@@ -34,8 +34,20 @@ const clearCart = async (req: Request, res: Response) => {
   }
 };
 
+const updateCartItem = async (req: Request, res: Response) => {
+  try {
+    const itemId = req.params.itemId;
+    const updatedData = req.body;
+    const updatedItem = await cartService.updateCartItem(itemId, updatedData);
+    res.status(200).json(updatedItem);
+  } catch (err: any) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
 export default {
   createCart,
   getCartItems,
   clearCart,
+  updateCartItem,
 };

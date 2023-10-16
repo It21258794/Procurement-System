@@ -29,7 +29,6 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
-
 const getOrderBySite = async (req: Request, res: Response) => {
   try {
     const { siteId } = req.params;
