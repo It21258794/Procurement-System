@@ -49,13 +49,13 @@ export default function ListItems() {
         onClick={() => {
           navigate('/supervisor/allApprovedOrders');
         }}
-        >
+      >
         <ListItemIcon>
-        <NearMeIcon />
+          <NearMeIcon />
         </ListItemIcon>
         <ListItemText primary="Approved Orders" />
       </ListItemButton>
-     
+
       <ListItemButton>
         <ListItemIcon>
           <SettingsIcon />

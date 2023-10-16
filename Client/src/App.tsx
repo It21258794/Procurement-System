@@ -20,60 +20,64 @@ import AccountForm from './components/admin/adminFunctions/createAccountForm';
 import ItemForm from './components/admin/adminFunctions/insertItemForm';
 import SiteForm from './components/admin/adminFunctions/insertSiteForm';
 import AdminDashboard from './components/admin/managerDashboard/AdminDashboard';
-
-
+import BudgetForm from './components/procurementManager/pages/BudgetForm';
+import PayOrderList from './components/procurementManager/pages/PayOrderList';
 
 function ProcurementManagerRoute() {
   return (
-    // <ManagerAuthGuard>
+    <ManagerAuthGuard>
       <ManagerDashboard>
         <Routes>
           <Route path="/sites" element={<SiteList />} />
           <Route path="/orders/:location/:id" element={<OrderList />} />
           <Route path="/order/:id" element={<OrderTable />} />
-          <Route path="/payment" element={<Checkout />} />
+          <Route path="/allOrders" element={<PayOrderList />} />
+          <Route path="/payment/:id/:orderId" element={<Checkout />} />
+          <Route
+            path="/budgetForm/:address/:siteBudget/:remBudget/:total/:siteId"
+            element={<BudgetForm />}
+          />
         </Routes>
       </ManagerDashboard>
-    // </ManagerAuthGuard>
+    </ManagerAuthGuard>
   );
 }
 
 function GuestRoute() {
   return (
-    // <AuthGuard>
+    <AuthGuard>
       <Routes>
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<SignIn />} />
       </Routes>
-    // </AuthGuard>
+    </AuthGuard>
   );
 }
 
-function SupervisorRoute(){
-  return(
+function SupervisorRoute() {
+  return (
     <SupervisorDashboard>
-    <Routes>
-            <Route path="/orderapprove" element={<ApproveOrderPage />} />
-            <Route path="/orders" element={<ApproveOrderList />} />
-            <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
-    </Routes>
+      <Routes>
+        <Route path="/orderapprove" element={<ApproveOrderPage />} />
+        <Route path="/orders" element={<ApproveOrderList />} />
+        <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
+      </Routes>
     </SupervisorDashboard>
-
-    );
+  );
 }
 function AdminRoute() {
   return (
     // <ManagerAuthGuard>
-      <AdminDashboard>
-        <Routes>
-          <Route path="/sites" element={<SiteList />} />
-          <Route path="/items" element={<ItemListView />} />
-          <Route path="/accountList" element={<AccountListView />} />
-          <Route path="/createAccount" element={<AccountForm/>} />
-          <Route path="/insertItem" element={<ItemForm/>} />
-          <Route path="/insertSite" element={<SiteForm/>} />
-        </Routes>
-      </AdminDashboard>
+    <AdminDashboard>
+      <Routes>
+        <Route path="/sites" element={<SiteList />} />
+        <Route path="/items" element={<ItemListView />} />
+        <Route path="/accountList" element={<AccountListView />} />
+        <Route path="/createAccount" element={<AccountForm />} />
+        <Route path="/insertItem" element={<ItemForm />} />
+        <Route path="/insertSite" element={<SiteForm />} />
+      </Routes>
+    </AdminDashboard>
     // </ManagerAuthGuard>
   );
 }

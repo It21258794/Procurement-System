@@ -25,6 +25,7 @@ const getSite = async (req: Request, res: Response) => {
 const bugestRequest = async (req: Request, res: Response) => {
   try {
     const dto = req.body;
+    console.log(dto.site_id);
     const item = await siteService.Increasebugest(dto);
     res.status(200).json(item);
   } catch (err: any) {
@@ -34,8 +35,13 @@ const bugestRequest = async (req: Request, res: Response) => {
 
 const budgetApprove = async (req: Request, res: Response) => {
   try {
-    const {site_id,budget_id,status,budget} = req.body
-    const isApproved = await siteService.approveBudget(site_id,budget_id,status,budget);
+    const { site_id, budget_id, status, budget } = req.body;
+    const isApproved = await siteService.approveBudget(
+      site_id,
+      budget_id,
+      status,
+      budget,
+    );
 
     if (isApproved) {
       res.status(200).json({ message: 'Budget approved successfully' });
@@ -51,7 +57,7 @@ const getAllApprovedBudget = async (req: Request, res: Response) => {
   try {
     const approvedBudget = await siteService.getAllApprovedBudget();
 
-    if (approvedBudget&& approvedBudget.length > 0) {
+    if (approvedBudget && approvedBudget.length > 0) {
       res.status(200).json({ approvedBudget });
     } else {
       res.status(404).json({ message: 'No approved budget found' });
@@ -63,7 +69,7 @@ const getAllApprovedBudget = async (req: Request, res: Response) => {
 
 const budgetReject = async (req: Request, res: Response) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const isRejected = await siteService.rejectBudget(id);
     if (isRejected) {
       res.status(200).json({ message: 'Budget rejected successfully' });
@@ -75,5 +81,11 @@ const budgetReject = async (req: Request, res: Response) => {
   }
 };
 
-
-export default { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget };
+export default {
+  insertSite,
+  getSite,
+  bugestRequest,
+  budgetReject,
+  budgetApprove,
+  getAllApprovedBudget,
+};

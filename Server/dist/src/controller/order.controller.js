@@ -88,6 +88,15 @@ const deleteOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(401).send({ err: err });
     }
 });
+const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const fountItem = yield order_service_1.default.getOrderByMonth();
+        res.status(200).json({ fountItem });
+    }
+    catch (err) {
+        res.status(401).send({ err: err });
+    }
+});
 exports.default = {
     sendOrder,
     createOrder,
@@ -95,5 +104,6 @@ exports.default = {
     getOrderById,
     changeStatus,
     getOrderAndBudget,
-    deleteOrderById
+    deleteOrderById,
+    getOrders,
 };

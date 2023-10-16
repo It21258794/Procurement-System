@@ -73,7 +73,8 @@ const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
             throw 'Site not Found';
         }
         const orderDetail = yield order_model_1.default.find({
-            siteId: id, month_year: year_month
+            siteId: id,
+            month_year: year_month,
         });
         return orderDetail;
     }
@@ -92,6 +93,7 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const changeOrderStatus = (orderId, status) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log('orderId', orderId);
         const order = yield order_model_1.default.updateOne({ _id: orderId }, { status: status });
         return { res: 'Updated' };
     }
@@ -155,6 +157,19 @@ const deleteOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
+const getOrderByMonth = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const date = new Date();
+        const currMonth = date.getMonth() + 1;
+        const currYear = date.getFullYear();
+        const year_month = currMonth + '_' + currYear;
+        const item = yield order_model_1.default.find({ month_year: year_month });
+        return item;
+    }
+    catch (err) {
+        throw err;
+    }
+});
 exports.default = {
     sendOrderByEmail,
     createOrder,
@@ -163,5 +178,6 @@ exports.default = {
     getOrderById,
     changeOrderStatus,
     getOrderAndBudget,
-    deleteOrder
+    deleteOrder,
+    getOrderByMonth,
 };

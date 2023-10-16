@@ -9,15 +9,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PaymentForm from '../payment/paymentForm';
 import Review from '../payment/review';
+import { useParams } from 'react-router-dom';
 
 const steps = ['Payment details', 'Review your order'];
 
 function getStepContent(step: number) {
+  const { id, orderId } = useParams();
   switch (step) {
     case 0:
-      return <PaymentForm />;
+      return <PaymentForm id={id} />;
     case 1:
-      return <Review />;
+      return <Review orderId={orderId} id={id} />;
     default:
       throw new Error('Unknown step');
   }
@@ -74,7 +76,8 @@ export default function Checkout() {
                 <Button
                   variant="contained"
                   onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
+                  sx={{ mt: 3, ml: 1, backgroundColor: 'orange' }}
+                  disabled={activeStep == 1}
                 >
                   {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>

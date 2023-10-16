@@ -29,6 +29,7 @@ const getSite = async () => {
 
 const Increasebugest = async (dto: IBudget) => {
   try {
+    console.log('service', dto);
     const site = await siteModel.findById(dto.site_id);
 
     if (!site) {
@@ -42,20 +43,25 @@ const Increasebugest = async (dto: IBudget) => {
   }
 };
 
-
 //http://localhost:8000/api/site/approveBudget
-async function approveBudget(site_id: string,budget_id:string,status: BudgetStatus,budget:number): Promise<any> {
+async function approveBudget(
+  site_id: string,
+  budget_id: string,
+  status: BudgetStatus,
+  budget: number,
+): Promise<any> {
   try {
-      const updateBudget = await budgetFormModel.updateOne({_id:budget_id}, { status: status});
-      console.log(updateBudget);
-      if(!updateBudget){
-         throw 'budget not updated.'
-
-      }
-      await siteModel.updateOne({_id:site_id},{budget:budget});
-        return true;
-
-    } catch (err) {
+    const updateBudget = await budgetFormModel.updateOne(
+      { _id: budget_id },
+      { status: status },
+    );
+    console.log(updateBudget);
+    if (!updateBudget) {
+      throw 'budget not updated.';
+    }
+    await siteModel.updateOne({ _id: site_id }, { budget: budget });
+    return true;
+  } catch (err) {
     throw err;
   }
 }
@@ -73,14 +79,23 @@ async function getAllApprovedBudget(): Promise<any[]> {
 //http://localhost:8000/api/site/rejectOrder
 async function rejectBudget(site_id: string): Promise<boolean> {
   try {
-      const rejectBudget = await budgetFormModel.findByIdAndUpdate(site_id,{status:'rejected'});
-      if (!rejectBudget) {
-          throw new Error('budget not found');
-      }
-      return true;
+    const rejectBudget = await budgetFormModel.findByIdAndUpdate(site_id, {
+      status: 'rejected',
+    });
+    if (!rejectBudget) {
+      throw new Error('budget not found');
+    }
+    return true;
   } catch (err) {
     throw err;
   }
 }
 
-export default { insertSite, getSite, Increasebugest, rejectBudget,approveBudget,getAllApprovedBudget };
+export default {
+  insertSite,
+  getSite,
+  Increasebugest,
+  rejectBudget,
+  approveBudget,
+  getAllApprovedBudget,
+};

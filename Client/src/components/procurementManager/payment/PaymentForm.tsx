@@ -6,8 +6,48 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AuthContext } from '../../../auth/AuthProvider';
+import { useSnackbar } from 'notistack';
 
-export default function PaymentForm() {
+export default function PaymentForm({ id }) {
+  console.log(id);
+  const { enqueueSnackbar } = useSnackbar();
+  const [payment, setPayment] = React.useState({
+    accountHolderName: '',
+    bankName: '',
+    accountNumber: '',
+  });
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+
+  const token = data.token;
+
+  const headers = { Authorization: 'Bearer ' + token };
+
+  React.useEffect(() => {
+    const fetchData = async (id: any) => {
+      console.log(id);
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/payment/getPaymentBySupplierId/${id}`,
+          { headers },
+        );
+        const res = await response.json();
+        console.log(res);
+
+        if (response.ok) {
+          setPayment(res);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.log(err);
+        enqueueSnackbar(err.message, { variant: 'error' });
+      }
+    };
+    fetchData(id);
+  }, []);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -16,29 +56,45 @@ export default function PaymentForm() {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <TextField
+            value={payment.accountHolderName}
             required
             id="SupplierName"
             label="Supplier Name"
             fullWidth
             autoComplete="cc-name"
             variant="standard"
+            disabled={true}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             required
+            value={payment.accountNumber}
             id="accNumber"
             label="Account number"
             fullWidth
             autoComplete="cc-number"
             variant="standard"
+            disabled={true}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            required
+            value={payment.bankName}
+            id="bank"
+            label="Bank"
+            fullWidth
+            autoComplete="cc-exp"
+            variant="standard"
+            disabled={true}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             required
             id="amount"
-            label="Amont"
+            label="Amount"
             fullWidth
             autoComplete="cc-exp"
             variant="standard"

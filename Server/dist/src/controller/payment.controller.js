@@ -38,6 +38,7 @@ const getPayemtDetails = (req, res) => __awaiter(void 0, void 0, void 0, functio
 const createPaymentItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dto = req.body;
+        console.log(dto);
         const paymentItem = yield payment_service_1.default.createPayment(dto);
         res.status(200).json(paymentItem);
     }

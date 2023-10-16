@@ -76,7 +76,7 @@ async function register(dto: IAccount): Promise<any> {
 
     let cpyUser = { ...dto };
     cpyUser.password = pass_hash;
-    
+
     const newUser = await accountModel.create(cpyUser);
     return newUser;
   } catch (err) {

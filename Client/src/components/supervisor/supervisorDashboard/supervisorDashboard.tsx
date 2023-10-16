@@ -215,7 +215,7 @@ export default function ManagerDashboard({ children }: any) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Supervisor 
+              Supervisor
             </Typography>
 
             <Search>

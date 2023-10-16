@@ -11,6 +11,10 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    supplierId: {
+      type: String,
+      required: true,
+    },
     address: {
       type: String,
       required: true,
@@ -34,10 +38,6 @@ const orderSchema = new mongoose.Schema(
         },
         quantity: {
           type: Number,
-          required: true,
-        },
-        supplierId: {
-          type: String,
           required: true,
         },
         price: {

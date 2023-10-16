@@ -1,5 +1,6 @@
 export interface IBudget {
   site_id: string;
+  curr_budget: number;
   amount: number;
   location: string;
   description: string;

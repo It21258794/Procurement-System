@@ -52,7 +52,6 @@ const getOrderId = async () => {
 };
 const getOrderBySite = async (id: string) => {
   try {
-
     const date = new Date();
     const currMonth = date.getMonth() + 1;
     const currYear = date.getFullYear();
@@ -64,15 +63,15 @@ const getOrderBySite = async (id: string) => {
       throw 'Site not Found';
     }
     const orderDetail = await orderModel.find({
-      siteId: id ,month_year:year_month
+      siteId: id,
+      month_year: year_month,
     });
-    
+
     return orderDetail;
   } catch (err: any) {
     throw err;
   }
 };
-
 
 const getOrderById = async (id: string) => {
   try {
@@ -83,9 +82,9 @@ const getOrderById = async (id: string) => {
   }
 };
 
-
 const changeOrderStatus = async (orderId: string, status: OrderStatus) => {
   try {
+    console.log('orderId', orderId);
     const order = await orderModel.updateOne(
       { _id: orderId },
       { status: status },
@@ -151,16 +150,27 @@ const getBudgetByMonth = async (id: string) => {
   }
 };
 
-const deleteOrder = async (id:string) =>{
-  try{
-
-   const item = await orderModel.findByIdAndDelete(id)
-   return {response: 'Deleted'}
-
-  }catch(err:any){
+const deleteOrder = async (id: string) => {
+  try {
+    const item = await orderModel.findByIdAndDelete(id);
+    return { response: 'Deleted' };
+  } catch (err: any) {
     throw err;
   }
-}
+};
+
+const getOrderByMonth = async () => {
+  try {
+    const date = new Date();
+    const currMonth = date.getMonth() + 1;
+    const currYear = date.getFullYear();
+    const year_month = currMonth + '_' + currYear;
+    const item = await orderModel.find({ month_year: year_month });
+    return item;
+  } catch (err: any) {
+    throw err;
+  }
+};
 
 export default {
   sendOrderByEmail,
@@ -170,5 +180,6 @@ export default {
   getOrderById,
   changeOrderStatus,
   getOrderAndBudget,
-  deleteOrder
+  deleteOrder,
+  getOrderByMonth,
 };

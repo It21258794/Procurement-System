@@ -4,13 +4,15 @@ import accountService from './account.service';
 
 async function insertItem(dto: any): Promise<any> {
   try {
-    console.log(dto.supplierName)
-    const supplier =await accountService.findItemsByUserName(dto.supplierUsername);
-    console.log(supplier)
+    console.log(dto.supplierName);
+    const supplier = await accountService.findItemsByUserName(
+      dto.supplierUsername,
+    );
+    console.log(supplier);
     if (!supplier) {
       throw new Error('Supplier does not exist');
     }
-    
+
     const existItem = await itemmodel.findOne({
       itemName: dto.itemName,
       supplierName: dto.supplierUsername,
@@ -18,7 +20,7 @@ async function insertItem(dto: any): Promise<any> {
     if (existItem) {
       throw new Error('Item already exists');
     }
-    console.log(dto.itemName)
+    console.log(dto.itemName);
     const createdItem = await itemmodel.create(dto);
     return createdItem;
   } catch (err) {

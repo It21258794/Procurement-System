@@ -50,7 +50,7 @@ const getPayemtDetailsBySupplier = (id) => __awaiter(void 0, void 0, void 0, fun
 });
 const createPayment = (dto) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const orderItem = yield order_model_1.default.findOne({ orderId: dto.order_id });
+        const orderItem = yield order_model_1.default.findOne({ _id: dto.order_id });
         if (!orderItem) {
             throw 'Order not found';
         }

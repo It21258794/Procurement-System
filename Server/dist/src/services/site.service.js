@@ -41,6 +41,7 @@ const getSite = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const Increasebugest = (dto) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log('service', dto);
         const site = yield site_model_1.default.findById(dto.site_id);
         if (!site) {
             throw 'Site not found';
@@ -85,7 +86,9 @@ function getAllApprovedBudget() {
 function rejectBudget(site_id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const rejectBudget = yield budgetForm_1.default.findByIdAndUpdate(site_id, { status: 'rejected' });
+            const rejectBudget = yield budgetForm_1.default.findByIdAndUpdate(site_id, {
+                status: 'rejected',
+            });
             if (!rejectBudget) {
                 throw new Error('budget not found');
             }
@@ -96,4 +99,11 @@ function rejectBudget(site_id) {
         }
     });
 }
-exports.default = { insertSite, getSite, Increasebugest, rejectBudget, approveBudget, getAllApprovedBudget };
+exports.default = {
+    insertSite,
+    getSite,
+    Increasebugest,
+    rejectBudget,
+    approveBudget,
+    getAllApprovedBudget,
+};

@@ -37,6 +37,7 @@ const getSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const bugestRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dto = req.body;
+        console.log(dto.site_id);
         const item = yield site_service_1.default.Increasebugest(dto);
         res.status(200).json(item);
     }
@@ -88,4 +89,11 @@ const budgetReject = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget };
+exports.default = {
+    insertSite,
+    getSite,
+    bugestRequest,
+    budgetReject,
+    budgetApprove,
+    getAllApprovedBudget,
+};

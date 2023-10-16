@@ -34,7 +34,7 @@ export default function ListItems() {
 
   return (
     <React.Fragment>
-      <ListItemButton
+      {/* <ListItemButton
         onClick={() => {
           navigate('/sites');
         }}
@@ -43,7 +43,7 @@ export default function ListItems() {
           <HomeIcon />
         </ListItemIcon>
         <ListItemText primary="Home" />
-      </ListItemButton>
+      </ListItemButton> */}
       <ListItemButton
         onClick={() => {
           navigate('/manager/sites');
@@ -63,9 +63,10 @@ export default function ListItems() {
         <List component="div" disablePadding>
           <ListItemButton
             sx={{ pl: 4 }}
-            onClick={() => {
-              navigate('/manager/orders/:id');
-            }}
+            // onClick={() => {
+            //   navigate(`/manager/orders/`);
+            // }}
+            disabled={true}
           >
             <ListItemIcon>
               <AirportShuttleIcon />
@@ -82,6 +83,7 @@ export default function ListItems() {
             onClick={() => {
               navigate('/manager/order');
             }}
+            disabled={true}
           >
             <ListItemIcon>
               <AirportShuttleIcon />
@@ -91,21 +93,27 @@ export default function ListItems() {
           </ListItemButton>
         </List>
       </Collapse>
+
       <ListItemButton
         onClick={() => {
-          navigate('/manager/payment');
+          navigate('/manager/allOrders');
         }}
       >
-        <ListItemIcon>
-          <PaidIcon />
-        </ListItemIcon>
-        <ListItemText primary="payment" />
-      </ListItemButton>
-      <ListItemButton>
         <ListItemIcon>
           <NearMeIcon />
         </ListItemIcon>
         <ListItemText primary="Track Order" />
+      </ListItemButton>
+      <ListItemButton
+        onClick={() => {
+          navigate('/manager/payment');
+        }}
+        disabled={true}
+      >
+        <ListItemIcon>
+          <PaidIcon />
+        </ListItemIcon>
+        <ListItemText primary="Payment" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
