@@ -8,5 +8,5 @@ var AuthRole;
     AuthRole["PROCUREMENT_ADMIN"] = "PROCUREMENT_ADMIN";
     AuthRole["SITE_MANAGER"] = "SITE_MANAGER";
     AuthRole["SUPERVISOR"] = "SUPERVISOR";
-    AuthRole["SUPLLIER"] = "SUPLLIER";
+    AuthRole["SUPPLIER"] = "SUPPLIER";
 })(AuthRole || (exports.AuthRole = AuthRole = {}));
