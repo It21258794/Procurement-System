@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import noteService from '../services/deliveryNote.Service';
 
-
 const createDeliveryNote = async (req: Request, res: Response) => {
   try {
     const noteDetails = req.body;
@@ -24,7 +23,6 @@ const getAllDeliveryNotes = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.status(500).json({ err: err.message });
   }
-}
+};
 
-
-export default {createDeliveryNote,getAllDeliveryNotes};
+export default { createDeliveryNote, getAllDeliveryNotes };

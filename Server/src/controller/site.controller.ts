@@ -33,11 +33,8 @@ const bugestRequest = async (req: Request, res: Response) => {
   }
 };
 
-
-
 const getAllBudgetRequests = async (req: Request, res: Response) => {
   try {
-
     const budgetRequests = await siteService.getAllBudgetRequests();
 
     if (budgetRequests && budgetRequests.length > 0) {
@@ -49,7 +46,6 @@ const getAllBudgetRequests = async (req: Request, res: Response) => {
     res.status(400).json({ err: err.message });
   }
 };
-
 
 const budgetApprove = async (req: Request, res: Response) => {
   try {
@@ -99,6 +95,12 @@ const budgetReject = async (req: Request, res: Response) => {
   }
 };
 
-
-
-export default { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget,getAllBudgetRequests };
+export default {
+  insertSite,
+  getSite,
+  bugestRequest,
+  budgetReject,
+  budgetApprove,
+  getAllApprovedBudget,
+  getAllBudgetRequests,
+};

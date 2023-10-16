@@ -61,10 +61,10 @@ function GuestRoute() {
 function SupervisorRoute() {
   return (
     <SupervisorDashboard>
-    <Routes>
-            <Route path="/orders" element={<ApproveOrderList />} />
-            <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
-    </Routes>
+      <Routes>
+        <Route path="/orders" element={<ApproveOrderList />} />
+        <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
+      </Routes>
     </SupervisorDashboard>
   );
 }
@@ -72,13 +72,13 @@ function SupervisorRoute() {
 function SupplierRoute() {
   return (
     // <ManagerAuthGuard>
-      <SupplierDashboard>
-        <Routes>
-          <Route path="/viewOrders" element={<OrderViewPage/>} />
-          <Route path="/addNote" element={<CreateDeliveryNotice />} />
-          <Route path="/viewNotes" element={<DeliveryNote />} />
-        </Routes>
-      </SupplierDashboard>
+    <SupplierDashboard>
+      <Routes>
+        <Route path="/viewOrders" element={<OrderViewPage />} />
+        <Route path="/addNote" element={<CreateDeliveryNotice />} />
+        <Route path="/viewNotes" element={<DeliveryNote />} />
+      </Routes>
+    </SupplierDashboard>
     // </ManagerAuthGuard>
   );
 }

@@ -15,11 +15,10 @@ interface Order {
   orderId: string;
   address: string;
   requiredDate: string;
-    itemName: string;
-    quantity: number;
-    price: number;
+  itemName: string;
+  quantity: number;
+  price: number;
 }
-
 
 export default function OrderList() {
   const [page, setPage] = React.useState(0);
@@ -30,13 +29,18 @@ export default function OrderList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/order/getOrder', {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Replace with your access token
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'http://localhost:8000/api/order/getOrder',
+          {
+            method: 'GET',
+            headers: {
+              Authorization:
+                'Bearer ' +
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Replace with your access token
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -59,7 +63,7 @@ export default function OrderList() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -78,19 +82,39 @@ export default function OrderList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell key="orderId" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="orderId"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Order Id
                 </TableCell>
-                <TableCell key="address" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="address"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Address
                 </TableCell>
-                <TableCell key="requiredDate" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="requiredDate"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Required Date
                 </TableCell>
-                <TableCell key="itemName" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="itemName"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Item Name
                 </TableCell>
-                <TableCell key="quantity" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="quantity"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Quantity
                 </TableCell>
                 <TableCell key="price" align="left" style={{ minWidth: '50' }}>
@@ -127,7 +151,3 @@ export default function OrderList() {
     </Box>
   );
 }
-
-
-
-

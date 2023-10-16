@@ -109,4 +109,12 @@ function rejectBudget(site_id) {
         }
     });
 }
-exports.default = { insertSite, getSite, Increasebugest, rejectBudget, approveBudget, getAllApprovedBudget, getAllBudgetRequests };
+exports.default = {
+    insertSite,
+    getSite,
+    Increasebugest,
+    rejectBudget,
+    approveBudget,
+    getAllApprovedBudget,
+    getAllBudgetRequests,
+};

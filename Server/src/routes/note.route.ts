@@ -10,4 +10,3 @@ noteRoute.post('/notes', noteController.createDeliveryNote);
 noteRoute.get('/allnotes', noteController.getAllDeliveryNotes);
 
 export default noteRoute;
-
