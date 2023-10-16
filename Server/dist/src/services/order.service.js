@@ -90,50 +90,6 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-//http://localhost:8000/api/order/approveOrder
-function approveOrder(orderId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const updatedOrder = yield order_model_1.default.findByIdAndUpdate(orderId, {
-                approved: true,
-            });
-            if (!updatedOrder) {
-                throw new Error('Order not found');
-            }
-            return true;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
-//http://localhost:8000/api/order/getAllApprovedOrders
-function getAllApprovedOrders() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const approvedOrders = yield order_model_1.default.find({ approved: true });
-            return approvedOrders;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
-//http://localhost:8000/api/order/rejectOrder
-function rejectOrder(orderId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const deletedOrder = yield order_model_1.default.findByIdAndDelete(orderId);
-            if (!deletedOrder) {
-                throw new Error('Order not found');
-            }
-            return true;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
-}
 const changeOrderStatus = (orderId, status) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const order = yield order_model_1.default.updateOne({ _id: orderId }, { status: status });
@@ -205,9 +161,6 @@ exports.default = {
     getOrderId,
     getOrderBySite,
     getOrderById,
-    rejectOrder,
-    approveOrder,
-    getAllApprovedOrders,
     changeOrderStatus,
     getOrderAndBudget,
     deleteOrder

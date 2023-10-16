@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import { Box, Typography, Button } from '@mui/material'; // Import Button
 
 interface Column {
-  id: 'orderId' | 'siteId' | 'address' | 'requiredDate' | 'description'|'action'; // Added 'actions'
+  id: 'siteId' | 'siteName' |'action'; // Added 'actions'
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -19,25 +19,13 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'orderId', label: 'Order ID', minWidth: 170 },
-  { id: 'siteId', label: 'site ID', minWidth: 100 },
+  { id: 'siteId', label: 'Site ID', minWidth: 170 },
   {
-    id: 'address',
-    label: 'Address',
+    id: 'siteName',
+    label: 'Site Name',
     minWidth: 170,
   },
-  {
-    id: 'requiredDate',
-    label: 'Required Date',
-    minWidth: 170,
-    align: 'right',
-    // format: (value: Date) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'description',
-    label: 'Description',
-    minWidth: 170,
-  },
+ 
   {
     id: 'action', // Added 'actions' column
     label: 'Actions',
@@ -47,25 +35,20 @@ const columns: readonly Column[] = [
 ];
 
 interface Data {
-  orderId: number;
   siteId: number;
-  address: string;
-  requiredDate: string;
-  description: string;
+  siteName: string;
+ 
 }
 
 function createData(
-  orderId: number,
   siteId: number,
-  address: string,
-  requiredDate: string,
-  description: string,
+  siteName: string,
 ): Data {
-  return { orderId, siteId, address, requiredDate, description };
+  return { siteId, siteName };
 }
 
 const rows = [
-  createData(201, 20301, 'kandy', '21/09/2023', 'box'),
+  createData(201,'Canada'),
   // ... (other rows)
 ];
 
@@ -113,7 +96,7 @@ export default function ApproveOrderList() {
                         hover
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.description}
+                        key={row.siteId}
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
@@ -123,9 +106,9 @@ export default function ApproveOrderList() {
                                 key={column.id}
                                 align={column.align}
                               >
-                                <Link to={`../orderapprove/${row.orderId}`}>
+                                <Link to={`../orderapprove/${row.siteId}`}>
                                   <Button variant="contained">
-                                    View Order
+                                    View Budget
                                   </Button>
                                 </Link>
                               </TableCell>

@@ -10,9 +10,13 @@ accountRoute.get(
   '/findAccountByCategory/:catogory',
   accountController.findItemsByCategory,
 );
+accountRoute.get(
+  '/findAccountByUserName/:username',
+  accountController.findItemsByUserName,
+);
 accountRoute.get('/currentUser', AuthGuard, accountController.getCurrentUser);
 accountRoute.put('/updateAccount/:accountid', accountController.updateAccount);
 accountRoute.delete(
   '/deleteAccount/:accountid',
   accountController.deleteAccount,
-);
+); 

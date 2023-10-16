@@ -30,6 +30,9 @@ const AccountSchema = new Schema({
         type: String,
         require: true,
     },
+    profileImage: {
+        type: String, // Store the path to the image file on your server
+    }
 }, { timestamps: true });
 const Account = mongoose_1.default.model('Account', AccountSchema);
 exports.default = Account;

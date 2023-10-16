@@ -11,6 +11,7 @@ exports.accountRoute = (0, express_1.Router)();
 exports.accountRoute.post('/createAccount', account_controller_1.default.signUp);
 exports.accountRoute.post('/login', account_controller_1.default.login);
 exports.accountRoute.get('/findAccountByCategory/:catogory', account_controller_1.default.findItemsByCategory);
+exports.accountRoute.get('/findAccountByUserName/:username', account_controller_1.default.findItemsByUserName);
 exports.accountRoute.get('/currentUser', authGuard_1.default, account_controller_1.default.getCurrentUser);
 exports.accountRoute.put('/updateAccount/:accountid', account_controller_1.default.updateAccount);
 exports.accountRoute.delete('/deleteAccount/:accountid', account_controller_1.default.deleteAccount);

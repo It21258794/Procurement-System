@@ -14,6 +14,13 @@ import AllApprovedOrders from './components/supervisor/pages/allApprovedOrders';
 import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React from 'react';
+import ItemListView from './components/admin/pages/ItemView';
+import AccountListView from './components/admin/pages/AccountListView';
+import AccountForm from './components/admin/adminFunctions/createAccountForm';
+import ItemForm from './components/admin/adminFunctions/insertItemForm';
+import SiteForm from './components/admin/adminFunctions/insertSiteForm';
+import AdminDashboard from './components/admin/managerDashboard/AdminDashboard';
+
 
 
 function ProcurementManagerRoute() {
@@ -54,7 +61,22 @@ function SupervisorRoute(){
 
     );
 }
-
+function AdminRoute() {
+  return (
+    // <ManagerAuthGuard>
+      <AdminDashboard>
+        <Routes>
+          <Route path="/sites" element={<SiteList />} />
+          <Route path="/items" element={<ItemListView />} />
+          <Route path="/accountList" element={<AccountListView />} />
+          <Route path="/createAccount" element={<AccountForm/>} />
+          <Route path="/insertItem" element={<ItemForm/>} />
+          <Route path="/insertSite" element={<SiteForm/>} />
+        </Routes>
+      </AdminDashboard>
+    // </ManagerAuthGuard>
+  );
+}
 function App() {
   React.useEffect(() => {
     const socket = io('http://localhost:8000');
@@ -67,6 +89,7 @@ function App() {
         <Route path="manager/*" element={<ProcurementManagerRoute />} />
         <Route path="*" element={<GuestRoute />} />
         <Route path="supervisor/*" element={<SupervisorRoute />} />
+        <Route path="admin/*" element={<AdminRoute />} />
       </Routes>
     </>
   );

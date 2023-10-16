@@ -77,7 +77,6 @@ const deleteAccount = async (req: Request, res: Response) => {
 const getCurrentUser = async (req: Request, res: Response) => {
   try {
     const userId = req.currentUser.id;
-
     const user = await accountmodel.findById(userId);
     return res.status(200).json({ user: user });
   } catch (err: any) {

@@ -24,6 +24,10 @@ const ItemSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       require: true,
     },
+    supplierUsername: {
+      type: String,
+      require: true,
+    },
     price: {
       type: Number,
       require: true,
