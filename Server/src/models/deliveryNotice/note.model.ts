@@ -17,8 +17,8 @@ const noteSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-  
-    items:[
+
+    items: [
       {
         itemName: {
           type: String,
@@ -32,13 +32,13 @@ const noteSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
-      }
+      },
     ],
     price: {
-    type: Number,
-          required: true,
-        },
-      },
+      type: Number,
+      required: true,
+    },
+  },
   { timestamps: false },
 );
 

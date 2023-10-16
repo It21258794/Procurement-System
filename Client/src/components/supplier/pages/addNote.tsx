@@ -23,10 +23,10 @@ const CreateDeliveryNotice: React.FC = () => {
     items: Item[];
     price: number; // Add the "price" field
   }>({
-    orderId: "",
-    deliveryAddress: "",
-    deliveryDate: "",
-    items: [{ itemName: "", itemType: "", quantity: 0 }],
+    orderId: '',
+    deliveryAddress: '',
+    deliveryDate: '',
+    items: [{ itemName: '', itemType: '', quantity: 0 }],
     price: 0, // Initialize with a default value
   });
 
@@ -36,7 +36,10 @@ const CreateDeliveryNotice: React.FC = () => {
     setDeliveryNotice({ ...deliveryNotice, [name]: value });
   };
 
-  const handleItemInput = (event: React.ChangeEvent<HTMLInputElement>, index: number): void => {
+  const handleItemInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ): void => {
     const name = event.target.name;
     const value = event.target.value;
     const updatedItems = [...deliveryNotice.items];
@@ -47,7 +50,10 @@ const CreateDeliveryNotice: React.FC = () => {
   const addNewItem = (): void => {
     setDeliveryNotice({
       ...deliveryNotice,
-      items: [...deliveryNotice.items, { itemName: "", itemType: "", quantity: 0 }],
+      items: [
+        ...deliveryNotice.items,
+        { itemName: '', itemType: '', quantity: 0 },
+      ],
     });
   };
 
@@ -61,28 +67,27 @@ const CreateDeliveryNotice: React.FC = () => {
     const itemErrors: string[] = [];
     for (const item of deliveryNotice.items) {
       if (
-        item.itemName.trim() === "" ||
-        item.itemType.trim() === "" ||
+        item.itemName.trim() === '' ||
+        item.itemType.trim() === '' ||
         isNaN(item.quantity) ||
         item.quantity <= 0
       ) {
-        itemErrors.push("Invalid item");
+        itemErrors.push('Invalid item');
       }
     }
     setErrors({ ...errors, items: itemErrors });
   };
 
   const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
-
     event.preventDefault();
 
     validateInputs();
 
-    let noteDetails = {}
+    let noteDetails = {};
     noteDetails = deliveryNotice;
-    await axios.post('http://localhost:8000/api/note/notes',noteDetails);
+    await axios.post('http://localhost:8000/api/note/notes', noteDetails);
 
-    const hasErrors = Object.values(errors).some((error) => error !== "");
+    const hasErrors = Object.values(errors).some((error) => error !== '');
     if (!hasErrors) {
       // Handle the submission of deliveryNotice here
       console.log(deliveryNotice);
@@ -150,7 +155,11 @@ const CreateDeliveryNotice: React.FC = () => {
                 value={item.quantity}
                 onChange={(event) => handleItemInput(event, index)}
               />
-              <Button variant="contained" color="secondary" onClick={() => removeItem(index)}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => removeItem(index)}
+              >
                 Remove Item
               </Button>
             </div>

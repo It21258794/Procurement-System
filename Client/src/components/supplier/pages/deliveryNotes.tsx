@@ -16,7 +16,6 @@ import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-
 interface deliveryNotes {
   _id: string;
   orderId: string;
@@ -27,7 +26,6 @@ interface deliveryNotes {
   price: number;
 }
 
-
 export default function allNoteList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -37,22 +35,23 @@ export default function allNoteList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/note/allnotes', {
-          method: 'GET',
-        });
-  if (response.ok) {
-  const data = await response.json();
-  console.log(data.deliveryNotes);
-    setDeliveryNotes(data.deliveryNotes); // Store the delivery notes data
-    console.log(deliveryNotes)
-} else {
-  const errorMessage = await response.text();
-  console.error(`Request failed with status: ${response.status}`);
-  console.error(`Error message: ${errorMessage}`);
-  enqueueSnackbar(errorMessage, { variant: 'error' });
-}
-
-        
+        const response = await fetch(
+          'http://localhost:8000/api/note/allnotes',
+          {
+            method: 'GET',
+          },
+        );
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.deliveryNotes);
+          setDeliveryNotes(data.deliveryNotes); // Store the delivery notes data
+          console.log(deliveryNotes);
+        } else {
+          const errorMessage = await response.text();
+          console.error(`Request failed with status: ${response.status}`);
+          console.error(`Error message: ${errorMessage}`);
+          enqueueSnackbar(errorMessage, { variant: 'error' });
+        }
       } catch (err) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
@@ -60,16 +59,13 @@ export default function allNoteList() {
     };
     fetchData();
   }, []);
-  
-  
-
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -86,44 +82,62 @@ export default function allNoteList() {
       >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-  <TableRow>
-    <TableCell key="orderId" align="left" style={{ minWidth: '50' }}>
-      Order ID
-    </TableCell>
-    <TableCell key="address" align="left" style={{ minWidth: '50' }}>
-      Address
-    </TableCell>
-    <TableCell key="requiredDate" align="left" style={{ minWidth: '50' }}>
-      Required Date
-    </TableCell>
-    <TableCell key="itemName" align="left" style={{ minWidth: '50' }}>
-      Item Name
-    </TableCell>
-    <TableCell key="quantity" align="left" style={{ minWidth: '50' }}>
-      Quantity
-    </TableCell>
-    <TableCell key="price" align="left" style={{ minWidth: '50' }}>
-      Price
-    </TableCell>
-  </TableRow>
-</TableHead>
-<TableBody>
-  {deliveryNotes
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .map((note: deliveryNotes) => (
-      <TableRow hover role="checkbox" tabIndex={-1} key={note._id}>
-        <TableCell align="left">{note.orderId}</TableCell>
-        <TableCell align="left">{note.address}</TableCell>
-        <TableCell align="left">{note.requiredDate}</TableCell>
-        <TableCell align="left">{note.itemName}</TableCell>
-        <TableCell align="left">{note.quantity}</TableCell>
-        <TableCell align="left">{note.price}</TableCell>
-      </TableRow>
-    ))
-  }
-</TableBody>
-
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  key="orderId"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
+                  Order ID
+                </TableCell>
+                <TableCell
+                  key="address"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
+                  Address
+                </TableCell>
+                <TableCell
+                  key="requiredDate"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
+                  Required Date
+                </TableCell>
+                <TableCell
+                  key="itemName"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
+                  Item Name
+                </TableCell>
+                <TableCell
+                  key="quantity"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
+                  Quantity
+                </TableCell>
+                <TableCell key="price" align="left" style={{ minWidth: '50' }}>
+                  Price
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {deliveryNotes
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((note: deliveryNotes) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={note._id}>
+                    <TableCell align="left">{note.orderId}</TableCell>
+                    <TableCell align="left">{note.address}</TableCell>
+                    <TableCell align="left">{note.requiredDate}</TableCell>
+                    <TableCell align="left">{note.itemName}</TableCell>
+                    <TableCell align="left">{note.quantity}</TableCell>
+                    <TableCell align="left">{note.price}</TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
           </Table>
         </TableContainer>
         <TablePagination

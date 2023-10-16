@@ -44,8 +44,12 @@ const Increasebugest = async (dto: IBudget) => {
 };
 
 //http://localhost:8000/api/site/approveBudget
-async function approveBudget(site_id: string,budget_id:string,status: BudgetStatus,budget:number): Promise<any> {
-  
+async function approveBudget(
+  site_id: string,
+  budget_id: string,
+  status: BudgetStatus,
+  budget: number,
+): Promise<any> {
   try {
     const updateBudget = await budgetFormModel.updateOne(
       { _id: budget_id },
@@ -65,14 +69,12 @@ async function approveBudget(site_id: string,budget_id:string,status: BudgetStat
 // http://localhost:8000/api/site/getAllBudgetRequests
 async function getAllBudgetRequests(): Promise<any[]> {
   try {
-    const budgetRequests = await budgetFormModel.find({status:'pending'});
+    const budgetRequests = await budgetFormModel.find({ status: 'pending' });
     return budgetRequests;
   } catch (err) {
-    
     throw err;
   }
 }
-
 
 //http://localhost:8000/api/site/getAllApprovedOrders
 async function getAllApprovedBudget(): Promise<any[]> {
@@ -92,12 +94,19 @@ async function rejectBudget(site_id: string): Promise<boolean> {
     if (!deletedBudget) {
       throw new Error('Budget request not found');
     }
-    
+
     return true;
   } catch (err) {
     throw err;
   }
 }
 
-
-export default { insertSite, getSite, Increasebugest, rejectBudget,approveBudget,getAllApprovedBudget,getAllBudgetRequests };
+export default {
+  insertSite,
+  getSite,
+  Increasebugest,
+  rejectBudget,
+  approveBudget,
+  getAllApprovedBudget,
+  getAllBudgetRequests,
+};

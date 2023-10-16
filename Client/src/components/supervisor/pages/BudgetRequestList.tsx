@@ -20,20 +20,21 @@ import CancelIcon from '@mui/icons-material/Cancel';
 interface BudgetRequest {
   _id: string;
   site_id: string;
-  budget_id:string;
+  budget_id: string;
   amount: number;
   location: string;
   description: string;
   status: string;
   disabled: boolean; // Add the disabled property
-
 }
 
 export default function BudgetRequestList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
-  const [budgetRequests, setBudgetRequests] = React.useState<BudgetRequest[]>([]);
+  const [budgetRequests, setBudgetRequests] = React.useState<BudgetRequest[]>(
+    [],
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,10 +44,12 @@ export default function BudgetRequestList() {
           {
             method: 'GET', // Make a GET request to fetch data
             headers: {
-              'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Make sure you have the 'token' variable defined
+              Authorization:
+                'Bearer ' +
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Make sure you have the 'token' variable defined
               'Content-Type': 'application/json',
             },
-          }
+          },
         );
         if (response.ok) {
           const data = await response.json();
@@ -67,14 +70,13 @@ export default function BudgetRequestList() {
     request.disabled = true;
 
     // Make an API request to update the status to "Approved"
-    await axios.put('http://localhost:8000/api/site/approve', {
-      site_id:budgetRequests.site_id,
-      budget_id:budgetRequests._id,
-      status:'confirmed',
-      // budget:budgetRequests.
-
-
-    })
+    await axios
+      .put('http://localhost:8000/api/site/approve', {
+        site_id: budgetRequests.site_id,
+        budget_id: budgetRequests._id,
+        status: 'confirmed',
+        // budget:budgetRequests.
+      })
       .then((response) => {
         if (response.ok) {
           // Update the status in the state
@@ -96,7 +98,6 @@ export default function BudgetRequestList() {
         enqueueSnackbar(error.message, { variant: 'error' });
       });
   };
-
 
   const handleReject = (request: BudgetRequest) => {
     request.disabled = true;
@@ -131,16 +132,13 @@ export default function BudgetRequestList() {
         enqueueSnackbar(error.message, { variant: 'error' });
       });
   };
-  
-  
-
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -159,7 +157,11 @@ export default function BudgetRequestList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell key="site_id" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="site_id"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Site Id
                 </TableCell>
                 {/* <TableCell key="budget_id" align="left" style={{ minWidth: '50' }}>
@@ -168,10 +170,18 @@ export default function BudgetRequestList() {
                 <TableCell key="amount" align="left" style={{ minWidth: '50' }}>
                   Amount
                 </TableCell>
-                <TableCell key="location" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="location"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Location
                 </TableCell>
-                <TableCell key="description" align="left" style={{ minWidth: '50' }}>
+                <TableCell
+                  key="description"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
                   Description
                 </TableCell>
                 <TableCell key="status" align="left" style={{ minWidth: '50' }}>
@@ -186,7 +196,12 @@ export default function BudgetRequestList() {
               {budgetRequests
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((request: BudgetRequest) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={request._id}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={request._id}
+                  >
                     <TableCell align="left">{request.site_id}</TableCell>
                     {/* <TableCell align="left">{request.budget_id}</TableCell> */}
                     <TableCell align="left">{request.amount}</TableCell>
@@ -194,30 +209,29 @@ export default function BudgetRequestList() {
                     <TableCell align="left">{request.description}</TableCell>
                     <TableCell align="left">{request.status}</TableCell>
                     <TableCell align="left">
-                    {/* {request.status === 'Pending' && ( */}
-                        <div>
-                          <Button
-                            onClick={() => handleAccept(request)}
-                            startIcon={<CheckCircleIcon style={{ color: 'green' }} />}
-                            disabled={request.disabled} // Add this
-
-                          >
-                            Confirm
-                          </Button>
-                          <Button
-                            onClick={() => handleReject(request)}
-                            startIcon={<CancelIcon style={{ color: 'red' }} />}
-                            disabled={request.disabled} // Add this
-
-                          >
-                            Reject
-                          </Button>
-                        </div>
+                      {/* {request.status === 'Pending' && ( */}
+                      <div>
+                        <Button
+                          onClick={() => handleAccept(request)}
+                          startIcon={
+                            <CheckCircleIcon style={{ color: 'green' }} />
+                          }
+                          disabled={request.disabled} // Add this
+                        >
+                          Confirm
+                        </Button>
+                        <Button
+                          onClick={() => handleReject(request)}
+                          startIcon={<CancelIcon style={{ color: 'red' }} />}
+                          disabled={request.disabled} // Add this
+                        >
+                          Reject
+                        </Button>
+                      </div>
                       {/* )} */}
                     </TableCell>
                   </TableRow>
-                ))
-              }
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

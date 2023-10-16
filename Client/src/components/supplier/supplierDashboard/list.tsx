@@ -49,9 +49,9 @@ export default function ListItems() {
         onClick={() => {
           navigate('/supplier/addNote');
         }}
-        >
+      >
         <ListItemIcon>
-        <NearMeIcon />
+          <NearMeIcon />
         </ListItemIcon>
         <ListItemText primary="Add Delivery Note" />
       </ListItemButton>
@@ -60,9 +60,9 @@ export default function ListItems() {
         onClick={() => {
           navigate('/supplier/viewNotes');
         }}
-        >
+      >
         <ListItemIcon>
-        <NearMeIcon />
+          <NearMeIcon />
         </ListItemIcon>
         <ListItemText primary="Delivery Notes" />
       </ListItemButton>

@@ -215,7 +215,7 @@ export default function SupplierDashboard({ children }: any) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Supplier 
+              Supplier
             </Typography>
 
             <Search>

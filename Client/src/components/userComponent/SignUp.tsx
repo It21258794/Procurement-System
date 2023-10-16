@@ -34,7 +34,7 @@ const validationSchema = Yup.object({
     })
     .required('Required'),
   email: Yup.string().email('Please enter a valid email').required('Required'),
-  role: Yup.string().required('Required')
+  role: Yup.string().required('Required'),
 });
 
 const useStyles = makeStyles()((theme) => ({

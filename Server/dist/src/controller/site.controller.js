@@ -103,4 +103,12 @@ const budgetReject = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(400).json({ err: err.message });
     }
 });
-exports.default = { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget, getAllBudgetRequests };
+exports.default = {
+    insertSite,
+    getSite,
+    bugestRequest,
+    budgetReject,
+    budgetApprove,
+    getAllApprovedBudget,
+    getAllBudgetRequests,
+};
