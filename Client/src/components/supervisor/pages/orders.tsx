@@ -46,7 +46,6 @@ function createData(
 ): Data {
   return { siteId, siteName };
 }
-
 const rows = [
   createData(201,'Canada'),
   // ... (other rows)
