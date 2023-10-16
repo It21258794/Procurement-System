@@ -19,4 +19,4 @@ accountRoute.put('/updateAccount/:accountid', accountController.updateAccount);
 accountRoute.delete(
   '/deleteAccount/:accountid',
   accountController.deleteAccount,
-); 
+);

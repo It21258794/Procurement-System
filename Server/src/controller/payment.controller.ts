@@ -26,6 +26,7 @@ const getPayemtDetails = async (req: Request, res: Response) => {
 const createPaymentItem = async (req: Request, res: Response) => {
   try {
     const dto = req.body;
+    console.log(dto);
     const paymentItem = await paymentService.createPayment(dto);
     res.status(200).json(paymentItem);
   } catch (err: any) {

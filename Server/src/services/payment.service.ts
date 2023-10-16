@@ -37,7 +37,7 @@ const getPayemtDetailsBySupplier = async (id: string) => {
 
 const createPayment = async (dto: IPaymentItem) => {
   try {
-    const orderItem = await orderModel.findOne({ orderId: dto.order_id });
+    const orderItem = await orderModel.findOne({ _id: dto.order_id });
 
     if (!orderItem) {
       throw 'Order not found';

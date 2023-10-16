@@ -1,6 +1,7 @@
 import Account from '../models/account/account.model';
 import { BudgetStatus, IBudget } from '../models/budgetForm/IBudget';
 import budgetFormModel from '../models/budgetForm/budgetForm';
+import Site from '../models/site/site.model';
 import siteModel from '../models/site/site.model';
 
 async function insertSite(dto: any): Promise<any> {
@@ -28,6 +29,7 @@ const getSite = async () => {
 
 const Increasebugest = async (dto: IBudget) => {
   try {
+    console.log('service', dto);
     const site = await siteModel.findById(dto.site_id);
 
     if (!site) {
@@ -41,21 +43,21 @@ const Increasebugest = async (dto: IBudget) => {
   }
 };
 
-
 //http://localhost:8000/api/site/approveBudget
 async function approveBudget(site_id: string,budget_id:string,status: BudgetStatus,budget:number): Promise<any> {
   
   try {
-      const updateBudget = await budgetFormModel.updateOne({_id:budget_id}, { status: status});
-      console.log(updateBudget);
-      if(!updateBudget){
-         throw 'budget not updated.'
-
-      }
-      await siteModel.updateOne({_id:site_id},{budget:budget});
-        return true;
-
-    } catch (err) {
+    const updateBudget = await budgetFormModel.updateOne(
+      { _id: budget_id },
+      { status: status },
+    );
+    console.log(updateBudget);
+    if (!updateBudget) {
+      throw 'budget not updated.';
+    }
+    await siteModel.updateOne({ _id: site_id }, { budget: budget });
+    return true;
+  } catch (err) {
     throw err;
   }
 }

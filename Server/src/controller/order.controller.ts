@@ -29,7 +29,6 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
-
 const getOrderBySite = async (req: Request, res: Response) => {
   try {
     const { siteId } = req.params;
@@ -43,6 +42,7 @@ const getOrderBySite = async (req: Request, res: Response) => {
 
 const getOrderById = async (req: Request, res: Response) => {
   try {
+    console.log('here');
     const { orderId } = req.params;
 
     const foundOrder = await orderService.getOrderById(orderId);
@@ -62,10 +62,43 @@ const changeStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getOrderAndBudget = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+
+    const { orderItem, budget } = await orderService.getOrderAndBudget(orderId);
+    res.status(200).json({ orderItem, budget });
+  } catch (err: any) {
+    res.status(401).send({ err: err });
+  }
+};
+
+const deleteOrderById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletedItem = await orderService.deleteOrder(id);
+    res.status(200).json({ deletedItem });
+  } catch (err: any) {
+    res.status(401).send({ err: err });
+  }
+};
+
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const fountItem = await orderService.getOrderByMonth();
+    res.status(200).json({ fountItem });
+  } catch (err: any) {
+    res.status(401).send({ err: err });
+  }
+};
+
 export default {
   sendOrder,
   createOrder,
   getOrderBySite,
   getOrderById,
   changeStatus,
+  getOrderAndBudget,
+  deleteOrderById,
+  getOrders,
 };

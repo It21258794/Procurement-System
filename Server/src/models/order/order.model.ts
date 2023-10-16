@@ -11,9 +11,16 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    supplierId: {
+      type: String,
+      required: true,
+    },
     address: {
       type: String,
       required: true,
+    },
+    month_year: {
+      type: String,
     },
     requiredDate: {
       type: Date,
@@ -33,16 +40,16 @@ const orderSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
-        supplierId: {
-          type: String,
-          required: true,
-        },
         price: {
           type: Number,
           required: true,
         },
       },
     ],
+    total_cost: {
+      type: Number,
+      required: true,
+    },
     status: {
       type: String,
       default: OrderStatus.PENDING,

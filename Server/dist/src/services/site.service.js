@@ -41,6 +41,7 @@ const getSite = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const Increasebugest = (dto) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log('service', dto);
         const site = yield site_model_1.default.findById(dto.site_id);
         if (!site) {
             throw 'Site not found';
