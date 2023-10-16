@@ -9,6 +9,10 @@ const BudgetFormSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       require: true,
     },
+    curr_budget: {
+      type: Number,
+      require: true,
+    },
     amount: {
       type: Number,
       require: true,

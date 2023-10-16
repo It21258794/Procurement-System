@@ -27,14 +27,19 @@ export default function SiteForm() {
 
   const handleSubmit = async () => {
     // Send a GET request to find the Site Manager account
-    console.log(siteDetails.siteManager_name)
-    fetch('http://localhost:8000/api/account/findAccountByUserName/' + siteDetails.siteManager_name)
+    console.log(siteDetails.siteManager_name);
+    fetch(
+      'http://localhost:8000/api/account/findAccountByUserName/' +
+        siteDetails.siteManager_name,
+    )
       .then(async (response) => {
         if (response.ok) {
           const siteManagerAccounts = await response.json();
           if (siteManagerAccounts.length > 0) {
             // Check if the account is a Site Manager
-            const isSiteManager = siteManagerAccounts.find((account) => account.role === 'Site_Manager');
+            const isSiteManager = siteManagerAccounts.find(
+              (account) => account.role === 'Site_Manager',
+            );
             if (isSiteManager) {
               // Proceed with site creation
               const siteDto = {
@@ -52,7 +57,9 @@ export default function SiteForm() {
                 .then((response) => {
                   if (response.ok) {
                     console.log('Site created successfully');
-                    enqueueSnackbar('Site created successfully', { variant: 'success' });
+                    enqueueSnackbar('Site created successfully', {
+                      variant: 'success',
+                    });
                     // Reset the form fields if needed
                     setSiteDetails({
                       siteManager_name: '',
@@ -61,17 +68,23 @@ export default function SiteForm() {
                     });
                   } else {
                     console.error('Failed to create site');
-                    enqueueSnackbar('Failed to create site', { variant: 'error' });
+                    enqueueSnackbar('Failed to create site', {
+                      variant: 'error',
+                    });
                   }
                 })
                 .catch((error) => {
                   console.error('An error occurred:', error);
-                  enqueueSnackbar('An error occurred while creating the site', { variant: 'error' });
+                  enqueueSnackbar('An error occurred while creating the site', {
+                    variant: 'error',
+                  });
                 });
             } else {
               // Account is not a Site Manager
               console.error('Site Manager account not found');
-              enqueueSnackbar('Site Manager account not found', { variant: 'error' });
+              enqueueSnackbar('Site Manager account not found', {
+                variant: 'error',
+              });
             }
           } else {
             // No account with the given username found
@@ -79,8 +92,13 @@ export default function SiteForm() {
             enqueueSnackbar('Account not found', { variant: 'error' });
           }
         } else {
-          console.error('Error checking for an existing account:', response.statusText);
-          enqueueSnackbar('Error checking for an existing account', { variant: 'error' });
+          console.error(
+            'Error checking for an existing account:',
+            response.statusText,
+          );
+          enqueueSnackbar('Error checking for an existing account', {
+            variant: 'error',
+          });
         }
       })
       .catch((error) => {

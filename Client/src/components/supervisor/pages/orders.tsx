@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import { Box, Typography, Button } from '@mui/material'; // Import Button
 
 interface Column {
-  id: 'siteId' | 'siteName' |'action'; // Added 'actions'
+  id: 'siteId' | 'siteName' | 'action'; // Added 'actions'
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -25,7 +25,7 @@ const columns: readonly Column[] = [
     label: 'Site Name',
     minWidth: 170,
   },
- 
+
   {
     id: 'action', // Added 'actions' column
     label: 'Actions',
@@ -37,18 +37,14 @@ const columns: readonly Column[] = [
 interface Data {
   siteId: number;
   siteName: string;
- 
 }
 
-function createData(
-  siteId: number,
-  siteName: string,
-): Data {
+function createData(siteId: number, siteName: string): Data {
   return { siteId, siteName };
 }
 
 const rows = [
-  createData(201,'Canada'),
+  createData(201, 'Canada'),
   // ... (other rows)
 ];
 
@@ -102,10 +98,7 @@ export default function ApproveOrderList() {
                           const value = row[column.id];
                           if (column.id === 'action') {
                             return (
-                              <TableCell
-                                key={column.id}
-                                align={column.align}
-                              >
+                              <TableCell key={column.id} align={column.align}>
                                 <Link to={`../orderapprove/${row.siteId}`}>
                                   <Button variant="contained">
                                     View Budget

@@ -64,12 +64,17 @@ const getOrderId = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const date = new Date();
+        const currMonth = date.getMonth() + 1;
+        const currYear = date.getFullYear();
+        const year_month = currMonth + '_' + currYear;
         const site = yield site_model_1.default.findById(id);
         if (!site) {
             throw 'Site not Found';
         }
         const orderDetail = yield order_model_1.default.find({
-            items: { $elemMatch: { siteId: id } },
+            siteId: id,
+            month_year: year_month,
         });
         return orderDetail;
     }
@@ -88,8 +93,78 @@ const getOrderById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const changeOrderStatus = (orderId, status) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log('orderId', orderId);
         const order = yield order_model_1.default.updateOne({ _id: orderId }, { status: status });
         return { res: 'Updated' };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const getOrderAndBudget = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const orderItem = yield order_model_1.default.findById(id);
+        if (!orderItem) {
+            throw 'order not Found';
+        }
+        const budget = yield getBudgetByMonth(orderItem.siteId.toString());
+        return { orderItem, budget };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const getBudgetByMonth = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let priceList = [];
+        let totalPrice = 0;
+        let remBudget = 0;
+        const date = new Date();
+        const currMonth = date.getMonth() + 1;
+        const currYear = date.getFullYear();
+        const year_month = currMonth + '_' + currYear;
+        const siteItem = yield site_model_1.default.findById(id);
+        if (!siteItem) {
+            throw 'Site Budget not Found';
+        }
+        const siteBudget = siteItem.budget;
+        priceList = yield order_model_1.default.find({
+            siteId: id,
+            month_year: year_month,
+            status: 'confirmed',
+        });
+        console.log(priceList);
+        priceList.forEach((item) => {
+            totalPrice = totalPrice + item.total_cost;
+        });
+        remBudget = siteBudget - totalPrice;
+        return {
+            siteBudget: siteBudget,
+            totalPrice: totalPrice,
+            remBudget: remBudget,
+        };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const deleteOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const item = yield order_model_1.default.findByIdAndDelete(id);
+        return { response: 'Deleted' };
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const getOrderByMonth = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const date = new Date();
+        const currMonth = date.getMonth() + 1;
+        const currYear = date.getFullYear();
+        const year_month = currMonth + '_' + currYear;
+        const item = yield order_model_1.default.find({ month_year: year_month });
+        return item;
     }
     catch (err) {
         throw err;
@@ -102,4 +177,7 @@ exports.default = {
     getOrderBySite,
     getOrderById,
     changeOrderStatus,
+    getOrderAndBudget,
+    deleteOrder,
+    getOrderByMonth,
 };

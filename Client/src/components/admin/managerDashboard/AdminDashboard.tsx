@@ -29,7 +29,7 @@ import { useSnackbar } from 'notistack';
 // import axios from 'axios';
 import { AuthContext } from '../../../auth/AuthProvider';
 import SiteForm from './components/admin/adminFunctions/insertSiteForm';
-import AdminListItem from './listItem.tsx'
+import AdminListItem from './listItem.tsx';
 
 function Copyright(props: any) {
   return (

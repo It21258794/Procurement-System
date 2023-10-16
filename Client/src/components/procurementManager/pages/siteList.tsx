@@ -12,6 +12,7 @@ import { useSnackbar } from 'notistack';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { AuthContext } from '../../../auth/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 interface Item {
   _id: string;
@@ -24,6 +25,7 @@ export default function SiteList() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
   const [site, setSite] = React.useState([]);
+  const navigate = useNavigate();
 
   let authPayload = React.useContext(AuthContext);
   const { fromStorage } = authPayload;
@@ -66,8 +68,19 @@ export default function SiteList() {
     setPage(0);
   };
 
+  const handelProps = (id: any, location: any) => {
+    navigate(`/manager/orders/${location}/${id}`);
+  };
+
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box
+      sx={{
+        paddingTop: 10,
+        paddingBottom: 10,
+        width: 800,
+        paddingLeft: '150px',
+      }}
+    >
       <Paper
         sx={{
           width: '100%',
@@ -85,10 +98,6 @@ export default function SiteList() {
                 <TableCell key="budget" align="left" style={{ minWidth: '50' }}>
                   Budgect
                 </TableCell>
-                <TableCell key="order" align="left" style={{ minWidth: '50' }}>
-                  Orders
-                </TableCell>
-
                 <TableCell key="view" align="left" style={{ minWidth: '50' }}>
                   view
                 </TableCell>
@@ -108,7 +117,9 @@ export default function SiteList() {
                       <TableCell align="left">{item.location}</TableCell>
                       <TableCell align="left">{item.budget}</TableCell>
                       <TableCell align="left">
-                        <IconButton>
+                        <IconButton
+                          onClick={() => handelProps(item._id, item.location)}
+                        >
                           <VisibilityIcon style={{ color: 'orange' }} />
                         </IconButton>
                       </TableCell>

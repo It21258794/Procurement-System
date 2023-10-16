@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -13,7 +11,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as Yup from 'yup';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import { useFormik } from 'formik';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate, NavLink } from 'react-router-dom';
@@ -24,13 +21,20 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const theme = createTheme();
 
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
 const validationSchema = Yup.object({
-  fname: Yup.string(),
-  lname: Yup.string(),
+  fname: Yup.string().required('Required'),
+  lname: Yup.string().required('Required'),
   mobile: Yup.number().required('phone number is required'),
-  password: Yup.string().min(5).required('Password is required'),
-  email: Yup.string().email('Invalid email address').required('Required'),
-  role: Yup.string(),
+  password: Yup.string()
+    .matches(passwordRules, {
+      message:
+        'Please create a stronger password (min 8 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit)',
+    })
+    .required('Required'),
+  email: Yup.string().email('Please enter a valid email').required('Required'),
+  role: Yup.string().required('Required')
 });
 
 const useStyles = makeStyles()((theme) => ({

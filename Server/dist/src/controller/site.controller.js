@@ -37,11 +37,26 @@ const getSite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const bugestRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dto = req.body;
+        console.log(dto.site_id);
         const item = yield site_service_1.default.Increasebugest(dto);
         res.status(200).json(item);
     }
     catch (err) {
         res.status(400).json({ err: err });
+    }
+});
+const getAllBudgetRequests = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const budgetRequests = yield site_service_1.default.getAllBudgetRequests();
+        if (budgetRequests && budgetRequests.length > 0) {
+            res.status(200).json({ budgetRequests });
+        }
+        else {
+            res.status(404).json({ message: 'No budget requests found' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ err: err.message });
     }
 });
 const budgetApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -76,16 +91,16 @@ const getAllApprovedBudget = (req, res) => __awaiter(void 0, void 0, void 0, fun
 const budgetReject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const isRejected = yield site_service_1.default.rejectBudget(id);
-        if (isRejected) {
-            res.status(200).json({ message: 'Budget rejected successfully' });
+        const isDeleted = yield site_service_1.default.rejectBudget(id); // Modify this to match your actual service function
+        if (isDeleted) {
+            res.status(200).json({ message: 'Budget request deleted successfully' });
         }
         else {
-            res.status(404).json({ message: 'Budget not found' });
+            res.status(404).json({ message: 'Budget request not found' });
         }
     }
     catch (err) {
-        res.status(400).json({ err: err });
+        res.status(400).json({ err: err.message });
     }
 });
-exports.default = { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget };
+exports.default = { insertSite, getSite, bugestRequest, budgetReject, budgetApprove, getAllApprovedBudget, getAllBudgetRequests };

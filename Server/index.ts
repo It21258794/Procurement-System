@@ -9,6 +9,7 @@ import { siteRoute } from './src/routes/site.route';
 import { Server } from 'socket.io';
 import { orderRoute } from './src/routes/order.route';
 import logger from './log/logger';
+import { noteRoute } from './src/routes/note.route';
 import { error } from 'console';
 import { cartRoute } from './src/routes/cart.route';
 
@@ -35,6 +36,7 @@ app.use('/api/payment', paymentRoute);
 app.use('/api/site', siteRoute);
 app.use('/api/order', orderRoute);
 app.use('/api/cart', cartRoute);
+app.use('/api/note', noteRoute);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
   logger.info('MongoDB connected');

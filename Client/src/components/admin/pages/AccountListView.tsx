@@ -7,7 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel, IconButton } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -45,9 +53,12 @@ export default function AccountListView() {
 
   const handleDeleteAccount = async (accountId) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/account/deleteAccount/${accountId}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/account/deleteAccount/${accountId}`,
+        {
+          method: 'DELETE',
+        },
+      );
 
       if (response.ok) {
         enqueueSnackbar('Account deleted successfully', { variant: 'success' });
@@ -68,13 +79,16 @@ export default function AccountListView() {
 
   const handleUpdateAccount = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/account/updateAccount/${updatedAccount._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `http://localhost:8000/api/account/updateAccount/${updatedAccount._id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedAccount),
         },
-        body: JSON.stringify(updatedAccount),
-      });
+      );
 
       if (response.ok) {
         enqueueSnackbar('Account updated successfully', { variant: 'success' });
@@ -124,11 +138,17 @@ export default function AccountListView() {
           <MenuItem value="Supervisor">Supervisor</MenuItem>
           <MenuItem value="supplier">Supplier</MenuItem>
           <MenuItem value="Procument_admin">Procument Admin</MenuItem>
-          <MenuItem value="Site_Manager" >Site Manager</MenuItem>
+          <MenuItem value="Site_Manager">Site Manager</MenuItem>
           {/* Add more options for other account types as needed */}
         </Select>
       </FormControl>
-      <Paper sx={{ width: '120%', overflow: 'hidden', backgroundColor: 'transparent' }}>
+      <Paper
+        sx={{
+          width: '120%',
+          overflow: 'hidden',
+          backgroundColor: 'transparent',
+        }}
+      >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -152,10 +172,16 @@ export default function AccountListView() {
                     <TableCell>{account.email}</TableCell>
                     <TableCell>{account.role}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleEditAccount(account)} color="primary">
+                      <IconButton
+                        onClick={() => handleEditAccount(account)}
+                        color="primary"
+                      >
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteAccount(account._id)} color="secondary">
+                      <IconButton
+                        onClick={() => handleDeleteAccount(account._id)}
+                        color="secondary"
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -184,90 +210,90 @@ export default function AccountListView() {
           },
         }}
       >
-<DialogTitle>Edit Account</DialogTitle>
-<DialogContent sx={{ maxHeight: '500px' }}>
-  <Box sx={{ marginBottom: 2 }}>
-    <TextField
-      label="First Name"
-      fullWidth
-      value={updatedAccount ? updatedAccount.fname : ''}
-      onChange={(e) =>
-        setUpdatedAccount({
-          ...updatedAccount,
-          fname: e.target.value,
-        })
-      }
-      disabled  // Disable this field
-      sx={{ margin: '16px 0' }} 
-    />
-  </Box>
-  <Box sx={{ marginBottom: 2 }}>
-    <TextField
-      label="Last Name"
-      fullWidth
-      value={updatedAccount ? updatedAccount.lname : ''}
-      onChange={(e) =>
-        setUpdatedAccount({
-          ...updatedAccount,
-          lname: e.target.value,
-        })
-      }
-      disabled  // Disable this field
-    />
-  </Box>
-  <Box sx={{ marginBottom: 2 }}>
-  <TextField
-    label="Mobile"
-    fullWidth
-    value={updatedAccount ? updatedAccount.mobile : ''}
-    onChange={(e) =>
-      setUpdatedAccount({
-        ...updatedAccount,
-        mobile: e.target.value,
-      })
-    }
-    sx={{ marginBottom: '16px' }}
-    inputProps={{
-      pattern: '\\d{10}', // This enforces 10 digits
-      title: 'Mobile number should be 10 digits',
-    }}
-    error={updatedAccount && !/^\d{10}$/.test(updatedAccount.mobile)}
-    helperText={
-      updatedAccount && !/^\d{10}$/.test(updatedAccount.mobile)
-        ? 'Mobile number should be 10 digits'
-        : ''
-    }
-  />
-</Box>
-  <Box sx={{ marginBottom: 2 }}>
-    <TextField
-      label="Email"
-      fullWidth
-      value={updatedAccount ? updatedAccount.email : ''}
-      onChange={(e) =>
-        setUpdatedAccount({
-          ...updatedAccount,
-          email: e.target.value,
-        })
-      }
-      disabled  // Disable this field
-    />
-  </Box>
-  <Box sx={{ marginBottom: 2 }}>
-    <TextField
-      label="Role"
-      fullWidth
-      value={updatedAccount ? updatedAccount.role : ''}
-      onChange={(e) =>
-        setUpdatedAccount({
-          ...updatedAccount,
-          role: e.target.value,
-        })
-      }
-      disabled  // Disable this field
-    />
-  </Box>
-</DialogContent>
+        <DialogTitle>Edit Account</DialogTitle>
+        <DialogContent sx={{ maxHeight: '500px' }}>
+          <Box sx={{ marginBottom: 2 }}>
+            <TextField
+              label="First Name"
+              fullWidth
+              value={updatedAccount ? updatedAccount.fname : ''}
+              onChange={(e) =>
+                setUpdatedAccount({
+                  ...updatedAccount,
+                  fname: e.target.value,
+                })
+              }
+              disabled // Disable this field
+              sx={{ margin: '16px 0' }}
+            />
+          </Box>
+          <Box sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Last Name"
+              fullWidth
+              value={updatedAccount ? updatedAccount.lname : ''}
+              onChange={(e) =>
+                setUpdatedAccount({
+                  ...updatedAccount,
+                  lname: e.target.value,
+                })
+              }
+              disabled // Disable this field
+            />
+          </Box>
+          <Box sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Mobile"
+              fullWidth
+              value={updatedAccount ? updatedAccount.mobile : ''}
+              onChange={(e) =>
+                setUpdatedAccount({
+                  ...updatedAccount,
+                  mobile: e.target.value,
+                })
+              }
+              sx={{ marginBottom: '16px' }}
+              inputProps={{
+                pattern: '\\d{10}', // This enforces 10 digits
+                title: 'Mobile number should be 10 digits',
+              }}
+              error={updatedAccount && !/^\d{10}$/.test(updatedAccount.mobile)}
+              helperText={
+                updatedAccount && !/^\d{10}$/.test(updatedAccount.mobile)
+                  ? 'Mobile number should be 10 digits'
+                  : ''
+              }
+            />
+          </Box>
+          <Box sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Email"
+              fullWidth
+              value={updatedAccount ? updatedAccount.email : ''}
+              onChange={(e) =>
+                setUpdatedAccount({
+                  ...updatedAccount,
+                  email: e.target.value,
+                })
+              }
+              disabled // Disable this field
+            />
+          </Box>
+          <Box sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Role"
+              fullWidth
+              value={updatedAccount ? updatedAccount.role : ''}
+              onChange={(e) =>
+                setUpdatedAccount({
+                  ...updatedAccount,
+                  role: e.target.value,
+                })
+              }
+              disabled // Disable this field
+            />
+          </Box>
+        </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditDialogOpen(false)} color="primary">
             Cancel

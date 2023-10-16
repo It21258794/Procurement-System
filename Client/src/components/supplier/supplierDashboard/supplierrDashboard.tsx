@@ -145,7 +145,7 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ManagerDashboard({ children }: any) {
+export default function SupplierDashboard({ children }: any) {
   const [open, setOpen] = React.useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = React.useState({});
@@ -215,7 +215,7 @@ export default function ManagerDashboard({ children }: any) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Supervisor
+              Supplier 
             </Typography>
 
             <Search>

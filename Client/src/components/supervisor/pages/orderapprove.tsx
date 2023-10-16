@@ -94,7 +94,9 @@ export default function ApproveOrderPage({ siteId }: ApproveOrderPageProps) {
                   <TableCell>{siteDetails.desc}</TableCell>
                   <TableCell align="right">{siteDetails.qty}</TableCell>
                   <TableCell align="right">{siteDetails.unit}</TableCell>
-                  <TableCell align="right">{ccyFormat(siteDetails.price)}</TableCell>
+                  <TableCell align="right">
+                    {ccyFormat(siteDetails.price)}
+                  </TableCell>
                 </TableRow>
               )}
               <TableRow>
@@ -106,7 +108,9 @@ export default function ApproveOrderPage({ siteId }: ApproveOrderPageProps) {
               </TableRow>
               <TableRow>
                 <TableCell>Tax</TableCell>
-                <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
+                <TableCell align="right">{`${(TAX_RATE * 100).toFixed(
+                  0,
+                )} %`}</TableCell>
                 <TableCell align="right">
                   {ccyFormat(siteDetails ? TAX_RATE * siteDetails.price : 0)}
                 </TableCell>
@@ -114,16 +118,26 @@ export default function ApproveOrderPage({ siteId }: ApproveOrderPageProps) {
               <TableRow>
                 <TableCell colSpan={2}>Total</TableCell>
                 <TableCell align="right">
-                  {ccyFormat(siteDetails ? (1 + TAX_RATE) * siteDetails.price : 0)}
+                  {ccyFormat(
+                    siteDetails ? (1 + TAX_RATE) * siteDetails.price : 0,
+                  )}
                 </TableCell>
               </TableRow>
               {orderStatus === null ? (
                 <TableRow>
                   <TableCell colSpan={4} align="right">
-                    <Button variant="contained" color="primary" onClick={handleApprove}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleApprove}
+                    >
                       Approve Order
                     </Button>
-                    <Button variant="contained" color="secondary" onClick={handleReject}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleReject}
+                    >
                       Reject Order
                     </Button>
                   </TableCell>

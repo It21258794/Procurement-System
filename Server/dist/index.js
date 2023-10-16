@@ -14,6 +14,7 @@ const site_route_1 = require("./src/routes/site.route");
 const socket_io_1 = require("socket.io");
 const order_route_1 = require("./src/routes/order.route");
 const logger_1 = __importDefault(require("./log/logger"));
+const note_route_1 = require("./src/routes/note.route");
 const cart_route_1 = require("./src/routes/cart.route");
 require('dotenv').config();
 const app = (0, express_1.default)();
@@ -32,6 +33,7 @@ app.use('/api/payment', payment_route_1.paymentRoute);
 app.use('/api/site', site_route_1.siteRoute);
 app.use('/api/order', order_route_1.orderRoute);
 app.use('/api/cart', cart_route_1.cartRoute);
+app.use('/api/note', note_route_1.noteRoute);
 mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
     logger_1.default.info('MongoDB connected');
     app.on('error', (err) => {

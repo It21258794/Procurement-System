@@ -36,24 +36,35 @@ export default function ListItems() {
     <React.Fragment>
       <ListItemButton
         onClick={() => {
-          navigate('/supervisor/orders');
+          navigate('//supplier/viewOrders');
         }}
       >
         <ListItemIcon>
           <ViewListIcon />
         </ListItemIcon>
-        <ListItemText primary="Budget Requests" />
+        <ListItemText primary="View Orders" />
       </ListItemButton>
 
       <ListItemButton
         onClick={() => {
-          navigate('/supervisor/allApprovedOrders');
+          navigate('/supplier/addNote');
         }}
-      >
+        >
         <ListItemIcon>
-          <NearMeIcon />
+        <NearMeIcon />
         </ListItemIcon>
-        <ListItemText primary="Approved Budgets" />
+        <ListItemText primary="Add Delivery Note" />
+      </ListItemButton>
+
+      <ListItemButton
+        onClick={() => {
+          navigate('/supplier/viewNotes');
+        }}
+        >
+        <ListItemIcon>
+        <NearMeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Delivery Notes" />
       </ListItemButton>
 
       <ListItemButton>

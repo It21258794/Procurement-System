@@ -7,7 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel, IconButton } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -108,7 +116,13 @@ export default function ItemListView() {
       <Typography variant="h6" gutterBottom>
         Item List
       </Typography>
-      <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'transparent' }}>
+      <Paper
+        sx={{
+          width: '100%',
+          overflow: 'hidden',
+          backgroundColor: 'transparent',
+        }}
+      >
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -132,10 +146,16 @@ export default function ItemListView() {
                     <TableCell>{item.supplierId}</TableCell>
                     <TableCell>{item.price}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleEditItem(item)} color="primary">
+                      <IconButton
+                        onClick={() => handleEditItem(item)}
+                        color="primary"
+                      >
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteItem(item._id)} color="secondary">
+                      <IconButton
+                        onClick={() => handleDeleteItem(item._id)}
+                        color="secondary"
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>

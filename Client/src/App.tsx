@@ -8,9 +8,13 @@ import Checkout from './components/procurementManager/pages/checkOut';
 import SignIn from './components/userComponent/SignIn';
 import SignUp from './components/userComponent/SignUp';
 import SupervisorDashboard from './components/supervisor//supervisorDashboard/supervisorDashboard';
-import ApproveOrderPage from './components/supervisor/pages/orderapprove';
-import ApproveOrderList from './components/supervisor/pages/orders';
-import AllApprovedOrders from './components/supervisor/pages/allApprovedOrders';
+import ApproveOrderList from './components/supervisor/pages/BudgetRequestList';
+import AllApprovedOrders from './components/supervisor/pages/approvedBudgetList';
+import SupplierDashboard from './components/supplier/supplierDashboard/supplierrDashboard';
+import OrderViewPage from './components/supplier/pages/viewOrder';
+import CreateDeliveryNotice from './components/supplier/pages/addNote';
+import DeliveryNote from './components/supplier/pages/deliveryNotes';
+
 import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React from 'react';
@@ -20,59 +24,78 @@ import AccountForm from './components/admin/adminFunctions/createAccountForm';
 import ItemForm from './components/admin/adminFunctions/insertItemForm';
 import SiteForm from './components/admin/adminFunctions/insertSiteForm';
 import AdminDashboard from './components/admin/managerDashboard/AdminDashboard';
-
+import BudgetForm from './components/procurementManager/pages/BudgetForm';
+import PayOrderList from './components/procurementManager/pages/PayOrderList';
 
 function ProcurementManagerRoute() {
   return (
-    // <ManagerAuthGuard>
+    <ManagerAuthGuard>
       <ManagerDashboard>
         <Routes>
           <Route path="/sites" element={<SiteList />} />
-          <Route path="/orders" element={<OrderList />} />
-          <Route path="/order" element={<OrderTable />} />
-          <Route path="/payment" element={<Checkout />} />
+          <Route path="/orders/:location/:id" element={<OrderList />} />
+          <Route path="/order/:id" element={<OrderTable />} />
+          <Route path="/allOrders" element={<PayOrderList />} />
+          <Route path="/payment/:id/:orderId" element={<Checkout />} />
+          <Route
+            path="/budgetForm/:address/:siteBudget/:remBudget/:total/:siteId"
+            element={<BudgetForm />}
+          />
         </Routes>
       </ManagerDashboard>
-    // </ManagerAuthGuard>
+    </ManagerAuthGuard>
   );
 }
 
 function GuestRoute() {
   return (
-    // <AuthGuard>
+    <AuthGuard>
       <Routes>
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<SignIn />} />
       </Routes>
-    // </AuthGuard>
+    </AuthGuard>
   );
 }
 
-function SupervisorRoute(){
-  return(
+function SupervisorRoute() {
+  return (
     <SupervisorDashboard>
     <Routes>
-            <Route path="/orderapprove" element={<ApproveOrderPage />} />
             <Route path="/orders" element={<ApproveOrderList />} />
             <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
     </Routes>
     </SupervisorDashboard>
-
-    );
+  );
 }
+
+function SupplierRoute() {
+  return (
+    // <ManagerAuthGuard>
+      <SupplierDashboard>
+        <Routes>
+          <Route path="/viewOrders" element={<OrderViewPage/>} />
+          <Route path="/addNote" element={<CreateDeliveryNotice />} />
+          <Route path="/viewNotes" element={<DeliveryNote />} />
+        </Routes>
+      </SupplierDashboard>
+    // </ManagerAuthGuard>
+  );
+}
+
 function AdminRoute() {
   return (
     // <ManagerAuthGuard>
-      <AdminDashboard>
-        <Routes>
-          <Route path="/sites" element={<SiteList />} />
-          <Route path="/items" element={<ItemListView />} />
-          <Route path="/accountList" element={<AccountListView />} />
-          <Route path="/createAccount" element={<AccountForm/>} />
-          <Route path="/insertItem" element={<ItemForm/>} />
-          <Route path="/insertSite" element={<SiteForm/>} />
-        </Routes>
-      </AdminDashboard>
+    <AdminDashboard>
+      <Routes>
+        <Route path="/sites" element={<SiteList />} />
+        <Route path="/items" element={<ItemListView />} />
+        <Route path="/accountList" element={<AccountListView />} />
+        <Route path="/createAccount" element={<AccountForm />} />
+        <Route path="/insertItem" element={<ItemForm />} />
+        <Route path="/insertSite" element={<SiteForm />} />
+      </Routes>
+    </AdminDashboard>
     // </ManagerAuthGuard>
   );
 }
@@ -88,6 +111,8 @@ function App() {
         <Route path="manager/*" element={<ProcurementManagerRoute />} />
         <Route path="*" element={<GuestRoute />} />
         <Route path="supervisor/*" element={<SupervisorRoute />} />
+        <Route path="supplier/*" element={<SupplierRoute />} />
+
         <Route path="admin/*" element={<AdminRoute />} />
       </Routes>
     </>

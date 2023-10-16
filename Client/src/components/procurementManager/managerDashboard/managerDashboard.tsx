@@ -215,7 +215,7 @@ export default function ManagerDashboard({ children }: any) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Name
+              {/* Name */}
             </Typography>
 
             <Search>
@@ -263,13 +263,13 @@ export default function ManagerDashboard({ children }: any) {
                 <Avatar
                   alt="Remy Sharp"
                   src="/static/images/avatar/1.jpg"
-                  sx={{ width: 86, height: 86 }}
+                  sx={{ width: 86, height: 86, justifyContent: 'center' }}
                 />
-                <Box sx={{ paddingTop: 3 }}>
+                <Box sx={{ paddingTop: 3, justifyContent: 'center' }}>
                   <Typography>
                     {user.fname} {user.lname}
                   </Typography>
-                  <Typography>{user.role}</Typography>
+                  <Typography>Manager</Typography>
                 </Box>
               </Box>
             </Stack>
