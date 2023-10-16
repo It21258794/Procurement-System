@@ -32,25 +32,19 @@ export default function allNoteList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
-  const [deliveryNotes, setDeliveryNotes] = React.useState<deliveryNotes[]>([]);
+  const [deliveryNotes, setDeliveryNotes] = React.useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8000/api/note/allnotes', {
           method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Replace with your access token
-            'Content-Type': 'application/json',
-          },
         });
   if (response.ok) {
   const data = await response.json();
-  if (Array.isArray(data)) {
-    setDeliveryNotes(data); // Store the delivery notes data
-  } else {
-    enqueueSnackbar("Invalid data format", { variant: 'error' });
-  }
+  console.log(data.deliveryNotes);
+    setDeliveryNotes(data.deliveryNotes); // Store the delivery notes data
+    console.log(deliveryNotes)
 } else {
   const errorMessage = await response.text();
   console.error(`Request failed with status: ${response.status}`);
