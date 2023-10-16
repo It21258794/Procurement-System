@@ -85,6 +85,7 @@ const getOrderBySite = async (req: Request, res: Response) => {
 
 const getOrderById = async (req: Request, res: Response) => {
   try {
+    console.log('here')
     const { orderId } = req.params;
 
     const foundOrder = await orderService.getOrderById(orderId);
@@ -115,6 +116,18 @@ const getOrderAndBudget = async (req: Request, res: Response) => {
   }
 };
 
+const deleteOrderById =async(req: Request, res: Response) =>{
+  try{
+    const { id } = req.params;
+    const deletedItem = await orderService.deleteOrder(id)
+    res.status(200).json({ deletedItem});
+
+  }catch(err:any){
+    res.status(401).send({ err: err });
+  }
+
+}
+
 export default {
   sendOrder,
   createOrder,
@@ -125,4 +138,5 @@ export default {
   getOrderById,
   changeStatus,
   getOrderAndBudget,
+  deleteOrderById
 };

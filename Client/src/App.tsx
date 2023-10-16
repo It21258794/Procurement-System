@@ -15,14 +15,15 @@ import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React from 'react';
 
+
 function ProcurementManagerRoute() {
   return (
     // <ManagerAuthGuard>
       <ManagerDashboard>
         <Routes>
           <Route path="/sites" element={<SiteList />} />
-          <Route path="/orders" element={<OrderList />} />
-          <Route path="/order" element={<OrderTable />} />
+          <Route path="/orders/:location/:id" element={<OrderList />} />
+          <Route path="/order/:id" element={<OrderTable />} />
           <Route path="/payment" element={<Checkout />} />
         </Routes>
       </ManagerDashboard>

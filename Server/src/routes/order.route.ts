@@ -14,7 +14,8 @@ orderRoute.post('/approve/:id', orderController.budgetApprove);
 // All approved orders
 orderRoute.get('/approved', orderController.getAllApprovedOrders);
 
-orderRoute.get('/getSiteOrder/:siteId', orderController.getOrderBySite);
-orderRoute.get('/getOrderById/:orderId', orderController.getOrderById);
+orderRoute.get('/getSiteOrder/:siteId',AuthGuard, orderController.getOrderBySite);
+orderRoute.get('/getOrderById/:orderId',AuthGuard, orderController.getOrderById);
 orderRoute.put('/setStatus', orderController.changeStatus);
-orderRoute.get('/getOrderBudget/:orderId', orderController.getOrderAndBudget);
+orderRoute.get('/getOrderBudget/:orderId',AuthGuard, orderController.getOrderAndBudget);
+orderRoute.delete('/deleteOrder/:id',AuthGuard,orderController.deleteOrderById)

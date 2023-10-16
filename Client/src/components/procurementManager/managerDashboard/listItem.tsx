@@ -64,7 +64,7 @@ export default function ListItems() {
           <ListItemButton
             sx={{ pl: 4 }}
             onClick={() => {
-              navigate('/manager/orders');
+              navigate('/manager/orders/:id');
             }}
           >
             <ListItemIcon>

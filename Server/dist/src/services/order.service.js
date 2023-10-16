@@ -64,12 +64,16 @@ const getOrderId = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getOrderBySite = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const date = new Date();
+        const currMonth = date.getMonth() + 1;
+        const currYear = date.getFullYear();
+        const year_month = currMonth + '_' + currYear;
         const site = yield site_model_1.default.findById(id);
         if (!site) {
             throw 'Site not Found';
         }
         const orderDetail = yield order_model_1.default.find({
-            items: { $elemMatch: { siteId: id } },
+            siteId: id, month_year: year_month
         });
         return orderDetail;
     }
@@ -186,6 +190,15 @@ const getBudgetByMonth = (id) => __awaiter(void 0, void 0, void 0, function* () 
         throw err;
     }
 });
+const deleteOrder = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const item = yield order_model_1.default.findByIdAndDelete(id);
+        return { response: 'Deleted' };
+    }
+    catch (err) {
+        throw err;
+    }
+});
 exports.default = {
     sendOrderByEmail,
     createOrder,
@@ -197,4 +210,5 @@ exports.default = {
     getAllApprovedOrders,
     changeOrderStatus,
     getOrderAndBudget,
+    deleteOrder
 };

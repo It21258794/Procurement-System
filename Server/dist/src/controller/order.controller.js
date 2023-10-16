@@ -93,6 +93,7 @@ const getOrderBySite = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log('here');
         const { orderId } = req.params;
         const foundOrder = yield order_service_1.default.getOrderById(orderId);
         res.status(200).json(foundOrder);
@@ -121,6 +122,16 @@ const getOrderAndBudget = (req, res) => __awaiter(void 0, void 0, void 0, functi
         res.status(401).send({ err: err });
     }
 });
+const deleteOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const deletedItem = yield order_service_1.default.deleteOrder(id);
+        res.status(200).json({ deletedItem });
+    }
+    catch (err) {
+        res.status(401).send({ err: err });
+    }
+});
 exports.default = {
     sendOrder,
     createOrder,
@@ -131,4 +142,5 @@ exports.default = {
     getOrderById,
     changeStatus,
     getOrderAndBudget,
+    deleteOrderById
 };
