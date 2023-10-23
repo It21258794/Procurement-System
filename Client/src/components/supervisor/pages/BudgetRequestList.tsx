@@ -79,15 +79,15 @@ export default function BudgetRequestList() {
   });
 
   // Listen for rejection notifications
-  socket.on('rejectionNotification', (data) => {
-    // Handle the rejection notification, e.g., show a snackbar or update the UI
-    enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
-  });
+  // socket.on('rejectionNotification', (data) => {
+  //   // Handle the rejection notification, e.g., show a snackbar or update the UI
+  //   enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
+  // });
 
-  return () => {
-    // Clean up the socket connection when the component unmounts
-    socket.disconnect();
-  };
+  // return () => {
+  //   // Clean up the socket connection when the component unmounts
+  //   socket.disconnect();
+  // };
     };
     fetchData();
   }, []);

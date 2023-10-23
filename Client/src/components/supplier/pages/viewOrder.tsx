@@ -16,6 +16,8 @@ import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { AuthContext } from '../../../auth/AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 interface approvedBudget {
   _id: string;
@@ -36,6 +38,8 @@ export default function viewOrderList() {
   let authPayload = useContext(AuthContext);
   const ctx = authPayload.token;
   const headers = { Authorization: 'Bearer ' + ctx };
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,6 +77,11 @@ export default function viewOrderList() {
     setPage(0);
   };
 
+  const handleAccept = (orderId: string) => {
+    // Navigate to the "Add Note" page with the order ID as a parameter
+    navigate(`/supplier/addNote/${orderId}`);
+  };
+
   return (
     <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
       <Paper
@@ -93,21 +102,7 @@ export default function viewOrderList() {
                 >
                   Order Id
                 </TableCell>
-                <TableCell
-                  key="site_id"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Site Id
-                </TableCell>
-                <TableCell
-                  key="supplier_id"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Supplier Id
-                </TableCell>
-
+              
                 <TableCell
                   key="location"
                   align="left"
@@ -129,6 +124,7 @@ export default function viewOrderList() {
                 >
                   Description
                 </TableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>
@@ -146,6 +142,12 @@ export default function viewOrderList() {
                     <TableCell align="left">{request.address}</TableCell>
                     <TableCell align="left">{request.total_cost}</TableCell>
                     <TableCell align="left">{request.description}</TableCell>
+                    <Button
+                      onClick={() => handleAccept(request.orderId)}
+                      startIcon={<CheckCircleIcon style={{ color: 'green' }} />}
+                    >
+      Add Note
+    </Button>
                   </TableRow>
                 ))}
             </TableBody>

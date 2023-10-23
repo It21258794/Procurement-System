@@ -9,6 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { AuthContext } from '../../../auth/AuthProvider';
+import { useParams } from 'react-router-dom';
 
 interface Item {
   id: string;
@@ -31,6 +32,8 @@ const CreateDeliveryNotice: React.FC = () => {
     // deliveryDate: '',
     description: ''
   });
+
+  const { orderId } = useParams();
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
@@ -102,7 +105,7 @@ const CreateDeliveryNotice: React.FC = () => {
     // }
 
     let noteDetails = {
-      orderId: deliveryNotice.orderId,
+      orderId:orderId,
       // address: deliveryNotice.deliveryAddress,
       // requiredDate: deliveryNotice.deliveryDate,
       description: deliveryNotice.description
@@ -147,10 +150,12 @@ const CreateDeliveryNotice: React.FC = () => {
             fullWidth
             label="Order ID"
             name="orderId"
-            value={deliveryNotice.orderId}
+            value={orderId}
             onChange={handleInput}
             error={Boolean(errors.orderId)}
             helperText={errors.orderId}
+            disabled={true}
+
           />
           {/* <TextField
             fullWidth

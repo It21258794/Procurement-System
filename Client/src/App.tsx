@@ -75,7 +75,7 @@ function SupplierRoute() {
     <SupplierDashboard>
       <Routes>
         <Route path="/viewOrders" element={<OrderViewPage />} />
-        <Route path="/addNote" element={<CreateDeliveryNotice />} />
+        <Route path="/addNote/:orderId" element={<CreateDeliveryNotice />} />
         <Route path="/viewNotes" element={<DeliveryNote />} />
       </Routes>
     </SupplierDashboard>
