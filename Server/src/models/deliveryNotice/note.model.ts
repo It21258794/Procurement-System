@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const noteSchema = new mongoose.Schema(
   {
     orderId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'order',
       required: true,
     },
