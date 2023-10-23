@@ -14,7 +14,7 @@ import SupplierDashboard from './components/supplier/supplierDashboard/supplierr
 import OrderViewPage from './components/supplier/pages/viewOrder';
 import CreateDeliveryNotice from './components/supplier/pages/addNote';
 import DeliveryNote from './components/supplier/pages/deliveryNotes';
-import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
+import { AuthGuard, ManagerAuthGuard,SupllierAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React, { useState } from 'react';
 import ItemListView from './components/admin/pages/ItemView';
@@ -27,7 +27,7 @@ import BudgetForm from './components/procurementManager/pages/BudgetForm';
 import PayOrderList from './components/procurementManager/pages/PayOrderList';
 
 function ProcurementManagerRoute({socket}) {
-  
+ 
   return (
     <ManagerAuthGuard>
       <ManagerDashboard socket={socket}>
@@ -70,8 +70,9 @@ function SupervisorRoute() {
 }
 
 function SupplierRoute({socket}) {
+  console.log(socket)
   return (
-    // <ManagerAuthGuard>
+    <SupllierAuthGuard>
     <SupplierDashboard socket={socket}>
       <Routes>
         <Route path="/viewOrders" element={<OrderViewPage socket={socket} />} />
@@ -79,7 +80,7 @@ function SupplierRoute({socket}) {
         <Route path="/viewNotes" element={<DeliveryNote />} />
       </Routes>
     </SupplierDashboard>
-    // </ManagerAuthGuard>
+    </SupllierAuthGuard>
   );
 }
 
@@ -106,13 +107,15 @@ function App() {
     
   }, []);
 
+ console.log(socket)
+
   return (
     <>
       <Routes>
         <Route path="manager/*" element={<ProcurementManagerRoute socket={socket}/>} />
         <Route path="*" element={<GuestRoute />} />
         <Route path="supervisor/*" element={<SupervisorRoute />} />
-        <Route path="supplier/*" element={<SupplierRoute socket/>} />
+        <Route path="supplier/*" element={<SupplierRoute socket={socket}/>} />
 
         <Route path="admin/*" element={<AdminRoute />} />
       </Routes>

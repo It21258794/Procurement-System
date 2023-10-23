@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,15 +15,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { AuthContext } from '../../../auth/AuthProvider';
 
 interface deliveryNotes {
   _id: string;
   orderId: string;
-  address: string;
-  requiredDate: string;
-  itemName: string;
-  quantity: number;
-  price: number;
+  // address: string;
+  // requiredDate: string;
+description:string
 }
 
 export default function allNoteList() {
@@ -31,6 +30,10 @@ export default function allNoteList() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
   const [deliveryNotes, setDeliveryNotes] = React.useState([]);
+  let authPayload = useContext(AuthContext);
+  const ctx = authPayload.token;
+  const headers = { Authorization: 'Bearer ' + ctx };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +41,8 @@ export default function allNoteList() {
         const response = await fetch(
           'http://localhost:8000/api/note/allnotes',
           {
-            method: 'GET',
+            headers
+            // method: 'GET',
           },
         );
         if (response.ok) {
@@ -52,7 +56,7 @@ export default function allNoteList() {
           console.error(`Error message: ${errorMessage}`);
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err) {
+      } catch (err:any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
@@ -91,7 +95,7 @@ export default function allNoteList() {
                 >
                   Order ID
                 </TableCell>
-                <TableCell
+                {/* <TableCell
                   key="address"
                   align="left"
                   style={{ minWidth: '50' }}
@@ -104,24 +108,15 @@ export default function allNoteList() {
                   style={{ minWidth: '50' }}
                 >
                   Required Date
-                </TableCell>
+                </TableCell> */}
                 <TableCell
                   key="itemName"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Item Name
-                </TableCell>
-                <TableCell
-                  key="quantity"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Quantity
-                </TableCell>
-                <TableCell key="price" align="left" style={{ minWidth: '50' }}>
-                  Price
-                </TableCell>
+                  Description      
+                            </TableCell>
+              
               </TableRow>
             </TableHead>
             <TableBody>
@@ -130,11 +125,10 @@ export default function allNoteList() {
                 .map((note: deliveryNotes) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={note._id}>
                     <TableCell align="left">{note.orderId}</TableCell>
-                    <TableCell align="left">{note.address}</TableCell>
-                    <TableCell align="left">{note.requiredDate}</TableCell>
-                    <TableCell align="left">{note.itemName}</TableCell>
-                    <TableCell align="left">{note.quantity}</TableCell>
-                    <TableCell align="left">{note.price}</TableCell>
+                    {/* <TableCell align="left">{note.address}</TableCell>
+                    <TableCell align="left">{note.requiredDate}</TableCell> */}
+                    <TableCell align="left">{note.description}</TableCell>
+                   
                   </TableRow>
                 ))}
             </TableBody>
