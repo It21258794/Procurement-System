@@ -20,8 +20,7 @@ import { AuthContext } from '../../../auth/AuthProvider';
 interface approvedBudget {
   _id: string;
   orderId:string;
-  siteId: string;
-  supplierId: string;
+ 
   address: string;
   total_cost: number;
   description: string;
@@ -143,9 +142,7 @@ export default function viewOrderList() {
                     key={request._id}
                   >
                     <TableCell align="left">{request.orderId}</TableCell>
-                    <TableCell align="left">{request.siteId}</TableCell>
                     {/* <TableCell align="left">{request.budget_id}</TableCell> */}
-                    <TableCell align="left">{request.supplierId}</TableCell>
                     <TableCell align="left">{request.address}</TableCell>
                     <TableCell align="left">{request.total_cost}</TableCell>
                     <TableCell align="left">{request.description}</TableCell>
