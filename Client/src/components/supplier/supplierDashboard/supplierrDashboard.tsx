@@ -145,14 +145,22 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function SupplierDashboard({ children }: any) {
+export default function SupplierDashboard({ children , socket }: any) {
   const [open, setOpen] = React.useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = React.useState({});
+  const [notifications, setNotifications] = React.useState([]);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  React.useEffect(() => {
+    socket.on("getOrderfromStaff", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }, [socket]);
+
+  console.log(notifications)
   // let authPayload = React.useContext(AuthContext);
   // const { fromStorage } = authPayload;
   // const data = JSON.parse(fromStorage);

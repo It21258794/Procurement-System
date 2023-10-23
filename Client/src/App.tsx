@@ -14,10 +14,9 @@ import SupplierDashboard from './components/supplier/supplierDashboard/supplierr
 import OrderViewPage from './components/supplier/pages/viewOrder';
 import CreateDeliveryNotice from './components/supplier/pages/addNote';
 import DeliveryNote from './components/supplier/pages/deliveryNotes';
-
 import { AuthGuard, ManagerAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
-import React from 'react';
+import React, { useState } from 'react';
 import ItemListView from './components/admin/pages/ItemView';
 import AccountListView from './components/admin/pages/AccountListView';
 import AccountForm from './components/admin/adminFunctions/createAccountForm';
@@ -27,14 +26,15 @@ import AdminDashboard from './components/admin/managerDashboard/AdminDashboard';
 import BudgetForm from './components/procurementManager/pages/BudgetForm';
 import PayOrderList from './components/procurementManager/pages/PayOrderList';
 
-function ProcurementManagerRoute() {
+function ProcurementManagerRoute({socket}) {
+  
   return (
     <ManagerAuthGuard>
-      <ManagerDashboard>
+      <ManagerDashboard socket={socket}>
         <Routes>
           <Route path="/sites" element={<SiteList />} />
           <Route path="/orders/:location/:id" element={<OrderList />} />
-          <Route path="/order/:id" element={<OrderTable />} />
+          <Route path="/order/:id" element={<OrderTable socket={socket} />} />
           <Route path="/allOrders" element={<PayOrderList />} />
           <Route path="/payment/:id/:orderId" element={<Checkout />} />
           <Route
@@ -69,12 +69,12 @@ function SupervisorRoute() {
   );
 }
 
-function SupplierRoute() {
+function SupplierRoute({socket}) {
   return (
     // <ManagerAuthGuard>
-    <SupplierDashboard>
+    <SupplierDashboard socket={socket}>
       <Routes>
-        <Route path="/viewOrders" element={<OrderViewPage />} />
+        <Route path="/viewOrders" element={<OrderViewPage socket={socket} />} />
         <Route path="/addNote" element={<CreateDeliveryNotice />} />
         <Route path="/viewNotes" element={<DeliveryNote />} />
       </Routes>
@@ -100,18 +100,19 @@ function AdminRoute() {
   );
 }
 function App() {
+  const [socket, setSocket] = React.useState(null);
   React.useEffect(() => {
-    const socket = io('http://localhost:8000');
-    console.log(socket);
+    setSocket(io('http://localhost:8000'));
+    
   }, []);
 
   return (
     <>
       <Routes>
-        <Route path="manager/*" element={<ProcurementManagerRoute />} />
+        <Route path="manager/*" element={<ProcurementManagerRoute socket={socket}/>} />
         <Route path="*" element={<GuestRoute />} />
         <Route path="supervisor/*" element={<SupervisorRoute />} />
-        <Route path="supplier/*" element={<SupplierRoute />} />
+        <Route path="supplier/*" element={<SupplierRoute socket/>} />
 
         <Route path="admin/*" element={<AdminRoute />} />
       </Routes>

@@ -20,11 +20,18 @@ interface Order {
   price: number;
 }
 
-export default function OrderList() {
+export default function OrderList({socket}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
   const [orders, setOrders] = React.useState([]);
+
+  const userId = '651573942be0d990f78c78cf'
+   React.useEffect(() => {
+    console.log(userId)
+    socket?.emit("newUser", userId);
+    console.log(socket)
+  }, [socket, userId]);
 
   useEffect(() => {
     const fetchData = async () => {

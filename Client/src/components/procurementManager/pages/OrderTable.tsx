@@ -12,6 +12,7 @@ import { AuthContext } from '../../../auth/AuthProvider';
 import { useSnackbar } from 'notistack';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 interface Item {
   _id: string;
@@ -21,12 +22,13 @@ interface Item {
   price: number;
 }
 
-export default function OrderTable() {
+export default function OrderTable({socket}) {
   const { enqueueSnackbar } = useSnackbar();
-  const { id } = useParams();
+  const { id} = useParams();
   const [order, setOrder] = React.useState({
     _id: '',
     orderId: '',
+    supplierId:'',
     siteId: '',
     address: '',
     month_year: '',
@@ -40,6 +42,8 @@ export default function OrderTable() {
   const { fromStorage } = authPayload;
   const data = JSON.parse(fromStorage);
   const token = data.token;
+  const decoded = jwt_decode(data.token);
+  const userId = decoded.id;
   const headers = { Authorization: 'Bearer ' + token };
 
   const subtotal = (items: readonly Item[]) => {
@@ -53,6 +57,11 @@ export default function OrderTable() {
   const invoiceSubtotal = subtotal(item);
   const siteBudget = cost.siteBudget;
   const remBudget = cost.remBudget;
+
+  React.useEffect(() => {
+    socket?.emit("newUser", userId);
+    console.log(socket)
+  }, [socket, userId]);
 
   const handleConfirmed = async (id: string) => {
     console.log(id);
@@ -68,6 +77,10 @@ export default function OrderTable() {
         )
         .then((res) => {
           console.log(res);
+          socket.emit("sendOrderToSupplier", {
+            reciverId:order.supplierId,
+            orderItem:{order}
+          });
           enqueueSnackbar('Order has been Confirmed', { variant: 'success' });
           navigate(-1);
         });
@@ -103,6 +116,7 @@ export default function OrderTable() {
           let updatedValues = {
             _id: res._id,
             orderId: res.orderId,
+            supplierId:res.supplierId,
             siteId: res.siteId,
             address: res.address,
             month_year: res.month_year,
