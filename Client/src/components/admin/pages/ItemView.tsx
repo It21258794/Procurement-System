@@ -10,11 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import {
   Box,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   IconButton,
+  Button, // Renamed Button import
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,12 +20,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 const getAllItemsUrl = 'http://localhost:8000/api/item/getAllItem';
 const updateItemUrl = 'http://localhost:8000/api/item/updateItem/';
 const deleteItemUrl = 'http://localhost:8000/api/item/deleteItem/';
+const createItemUrl = 'http://localhost:8000/api/item/createItem';
 
 export default function ItemListView() {
   const [page, setPage] = useState(0);
@@ -36,8 +33,8 @@ export default function ItemListView() {
   const { enqueueSnackbar } = useSnackbar();
   const [items, setItems] = useState([]);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [updatedItem, setUpdatedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [updatedItem, setUpdatedItem] = useState({});
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -71,25 +68,58 @@ export default function ItemListView() {
     setEditDialogOpen(true);
   };
 
-  const handleUpdateItem = async () => {
-    try {
-      const response = await fetch(updateItemUrl + updatedItem._id, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedItem),
-      });
+  const checkSupplierExistence = async (supplierUsername) => {
+    const checkSupplierUrl = `http://localhost:8000/api/account/findAccountByUserName/${supplierUsername}`;
 
+    try {
+      const response = await fetch(checkSupplierUrl);
       if (response.ok) {
-        enqueueSnackbar('Item updated successfully', { variant: 'success' });
-        setEditDialogOpen(false); // Close the edit dialog
-        fetchItems(); // Refresh the item list after the update
-      } else {
-        enqueueSnackbar('Item update failed', { variant: 'error' });
+        const supplierData = await response.json();
+        if (supplierData.length > 0) {
+          // Check if the account is a Supplier
+          const isSupplier = supplierData.find(
+            (account) => account.role === 'supplier'
+          );
+          return isSupplier !== undefined;
+        }
       }
+      return false;
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error('An error occurred while checking supplier existence:', error);
+      return false;
+    }
+  };
+
+  const handleUpdateItem = async () => {
+    if (checkSupplierExistence(updatedItem.supplierUsername)) {
+      const quantity = parseFloat(updatedItem.quantity);
+      const price = parseFloat(updatedItem.price);
+
+      if (!isNaN(quantity) && !isNaN(price) && quantity > 0 && price > 0) {
+        try {
+          const response = await fetch(updateItemUrl + updatedItem._id, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedItem),
+          });
+
+          if (response.ok) {
+            enqueueSnackbar('Item updated successfully', { variant: 'success' });
+            setEditDialogOpen(false); // Close the edit dialog
+            fetchItems(); // Refresh the item list after the update
+          } else {
+            enqueueSnackbar('Item update failed', { variant: 'error' });
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+        }
+      } else {
+        enqueueSnackbar('Quantity and price should be greater than 0', { variant: 'error' });
+      }
+    } else {
+      enqueueSnackbar('Supplier does not exist or is not a valid supplier', { variant: 'error' });
     }
   };
 
@@ -130,7 +160,7 @@ export default function ItemListView() {
                 <TableCell>Item Name</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Quantity</TableCell>
-                <TableCell>Supplier ID</TableCell>
+                <TableCell>Supplier Name</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
@@ -143,7 +173,7 @@ export default function ItemListView() {
                     <TableCell>{item.itemName}</TableCell>
                     <TableCell>{item.type}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
-                    <TableCell>{item.supplierId}</TableCell>
+                    <TableCell>{item.supplierUsername}</TableCell>
                     <TableCell>{item.price}</TableCell>
                     <TableCell>
                       <IconButton
@@ -179,6 +209,7 @@ export default function ItemListView() {
         <DialogContent>
           {/* Add form fields for editing item properties */}
           <TextField
+            sx={{ marginBottom: 2 }}
             label="Item Name"
             fullWidth
             value={updatedItem ? updatedItem.itemName : ''}
@@ -188,8 +219,58 @@ export default function ItemListView() {
                 itemName: e.target.value,
               })
             }
+            sx={{ marginBottom: 2 }}
           />
-          {/* Add more fields for other item properties as needed */}
+          <TextField
+            label="Type" // Placeholder for Type field
+            fullWidth
+            value={updatedItem ? updatedItem.type : ''}
+            onChange={(e) =>
+              setUpdatedItem({
+                ...updatedItem,
+                type: e.target.value,
+              })
+            }
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            label="Quantity" // Placeholder for Quantity field
+            fullWidth
+            value={updatedItem ? updatedItem.quantity : ''}
+            onChange={(e) =>
+              setUpdatedItem({
+                ...updatedItem,
+                quantity: e.target.value,
+              })
+            }
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            
+            label="Supplier Name" // Placeholder for Supplier ID field
+            fullWidth
+            value={updatedItem ? updatedItem.supplierUsername : ''}
+            disabled
+            onChange={(e) =>
+              setUpdatedItem({
+                ...updatedItem,
+                supplierUsername: e.target.value,
+              })
+            }
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            label="Price" // Placeholder for Price field
+            fullWidth
+            value={updatedItem ? updatedItem.price : ''}
+            onChange={(e) =>
+              setUpdatedItem({
+                ...updatedItem,
+                price: e.target.value,
+              })
+            }
+            sx={{ marginBottom: 2 }}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditDialogOpen(false)} color="primary">
