@@ -29,3 +29,5 @@ orderRoute.delete(
   orderController.deleteOrderById,
 );
 orderRoute.get('/getOrdersByMonth', orderController.getOrders);
+
+orderRoute.get('/getAllOrders', orderController.getAllOrders);

@@ -26,7 +26,7 @@ const getCartItems = async (req: Request, res: Response) => {
 const clearCart = async (req: Request, res: Response) => {
   try {
     const itemId = req.params.itemId;
-    const isDeleted = await cartService.clearCart(itemId);
+    const isDeleted = await cartService.deleteCartItem(itemId);
 
     res.status(200).json({ message: 'Cart cleared' });
   } catch (err: any) {

@@ -21,7 +21,9 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     const getOrderId = await orderService.getOrderId();
     req.body.orderId = getOrderId;
+
     const orderDetails = new orderModel(req.body);
+    console.log(orderDetails);
     const order = await orderService.createOrder(orderDetails);
     res.status(200).json(order);
   } catch (err: any) {
@@ -92,6 +94,15 @@ const getOrders = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const orderList = await orderService.getAllOrders();
+    res.status(200).json(orderList);
+  } catch (err: any) {
+    res.status(401).send({ err: err });
+  }
+};
+
 export default {
   sendOrder,
   createOrder,
@@ -101,4 +112,5 @@ export default {
   getOrderAndBudget,
   deleteOrderById,
   getOrders,
+  getAllOrders,
 };

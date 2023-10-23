@@ -170,6 +170,19 @@ const getOrderByMonth = () => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
+function getAllOrders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log('Fetching all items');
+        try {
+            const orders = yield order_model_1.default.find({});
+            console.log('Found items:', orders);
+            return orders;
+        }
+        catch (err) {
+            throw err;
+        }
+    });
+}
 exports.default = {
     sendOrderByEmail,
     createOrder,
@@ -180,4 +193,5 @@ exports.default = {
     getOrderAndBudget,
     deleteOrder,
     getOrderByMonth,
+    getAllOrders,
 };

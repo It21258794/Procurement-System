@@ -20,11 +20,15 @@ async function getCartItems(): Promise<any[]> {
   }
 }
 
-async function clearCart(itemId: string): Promise<boolean> {
+async function deleteCartItem(itemId: string): Promise<boolean> {
   try {
-    const deletedItem = await cartModel.deleteMany();
+    const deletedItem = await cartModel.deleteOne({ _id: itemId });
 
-    return true;
+    if (deletedItem.deletedCount === 1) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (err) {
     throw err;
   }
@@ -46,6 +50,6 @@ async function updateCartItem(itemId: string, updatedData: any): Promise<any> {
 export default {
   createCart,
   getCartItems,
-  clearCart,
+  deleteCartItem,
   updateCartItem,
 };

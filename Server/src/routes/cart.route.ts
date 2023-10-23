@@ -5,5 +5,5 @@ export const cartRoute = Router();
 
 cartRoute.post('/createCart', cartController.createCart);
 cartRoute.get('/getCart', cartController.getCartItems);
-cartRoute.delete('/clearCart', cartController.clearCart);
+cartRoute.delete('/deleteItem/:itemId', cartController.clearCart);
 cartRoute.put('/clearCart', cartController.updateCartItem);

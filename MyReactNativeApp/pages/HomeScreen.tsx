@@ -14,6 +14,8 @@ import {
   Stack,
   Button,
   Fab,
+  Actionsheet,
+  useDisclose,
 } from "native-base";
 import axios from "axios";
 
@@ -30,6 +32,7 @@ interface CardData {
 
 function HomeScreen({ navigation }) {
   const [cards, setCards] = useState<CardData[]>([]);
+  const { isOpen, onOpen, onClose } = useDisclose();
 
   useEffect(() => {
     axios
@@ -145,12 +148,28 @@ function HomeScreen({ navigation }) {
           </Box>
         ))}
       </ScrollView>
-      <Fab
-        renderInPortal={false}
-        shadow={2}
-        size="sm"
-        onPress={() => navigation.navigate("Orders")}
-      />
+      <Fab renderInPortal={false} shadow={2} size="sm" onPress={onOpen} />
+      <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
+        <Actionsheet.Content borderTopRadius="0">
+          <Box w="100%" h={60} px={4} justifyContent="center">
+            <Text
+              fontSize="16"
+              color="gray.500"
+              _dark={{
+                color: "gray.300",
+              }}
+            >
+              Menu
+            </Text>
+          </Box>
+          <Actionsheet.Item onPress={() => navigation.navigate("Cart")}>
+            Cart
+          </Actionsheet.Item>
+          <Actionsheet.Item onPress={() => navigation.navigate("Orders")}>
+            Orders
+          </Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
     </View>
   );
 }

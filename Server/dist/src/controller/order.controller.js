@@ -30,6 +30,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const getOrderId = yield order_service_1.default.getOrderId();
         req.body.orderId = getOrderId;
         const orderDetails = new order_model_1.default(req.body);
+        console.log(orderDetails);
         const order = yield order_service_1.default.createOrder(orderDetails);
         res.status(200).json(order);
     }
@@ -97,6 +98,15 @@ const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(401).send({ err: err });
     }
 });
+const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const orderList = yield order_service_1.default.getAllOrders();
+        res.status(200).json(orderList);
+    }
+    catch (err) {
+        res.status(401).send({ err: err });
+    }
+});
 exports.default = {
     sendOrder,
     createOrder,
@@ -106,4 +116,5 @@ exports.default = {
     getOrderAndBudget,
     deleteOrderById,
     getOrders,
+    getAllOrders,
 };
