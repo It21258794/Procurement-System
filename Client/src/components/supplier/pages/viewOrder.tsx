@@ -19,11 +19,11 @@ import { AuthContext } from '../../../auth/AuthProvider';
 
 interface approvedBudget {
   _id: string;
-  order_id:string;
-  site_id: string;
-  supplier_id: string;
+  orderId:string;
+  siteId: string;
+  supplierId: string;
   address: string;
-  totalCost: number;
+  total_cost: number;
   description: string;
 }
 
@@ -49,7 +49,8 @@ export default function viewOrderList() {
         );
         if (response.ok) {
           const data = await response.json();
-          setApprovedBudget(data.approvedBudget); // Assuming your data structure has a field named 'budgetRequests'
+          console.log(data)
+          setApprovedBudget(data.orderRequests); // Assuming your data structure has a field named 'budgetRequests'
         } else {
           const errorMessage = await response.text();
           enqueueSnackbar(errorMessage, { variant: 'error' });
@@ -141,12 +142,12 @@ export default function viewOrderList() {
                     tabIndex={-1}
                     key={request._id}
                   >
-                    <TableCell align="left">{request.order_id}</TableCell>
-                    <TableCell align="left">{request.site_id}</TableCell>
+                    <TableCell align="left">{request.orderId}</TableCell>
+                    <TableCell align="left">{request.siteId}</TableCell>
                     {/* <TableCell align="left">{request.budget_id}</TableCell> */}
-                    <TableCell align="left">{request.supplier_id}</TableCell>
+                    <TableCell align="left">{request.supplierId}</TableCell>
                     <TableCell align="left">{request.address}</TableCell>
-                    <TableCell align="left">{request.totalCost}</TableCell>
+                    <TableCell align="left">{request.total_cost}</TableCell>
                     <TableCell align="left">{request.description}</TableCell>
                   </TableRow>
                 ))}

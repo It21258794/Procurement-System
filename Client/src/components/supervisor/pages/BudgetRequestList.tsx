@@ -74,20 +74,20 @@ export default function BudgetRequestList() {
       }
 
       socket.on('confirmationNotification', (data) => {
-        // Handle the confirmation notification, e.g., show a snackbar or update the UI
-        enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
-      });
-    
-      // Listen for rejection notifications
-      socket.on('rejectionNotification', (data) => {
-        // Handle the rejection notification, e.g., show a snackbar or update the UI
-        enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
-      });
-    
-      return () => {
-        // Clean up the socket connection when the component unmounts
-        socket.disconnect();
-      };
+    // Handle the confirmation notification, e.g., show a snackbar or update the UI
+    enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
+  });
+
+  // Listen for rejection notifications
+  socket.on('rejectionNotification', (data) => {
+    // Handle the rejection notification, e.g., show a snackbar or update the UI
+    enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
+  });
+
+  return () => {
+    // Clean up the socket connection when the component unmounts
+    socket.disconnect();
+  };
     };
     fetchData();
   }, []);
@@ -106,13 +106,10 @@ export default function BudgetRequestList() {
       },{headers})
       .then(async (response) => {
         if (response.status == 200 ) {
-          
           // Update the status in the state
           const budgetCopy = [...budgetRequests];
           const filteredBudget = budgetCopy.filter((item: any) => item._id !== budget_id);
           setBudgetRequests(filteredBudget);
-          socket.emit('requestConfirmed', { budget_id });
-
         } else {
           
           const errorMessage = "something went wrong"
@@ -146,8 +143,6 @@ export default function BudgetRequestList() {
           const budgetCopy = [...budgetRequests];
           const filteredBudget = budgetCopy.filter((item: any) => item._id !==  request._id);
           setBudgetRequests(filteredBudget);
-          socket.emit('requestRejected', { budget_id: request._id });
-
         } else {
           return response.text().then((errorMessage) => {
             enqueueSnackbar(errorMessage, { variant: 'error' });
