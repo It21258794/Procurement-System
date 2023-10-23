@@ -1,98 +1,140 @@
 import * as React from 'react';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
+import { AuthContext } from '../../../auth/AuthProvider';
 
 interface Item {
-  itemName: string;
-  itemType: string;
-  quantity: number;
+  id: string;
+  // date: Date;
+  description: string;
 }
 
 const CreateDeliveryNotice: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  let authPayload = useContext(AuthContext);
+  const ctx = authPayload.token;
+  const headers = { Authorization: 'Bearer ' + ctx };
 
   const [deliveryNotice, setDeliveryNotice] = useState<{
     orderId: string;
-    deliveryAddress: string;
-    deliveryDate: string;
-    items: Item[];
-    price: number; // Add the "price" field
+    // deliveryDate: string;
+    description: string;
   }>({
     orderId: '',
-    deliveryAddress: '',
-    deliveryDate: '',
-    items: [{ itemName: '', itemType: '', quantity: 0 }],
-    price: 0, // Initialize with a default value
+    // deliveryDate: '',
+    description: ''
   });
+
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const validateRequired = (value: string) => {
+    if (!value) {
+      return 'This field is required';
+    }
+    return '';
+  };
+
+  //  const validateFutureDate = (value: string) => {
+  //   const selectedDate = new Date(value);
+  //   const currentDate = new Date();
+  //   if (selectedDate <= currentDate) {
+  //     return 'Please select a date in the future';
+  //   }
+  //   return '';
+  // };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const name = event.target.name;
     const value = event.target.value;
     setDeliveryNotice({ ...deliveryNotice, [name]: value });
-  };
+    // const error = validateRequired(value);
 
-  const handleItemInput = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ): void => {
-    const name = event.target.name;
-    const value = event.target.value;
-    const updatedItems = [...deliveryNotice.items];
-    updatedItems[index] = { ...updatedItems[index], [name]: value };
-    setDeliveryNotice({ ...deliveryNotice, items: updatedItems });
-  };
-
-  const addNewItem = (): void => {
-    setDeliveryNotice({
-      ...deliveryNotice,
-      items: [
-        ...deliveryNotice.items,
-        { itemName: '', itemType: '', quantity: 0 },
-      ],
-    });
-  };
-
-  const removeItem = (index: number): void => {
-    const updatedItems = [...deliveryNotice.items];
-    updatedItems.splice(index, 1);
-    setDeliveryNotice({ ...deliveryNotice, items: updatedItems });
-  };
-
-  const validateInputs = (): void => {
-    const itemErrors: string[] = [];
-    for (const item of deliveryNotice.items) {
-      if (
-        item.itemName.trim() === '' ||
-        item.itemType.trim() === '' ||
-        isNaN(item.quantity) ||
-        item.quantity <= 0
-      ) {
-        itemErrors.push('Invalid item');
+     let error = '';
+     if (name === 'orderId') {
+      error = validateRequired(value);
+      if (value.length !== 24) { // Check if the Order ID has exactly 24 characters
+        error = 'Order ID must be 24 characters';
       }
     }
-    setErrors({ ...errors, items: itemErrors });
+  // else if (name === 'deliveryDate') {
+  //     error = validateRequired(value);
+  //     error = validateFutureDate(value);
+  //   } 
+  else if (name === 'description') {
+    // Add a custom validation for the description field (e.g., minimum length)
+    if (value.length < 3) {
+      error = 'Description must be at least 3 characters';
+    }
+  }
+  
+  setErrors({ ...errors, [name]: error });
   };
 
   const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
 
-    validateInputs();
-
-    let noteDetails = {};
-    noteDetails = deliveryNotice;
-    await axios.post('http://localhost:8000/api/note/notes', noteDetails);
-
+    // Check if any of the fields are empty
     const hasErrors = Object.values(errors).some((error) => error !== '');
-    if (!hasErrors) {
-      // Handle the submission of deliveryNotice here
-      console.log(deliveryNotice);
+    if (hasErrors) {
+      // If there's an error, show an error alert
+      setAlertSeverity('error');
+      setAlertMessage('Error creating order');
+      setAlertOpen(true);
+      return;
     }
+
+    // const orderIdExists = await checkOrderIdExists(deliveryNotice.orderId);
+
+    // if (!orderIdExists) {
+    //   setAlertSeverity('error');
+    //   setAlertMessage('Order ID does not exist');
+    //   setAlertOpen(true);
+    //   return;
+    // }
+
+    let noteDetails = {
+      orderId: deliveryNotice.orderId,
+      // address: deliveryNotice.deliveryAddress,
+      // requiredDate: deliveryNotice.deliveryDate,
+      description: deliveryNotice.description
+    };
+
+    console.log(noteDetails);
+    await axios.post('http://localhost:8000/api/note/notes', noteDetails, { headers });
+
+    // If the order is created successfully, show a success alert
+    setAlertSeverity('success');
+    setAlertMessage('Order created successfully');
+    setAlertOpen(true);
   };
+
+  const handleCloseAlert = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
+  };
+  
+
+  // const checkOrderIdExists = async (orderId: string): Promise<boolean> => {
+  //   try {
+  //     // Make an API request to check if the order ID exists
+  //     const response = await axios.get(`http://localhost:8000/api/order/getOrderById/${orderId}`, { headers });
+  //     return response.data.exists; // You need to adjust this based on your API response
+  //   } catch (error) {
+  //     console.error('Error checking order ID:', error);
+  //     return false;
+  //   }
+  // };
 
   return (
     <Container maxWidth="sm">
@@ -107,71 +149,39 @@ const CreateDeliveryNotice: React.FC = () => {
             name="orderId"
             value={deliveryNotice.orderId}
             onChange={handleInput}
+            error={Boolean(errors.orderId)}
+            helperText={errors.orderId}
           />
-          <TextField
+          {/* <TextField
             fullWidth
             label="Delivery Address"
             name="deliveryAddress"
             value={deliveryNotice.deliveryAddress}
             onChange={handleInput}
-          />
-          <TextField
+            error={Boolean(errors.deliveryAddress)}
+            helperText={errors.deliveryAddress}
+          /> */}
+          {/* <TextField
             fullWidth
             label="Delivery Date"
             name="deliveryDate"
             type="date"
             value={deliveryNotice.deliveryDate}
             onChange={handleInput}
-          />
+            error={Boolean(errors.deliveryDate)}
+            helperText={errors.deliveryDate}
+          /> */}
           <TextField
             fullWidth
-            label="Price"
-            name="price"
-            type="number"
-            value={deliveryNotice.price}
+            label="Description"
+            name="description"
+            multiline
+            rows={4}
+            value={deliveryNotice.description}
             onChange={handleInput}
+            error={Boolean(errors.description)}
+            helperText={errors.description}
           />
-          {deliveryNotice.items.map((item, index) => (
-            <div key={index}>
-              <TextField
-                fullWidth
-                label="Item Name"
-                name="itemName"
-                value={item.itemName}
-                onChange={(event) => handleItemInput(event, index)}
-              />
-              <TextField
-                fullWidth
-                label="Item Type"
-                name="itemType"
-                value={item.itemType}
-                onChange={(event) => handleItemInput(event, index)}
-              />
-              <TextField
-                fullWidth
-                label="Quantity"
-                name="quantity"
-                type="number"
-                value={item.quantity}
-                onChange={(event) => handleItemInput(event, index)}
-              />
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => removeItem(index)}
-              >
-                Remove Item
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={addNewItem}
-            style={{ marginTop: '16px' }}
-          >
-            Add Item
-          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -183,6 +193,16 @@ const CreateDeliveryNotice: React.FC = () => {
           </Button>
         </form>
       </Paper>
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleCloseAlert}>
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          severity={alertSeverity}
+          onClose={handleCloseAlert}
+        >
+          {alertMessage}
+        </MuiAlert>
+      </Snackbar>
     </Container>
   );
 };

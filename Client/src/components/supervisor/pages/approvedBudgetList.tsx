@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,6 +15,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { AuthContext } from '../../../auth/AuthProvider';
 
 interface approvedBudget {
   _id: string;
@@ -33,21 +34,18 @@ export default function approvedBudgetList() {
   const [approvedBudget, setApprovedBudget] = React.useState<approvedBudget[]>(
     [],
   );
+  let authPayload = useContext(AuthContext);
+  const ctx = authPayload.token;
+  const headers = { Authorization: 'Bearer ' + ctx };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           'http://localhost:8000/api/site/approved', // Corrected API endpoint
-          {
-            method: 'GET', // Make a GET request to fetch data
-            headers: {
-              Authorization:
-                'Bearer ' +
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Make sure you have the 'token' variable defined
-              'Content-Type': 'application/json',
-            },
-          },
+              { headers }
+
+          
         );
         if (response.ok) {
           const data = await response.json();
@@ -56,7 +54,7 @@ export default function approvedBudgetList() {
           const errorMessage = await response.text();
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err) {
+      } catch (err:any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
@@ -70,7 +68,7 @@ export default function approvedBudgetList() {
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+    ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
