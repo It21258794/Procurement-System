@@ -82,6 +82,7 @@ const getOrderById = async (id: string) => {
   }
 };
 
+
 const changeOrderStatus = async (orderId: string, status: OrderStatus) => {
   try {
     console.log('orderId', orderId);
@@ -172,7 +173,19 @@ const getOrderByMonth = async () => {
   }
 };
 
+
+async function getAllOrders(): Promise<any[]> {
+  try {
+    const orderRequests = await orderModel.find();
+    return orderRequests;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
 export default {
+  getAllOrders,
   sendOrderByEmail,
   createOrder,
   getOrderId,

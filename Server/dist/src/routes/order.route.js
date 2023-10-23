@@ -16,3 +16,5 @@ exports.orderRoute.put('/setStatus', order_controller_1.default.changeStatus);
 exports.orderRoute.get('/getOrderBudget/:orderId', authGuard_1.default, order_controller_1.default.getOrderAndBudget);
 exports.orderRoute.delete('/deleteOrder/:id', authGuard_1.default, order_controller_1.default.deleteOrderById);
 exports.orderRoute.get('/getOrdersByMonth', order_controller_1.default.getOrders);
+//get all orders supplier
+exports.orderRoute.get('/getAllOrders', order_controller_1.default.getAllOrders);
