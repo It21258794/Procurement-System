@@ -3,6 +3,7 @@ import orderService from '../services/order.service';
 import orderModel from '../models/order/order.model';
 
 import Orders from '../services/order.service';
+import { error } from 'winston';
 
 const sendOrder = (req: Request, res: Response) => {
   try {
@@ -92,7 +93,23 @@ const getOrders = async (req: Request, res: Response) => {
   }
 };
 
+//get all orders
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const orderRequests = await orderService.getAllOrders();
+
+    if (orderRequests && orderRequests.length > 0) {
+      res.status(200).json({ orderRequests });
+    } else {
+      res.status(404).json({ message: 'No order found' });
+    }
+  } catch (err: any) {
+    res.status(400).json({ err: err.message });
+  }
+};
+
 export default {
+  getAllOrders,
   sendOrder,
   createOrder,
   getOrderBySite,

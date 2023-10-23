@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,51 +10,55 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Button from '@mui/material/Button';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { AuthContext } from '../../../auth/AuthProvider';
 
-interface Order {
-  orderId: string;
+interface approvedBudget {
+  _id: string;
+  orderId:string;
+ 
   address: string;
-  requiredDate: string;
-  itemName: string;
-  quantity: number;
-  price: number;
+  total_cost: number;
+  description: string;
 }
 
-export default function OrderList() {
+export default function viewOrderList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
-  const [orders, setOrders] = React.useState([]);
+  const [approvedBudget, setApprovedBudget] = React.useState<approvedBudget[]>(
+    [],
+  );
+  let authPayload = useContext(AuthContext);
+  const ctx = authPayload.token;
+  const headers = { Authorization: 'Bearer ' + ctx };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'http://localhost:8000/api/order/getOrder',
-          {
-            method: 'GET',
-            headers: {
-              Authorization:
-                'Bearer ' +
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Replace with your access token
-              'Content-Type': 'application/json',
-            },
-          },
-        );
+          'http://localhost:8000/api/order/getAllOrders', // Corrected API endpoint
+              { headers }
 
+          
+        );
         if (response.ok) {
           const data = await response.json();
-          setOrders(data); // Assuming your data is an array of orders
+          console.log(data)
+          setApprovedBudget(data.orderRequests); // Assuming your data structure has a field named 'budgetRequests'
         } else {
           const errorMessage = await response.text();
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err) {
+      } catch (err:any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
     };
-
     fetchData();
   }, []);
 
@@ -64,7 +68,7 @@ export default function OrderList() {
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+    ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -83,56 +87,65 @@ export default function OrderList() {
             <TableHead>
               <TableRow>
                 <TableCell
-                  key="orderId"
+                  key="order_id"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
                   Order Id
                 </TableCell>
                 <TableCell
-                  key="address"
+                  key="site_id"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Address
+                  Site Id
                 </TableCell>
                 <TableCell
-                  key="requiredDate"
+                  key="supplier_id"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Required Date
+                  Supplier Id
                 </TableCell>
+
                 <TableCell
-                  key="itemName"
+                  key="location"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Item Name
+                  Address                
+                  </TableCell>
+                {/* <TableCell key="budget_id" align="left" style={{ minWidth: '50' }}>
+                  Budget Id
+                </TableCell> */}
+                <TableCell key="amount" align="left" style={{ minWidth: '50' }}>
+                  Total Cost
                 </TableCell>
+               
                 <TableCell
-                  key="quantity"
+                  key="description"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Quantity
-                </TableCell>
-                <TableCell key="price" align="left" style={{ minWidth: '50' }}>
-                  Price
+                  Description
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders
+              {approvedBudget
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((order) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={order._id}>
-                    <TableCell align="left">{order.orderId}</TableCell>
-                    <TableCell align="left">{order.address}</TableCell>
-                    <TableCell align="left">{order.requiredDate}</TableCell>
-                    <TableCell align="left">{order.itemName}</TableCell>
-                    <TableCell align="left">{order.quantity}</TableCell>
-                    <TableCell align="left">{order.price}</TableCell>
+                .map((request: approvedBudget) => (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={request._id}
+                  >
+                    <TableCell align="left">{request.orderId}</TableCell>
+                    {/* <TableCell align="left">{request.budget_id}</TableCell> */}
+                    <TableCell align="left">{request.address}</TableCell>
+                    <TableCell align="left">{request.total_cost}</TableCell>
+                    <TableCell align="left">{request.description}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -141,7 +154,7 @@ export default function OrderList() {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={orders.length}
+          count={approvedBudget.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
