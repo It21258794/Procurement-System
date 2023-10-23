@@ -26,7 +26,7 @@ interface approvedBudget {
   description: string;
 }
 
-export default function viewOrderList() {
+export default function viewOrderList({socket}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
@@ -36,6 +36,12 @@ export default function viewOrderList() {
   let authPayload = useContext(AuthContext);
   const ctx = authPayload.token;
   const headers = { Authorization: 'Bearer ' + ctx };
+
+  const userId = '651573942be0d990f78c78cf'
+  React.useEffect(() => {
+    socket?.emit("newUser", userId);
+    console.log(socket)
+  }, [socket, userId]);
 
   useEffect(() => {
     const fetchData = async () => {

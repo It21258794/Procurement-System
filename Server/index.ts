@@ -38,6 +38,20 @@ app.use('/api/order', orderRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/note', noteRoute);
 
+let onlineUsers: any= [];
+const addNewUser = (userId:string, socketId:any) => {
+  !onlineUsers.some((user:any) => user.userId === userId) &&
+    onlineUsers.push({ userId, socketId });
+};
+
+const removeUser = (socketId:any) => {
+  onlineUsers = onlineUsers.filter((user:any) => user.socketId !== socketId);
+};
+
+const getUser = (userId:any) => {
+  return onlineUsers.find((user:any) => user.userId === userId);
+};
+
 mongoose.connect(process.env.MONGODB_URI).then(() => {
   logger.info('MongoDB connected');
   app.on('error', (err) => {
@@ -54,10 +68,21 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     });
 
     io.on('connection', (socket) => {
-      logger.error('some has connected to socket');
+      
+      socket.on("newUser", (userId) => {
+        console.log("socket",userId)
+        addNewUser(userId, socket.id);
+      });
+
+      socket.on("sendOrderToSupplier", ({ reciverId, orderItem }) => {
+        const receiver = getUser(reciverId);
+        io.to(receiver.socketId).emit("getOrderfromStaff", {
+          orderItem
+        });
+      });
 
       socket.on('disconnect', () => {
-        logger.error('socket discconected ');
+        removeUser(socket.id);
       });
     });
   });
