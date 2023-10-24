@@ -13,7 +13,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 // import './RditForm.css';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -38,7 +38,7 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const BudgetForm = () => {
+const BudgetForm = ({socket}:any) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -73,7 +73,11 @@ const BudgetForm = () => {
       await axios
         .post('http://localhost:8000/api/site/budgetRequest', dto, { headers })
         .then((res) => {
-          console.log(res);
+          console.log(res.data._id);
+          // socket.emit("sendBudgetToSupervisor", {
+          //   reciverId:'',
+          //   budgetId:res.data._id
+          // });
           enqueueSnackbar('Succesfully Submited', { variant: 'success' });
 
           if (res.data.success) {

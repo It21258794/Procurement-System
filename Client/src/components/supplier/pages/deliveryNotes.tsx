@@ -20,8 +20,6 @@ import { AuthContext } from '../../../auth/AuthProvider';
 interface deliveryNotes {
   _id: string;
   orderId: string;
-  // address: string;
-  // requiredDate: string;
 description:string
 }
 
@@ -42,7 +40,6 @@ export default function allNoteList() {
           'http://localhost:8000/api/note/allnotes',
           {
             headers
-            // method: 'GET',
           },
         );
         if (response.ok) {
@@ -76,7 +73,7 @@ export default function allNoteList() {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 10,width: 800,paddingLeft:25 }}>
       <Paper
         sx={{
           width: '100%',
@@ -95,20 +92,7 @@ export default function allNoteList() {
                 >
                   Order ID
                 </TableCell>
-                {/* <TableCell
-                  key="address"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Address
-                </TableCell>
-                <TableCell
-                  key="requiredDate"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Required Date
-                </TableCell> */}
+              
                 <TableCell
                   key="itemName"
                   align="left"

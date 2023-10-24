@@ -18,6 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { InputLabel, MenuItem, Select } from '@mui/material';
 
 const theme = createTheme();
 
@@ -74,6 +75,28 @@ const useStyles = makeStyles()((theme) => ({
 export default function SignUp() {
   const navigate = useNavigate();
   const { classes } = useStyles();
+  const [type,setType] = React.useState([])
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/account/getAccountTypes`,
+        );
+        const res = await response.json();
+        console.log(res);
+
+        if (response.ok) {
+          setType(res);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.log(err);
+        // enqueueSnackbar(err.message, { variant: 'error' });
+      }
+    };
+    fetchData();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -275,7 +298,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                {/* <TextField
                   margin="normal"
                   fullWidth
                   id="role"
@@ -292,7 +315,25 @@ export default function SignUp() {
                       ? formik.errors['role']
                       : null
                   }
-                />
+                /> */}
+                 <InputLabel>Select Role</InputLabel>
+                 <Select
+                 fullWidth
+                  value={formik.values.role}
+                  onChange={handleChange}
+                  name="role"
+                  label="Role"
+                  error={
+                    formik.errors['role'] && formik.touched.role ? true : false
+                  }
+                >
+                  {type &&
+                    type.map((data, index) => (
+                      <MenuItem key={index} value={data.type}>
+                        {data.type}
+                      </MenuItem>
+                    ))}
+                </Select>
               </Grid>
             </Grid>
             <Button

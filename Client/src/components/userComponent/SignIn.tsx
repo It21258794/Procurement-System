@@ -261,7 +261,7 @@ export default function SignIn() {
               <NavLink to="/recoveryPassword">{'Forgot password?'}</NavLink>
             </Grid>
             <Grid item marginTop="12px">
-              <NavLink to="/signup">
+              <NavLink to="/">
                 {' '}
                 {"Don't have an account? Sign Up"}
               </NavLink>

@@ -18,6 +18,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import io from 'socket.io-client';
 import { AuthContext } from '../../../auth/AuthProvider';
+import jwt_decode from 'jwt-decode';
+
 
 interface BudgetRequest {
   _id: string;
@@ -30,20 +32,29 @@ interface BudgetRequest {
   disabled: boolean; // Add the disabled property
 }
 
-export default function BudgetRequestList() {
+export default function BudgetRequestList({socket}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
   const [budgetRequests, setBudgetRequests] = React.useState<BudgetRequest[]>(
     [],
   );
-  let authPayload = useContext(AuthContext);
-  const ctx = authPayload.token;
-  const headers = { Authorization: 'Bearer ' + ctx };
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+  const token = data.token;
+  // const decoded = jwt_decode(data.token);
+  // const userId = decoded.id;
+  const headers = { Authorization: 'Bearer ' + token };
+
+  // React.useEffect(() => {
+  //   socket?.emit("newUser", userId);
+  //   console.log(socket)
+  // }, [socket, userId]);
+
 
 
   useEffect(() => {
-    const socket = io('http://localhost:8000'); // Replace with your server's URL
 
     const fetchData = async () => {
       try {
@@ -72,28 +83,26 @@ export default function BudgetRequestList() {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
+      console.log(socket)
 
-      socket.on('confirmationNotification', (data) => {
-    // Handle the confirmation notification, e.g., show a snackbar or update the UI
-    enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
-  });
+
+    // enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
 
   // Listen for rejection notifications
-  socket.on('rejectionNotification', (data) => {
-    // Handle the rejection notification, e.g., show a snackbar or update the UI
-    enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
-  });
+  // socket.on('rejectionNotification', (data) => {
+  //   // Handle the rejection notification, e.g., show a snackbar or update the UI
+  //   enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
+  // });
 
-  return () => {
-    // Clean up the socket connection when the component unmounts
-    socket.disconnect();
-  };
+  // return () => {
+  //   // Clean up the socket connection when the component unmounts
+  //   socket.disconnect();
+  // };
     };
     fetchData();
   }, []);
 
   const handleAccept = async (budget_id:string,site_id:string,amount:number,curr_budget:number) => {
-    // request.disabled = true;
 
     // Make an API request to update the status to "Approved"
     const new_budget = amount + curr_budget;
@@ -110,12 +119,14 @@ export default function BudgetRequestList() {
           const budgetCopy = [...budgetRequests];
           const filteredBudget = budgetCopy.filter((item: any) => item._id !== budget_id);
           setBudgetRequests(filteredBudget);
+         
         } else {
           
           const errorMessage = "something went wrong"
             enqueueSnackbar(errorMessage, { variant: 'error' });
           
         }
+       
       })
       .catch((error) => {
         console.error(error);
@@ -130,11 +141,8 @@ export default function BudgetRequestList() {
     // Make an API request to update the status to "Rejected"
     fetch(`http://localhost:8000/api/site/reject/${request._id}`, {
       headers,
-      method: 'DELETE', // Use the appropriate HTTP method (e.g., POST)
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   // Add any necessary headers, such as authentication headers
-      // },
+      method: 'DELETE', // Use the appropriate HTTP method 
+     
       body: JSON.stringify({ requestId: request._id, status: 'Rejected' }),
     })
       .then((response) => {
@@ -167,15 +175,18 @@ export default function BudgetRequestList() {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 1040,paddingLeft:4}}>
       <Paper
         sx={{
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'transparent',
+          margin: 'auto', // Center the Paper element
+
         }}
       >
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 440,          margin: 'auto', // Center the Paper element
+ }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -209,7 +220,7 @@ export default function BudgetRequestList() {
                 <TableCell key="status" align="left" style={{ minWidth: '50' }}>
                   Status
                 </TableCell>
-                <TableCell key="view" align="left" style={{ minWidth: '50' }}>
+                <TableCell key="view" align="center" style={{ minWidth: '50' }}>
                   Action
                 </TableCell>
               </TableRow>

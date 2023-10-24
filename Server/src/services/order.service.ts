@@ -111,6 +111,7 @@ const changeOrderStatus = async (orderId: string, status: OrderStatus) => {
   }
 };
 
+//get monthly budget for a single site
 const getOrderAndBudget = async (id: string) => {
   try {
     const orderItem = await orderModel.findById(id);
@@ -118,12 +119,14 @@ const getOrderAndBudget = async (id: string) => {
     if (!orderItem) {
       throw 'order not Found';
     }
-    const budget = await getBudgetByMonth(orderItem.siteId.toString());
+    const budget = await getBudgetByMonth(orderItem.siteId.toString());  // calling the budget calculate function
     return { orderItem, budget };
   } catch (err: any) {
     throw err;
   }
 };
+
+//function for calculate and filter budget by month 
 
 const getBudgetByMonth = async (id: string) => {
   try {

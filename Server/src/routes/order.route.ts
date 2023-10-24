@@ -5,13 +5,17 @@ import orderService from '../services/order.service';
 
 export const orderRoute = Router();
 
-orderRoute.post('/sendOrderEmail', orderController.sendOrder);
+
 orderRoute.post('/createOrder', orderController.createOrder);
+
+//get order per sites
 orderRoute.get(
   '/getSiteOrder/:siteId',
   AuthGuard,
   orderController.getOrderBySite,
 );
+
+//get site order by providing individual ids
 orderRoute.get(
   '/getOrderById/:orderId',
   AuthGuard,
@@ -23,11 +27,15 @@ orderRoute.get(
   AuthGuard,
   orderController.getOrderAndBudget,
 );
+
+//delete a perticular order by providing id
 orderRoute.delete(
   '/deleteOrder/:id',
   AuthGuard,
   orderController.deleteOrderById,
 );
+
+//get get Orders By Month
 orderRoute.get('/getOrdersByMonth', orderController.getOrders);
 
 //get all orders supplier
