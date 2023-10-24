@@ -37,6 +37,10 @@ export default function OrderTable({socket}) {
   });
   const [item, setItem] = React.useState([]);
   const [cost, setCost] = React.useState({ siteBudget: 0, remBudget: 0 });
+  const [supplierEmail, setSupplierEmail] = React.useState({
+    email:'',
+  });
+  let supplierId = ''
   let authPayload = React.useContext(AuthContext);
   const navigate = useNavigate();
   const { fromStorage } = authPayload;
@@ -75,12 +79,18 @@ export default function OrderTable({socket}) {
           },
           { headers },
         )
-        .then((res) => {
+        .then(async (res) => {
+          const response = await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
+            order_id:order.orderId,
+            pdf: '',
+            email:supplierEmail.email
+          },{headers});
           console.log(res);
           socket.emit("sendOrderToSupplier", {
             reciverId:order.supplierId,
             orderItem:{order}
           });
+         
           enqueueSnackbar('Order has been Confirmed', { variant: 'success' });
           navigate(-1);
         });
@@ -123,7 +133,7 @@ export default function OrderTable({socket}) {
             status: res.status,
             total_cost: res.total_cost,
           };
-
+          supplierId = res.supplierId
           setOrder((order) => ({
             ...order,
             ...updatedValues,
@@ -146,7 +156,16 @@ export default function OrderTable({socket}) {
             ...updatedBudget,
           }));
         }
-        console.log(cost);
+        const supllierRes = await fetch(
+          `http://localhost:8000/api/account/supplierEmail/${supplierId}`,
+            { headers },
+        );
+        const res3 = await supllierRes.json();
+        
+        if (supllierRes.ok) {
+         
+          setSupplierEmail(res3)
+        }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -211,7 +230,7 @@ export default function OrderTable({socket}) {
                     type="submit"
                     style={{ backgroundColor: 'orange' }}
                     variant="contained"
-                    disabled={order.status == 'confirmed'}
+                    disabled={order.status != 'pending'}
                     onClick={() =>
                       budgestRequest(
                         order.address,
@@ -230,7 +249,7 @@ export default function OrderTable({socket}) {
                     type="submit"
                     style={{ backgroundColor: 'orange' }}
                     variant="contained"
-                    disabled={order.status == 'confirmed'}
+                    disabled={order.status != 'pending'}
                     onClick={() => handleConfirmed(order._id)}
                   >
                     confirem
