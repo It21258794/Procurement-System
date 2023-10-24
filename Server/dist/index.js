@@ -56,14 +56,14 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
             },
         });
         io.on('connection', (socket) => {
-            socket.on("newUser", (userId) => {
-                console.log("socket", userId);
+            socket.on('newUser', (userId) => {
+                console.log('socket', userId);
                 addNewUser(userId, socket.id);
             });
-            socket.on("sendOrderToSupplier", ({ reciverId, orderItem }) => {
+            socket.on('sendOrderToSupplier', ({ reciverId, orderItem }) => {
                 const receiver = getUser(reciverId);
-                io.to(receiver.socketId).emit("getOrderfromStaff", {
-                    orderItem
+                io.to(receiver.socketId).emit('getOrderfromStaff', {
+                    orderItem,
                 });
             });
             socket.on('disconnect', () => {
@@ -72,3 +72,4 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
         });
     });
 });
+exports.default = app;

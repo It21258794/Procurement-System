@@ -10,8 +10,10 @@ import {
   Pressable,
   ScrollView,
   Divider,
+  Center,
 } from "native-base";
 import React, { useEffect, useState } from "react";
+import { LogBox } from "react-native";
 
 interface IOrder {
   orderId: string;
@@ -35,6 +37,7 @@ interface Items {
 
 function OrderList() {
   const [orderList, setOrders] = useState<IOrder[]>([]);
+  LogBox.ignoreAllLogs();
 
   useEffect(() => {
     axios
@@ -63,6 +66,8 @@ function OrderList() {
             shadow="3"
             bg="coolGray.100"
             p="5"
+            margin="2"
+            width="95%"
           >
             <Box>
               <HStack alignItems="center">
@@ -89,42 +94,35 @@ function OrderList() {
               >
                 Order number {orders.orderId}
               </Text>
-              {orders.items.map((item, index) => (
-                <Flex direction="row" h="58" p="4">
-                  <Text>{item.itemName}</Text>
-                  <Divider
-                    bg="emerald.500"
-                    thickness="2"
-                    mx="2"
-                    orientation="vertical"
-                  />
-                  <Text>{item.quantity}</Text>
-                  <Divider
-                    bg="indigo.500"
-                    thickness="2"
-                    mx="2"
-                    orientation="vertical"
-                  />
-                  <Text>{item.price}</Text>
-                  <Divider
-                    bg="indigo.500"
-                    thickness="2"
-                    mx="2"
-                    orientation="vertical"
-                  />
-                  <Text>{(item.quantity * item.price).toFixed(2)}</Text>
-                </Flex>
-              ))}
-              <Flex>
-                <Text
-                  mt="2"
-                  fontSize={12}
-                  fontWeight="medium"
-                  color="darkBlue.600"
-                >
-                  Read More
-                </Text>
-              </Flex>
+              <Center>
+                {orders.items.map((item, index) => (
+                  <Flex direction="row" h="58" p="4">
+                    <Text>{item.itemName}</Text>
+                    <Divider
+                      bg="emerald.500"
+                      thickness="2"
+                      mx="2"
+                      orientation="vertical"
+                    />
+                    <Text>{item.quantity}</Text>
+                    <Divider
+                      bg="indigo.500"
+                      thickness="2"
+                      mx="2"
+                      orientation="vertical"
+                    />
+                    <Text>{item.price}</Text>
+                    <Divider
+                      bg="indigo.500"
+                      thickness="2"
+                      mx="2"
+                      orientation="vertical"
+                    />
+                    <Text>{(item.quantity * item.price).toFixed(2)}</Text>
+                  </Flex>
+                ))}
+              </Center>
+              <Flex></Flex>
             </Box>
           </Pressable>
         </Box>

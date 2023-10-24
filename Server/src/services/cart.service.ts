@@ -47,9 +47,19 @@ async function updateCartItem(itemId: string, updatedData: any): Promise<any> {
   }
 }
 
+async function clearCart(): Promise<any> {
+  try {
+    const cart = await cartModel.deleteMany();
+    return cart;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export default {
   createCart,
   getCartItems,
   deleteCartItem,
   updateCartItem,
+  clearCart,
 };

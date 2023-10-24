@@ -116,9 +116,14 @@
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -131,6 +136,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -141,6 +147,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -149,6 +156,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,6 +181,7 @@
 <span class="cstat-no" title="statement not covered" >import cartService from '../services/cart.service';</span>
 <span class="cstat-no" title="statement not covered" >import cartModel from '../models/cart/cart.model';</span>
 &nbsp;
+//add cart items
 const createCart = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    console.log(req.body);</span>
@@ -184,6 +193,7 @@ const createCart = <span class="cstat-no" title="statement not covered" ><span c
   }
 };
 &nbsp;
+//get all cart items
 const getCartItems = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    console.log('itemController');</span>
@@ -194,10 +204,11 @@ const getCartItems = <span class="cstat-no" title="statement not covered" ><span
   }
 };
 &nbsp;
+//delete cart item
 const clearCart = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const itemId = <span class="cstat-no" title="statement not covered" >req.params.itemId;</span>
-    const isDeleted = <span class="cstat-no" title="statement not covered" >await cartService.clearCart(itemId);</span>
+    const isDeleted = <span class="cstat-no" title="statement not covered" >await cartService.deleteCartItem(itemId);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    res.status(200).json({ message: 'Cart cleared' });</span>
   } catch (err: any) {
@@ -205,6 +216,7 @@ const clearCart = <span class="cstat-no" title="statement not covered" ><span cl
   }
 };
 &nbsp;
+//update cart item
 const updateCartItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const itemId = <span class="cstat-no" title="statement not covered" >req.params.itemId;</span>
@@ -229,7 +241,7 @@ const updateCartItem = <span class="cstat-no" title="statement not covered" ><sp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-10-24T07:48:55.920Z
+                at 2023-10-24T10:50:26.707Z
             </div>
         <script src="../prettify.js"></script>
         <script>

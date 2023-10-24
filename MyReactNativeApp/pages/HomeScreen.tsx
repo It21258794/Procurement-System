@@ -3,6 +3,7 @@ import ItemCard from "../components/ItemCard";
 import React, { useEffect, useState } from "react";
 import { View, Image, ScrollView } from "react-native";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { LogBox } from "react-native";
 
 import {
   Text,
@@ -16,6 +17,7 @@ import {
   Fab,
   Actionsheet,
   useDisclose,
+  ThreeDotsIcon,
 } from "native-base";
 import axios from "axios";
 
@@ -33,7 +35,9 @@ interface CardData {
 function HomeScreen({ navigation }) {
   const [cards, setCards] = useState<CardData[]>([]);
   const { isOpen, onOpen, onClose } = useDisclose();
+  LogBox.ignoreAllLogs();
 
+  //get all items
   useEffect(() => {
     axios
       .get<CardData[]>(
@@ -148,7 +152,14 @@ function HomeScreen({ navigation }) {
           </Box>
         ))}
       </ScrollView>
-      <Fab renderInPortal={false} shadow={2} size="sm" onPress={onOpen} />
+      <Fab
+        renderInPortal={false}
+        shadow={2}
+        size="sm"
+        onPress={onOpen}
+        icon={<ThreeDotsIcon />}
+      />
+
       <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
         <Actionsheet.Content borderTopRadius="0">
           <Box w="100%" h={60} px={4} justifyContent="center">
