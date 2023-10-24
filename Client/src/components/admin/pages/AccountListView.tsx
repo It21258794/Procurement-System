@@ -134,7 +134,7 @@ export default function AccountListView() {
           label="Account Type"
           onChange={handleChangeType}
         >
-          <MenuItem value="Procument_manager">Procument Manager</MenuItem>
+          <MenuItem value="Procurement_Manager">Procument Manager</MenuItem>
           <MenuItem value="Supervisor">Supervisor</MenuItem>
           <MenuItem value="supplier">Supplier</MenuItem>
           <MenuItem value="Procument_admin">Procument Admin</MenuItem>

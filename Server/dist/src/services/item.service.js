@@ -14,15 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const item_model_1 = __importDefault(require("../models/item/item.model"));
 const account_service_1 = __importDefault(require("./account.service"));
+// Function to insert a new item into the database
 function insertItem(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log(dto.supplierName);
+            // Check if the supplier exists
             const supplier = yield account_service_1.default.findItemsByUserName(dto.supplierUsername);
             console.log(supplier);
             if (!supplier) {
                 throw new Error('Supplier does not exist');
             }
+            // Check if the item with the same name and supplier already exists
             const existItem = yield item_model_1.default.findOne({
                 itemName: dto.itemName,
                 supplierName: dto.supplierUsername,
@@ -31,6 +34,7 @@ function insertItem(dto) {
                 throw new Error('Item already exists');
             }
             console.log(dto.itemName);
+            // Create and return the new item
             const createdItem = yield item_model_1.default.create(dto);
             return createdItem;
         }
@@ -39,10 +43,12 @@ function insertItem(dto) {
         }
     });
 }
+// Function to find items by their name
 function findItemsByName(itemName) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log('Searching for item with name:', itemName);
+            // Find items with the specified name
             const items = yield item_model_1.default.find({ itemName: itemName });
             console.log('Found items:', items);
             return items;
@@ -52,10 +58,12 @@ function findItemsByName(itemName) {
         }
     });
 }
+// Function to get all items from the database
 function getAllItems() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('Fetching all items');
         try {
+            // Retrieve all items from the database
             const items = yield item_model_1.default.find({});
             console.log('Found items:', items);
             return items;
@@ -65,9 +73,11 @@ function getAllItems() {
         }
     });
 }
+// Function to update an item by its ID
 function updateItem(itemId, updatedData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Update the item with the specified ID and return the updated item
             const updatedItem = yield item_model_1.default.findByIdAndUpdate(itemId, updatedData, {
                 new: true,
             });
@@ -81,9 +91,11 @@ function updateItem(itemId, updatedData) {
         }
     });
 }
+// Function to delete an item by its ID
 function deleteItem(itemId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Delete the item with the specified ID
             const deletedItem = yield item_model_1.default.findByIdAndDelete(itemId);
             if (!deletedItem) {
                 throw new Error('Item not found');
@@ -95,6 +107,7 @@ function deleteItem(itemId) {
         }
     });
 }
+// Export all the functions as an object
 exports.default = {
     insertItem,
     findItemsByName,

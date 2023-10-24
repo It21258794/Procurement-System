@@ -180,6 +180,8 @@ export default function AccountForm() {
             fullWidth
             value={formData.password}
             onChange={handleChange}
+            placeholder="Password"
+            type="password"
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -192,7 +194,7 @@ export default function AccountForm() {
             value={formData.role}
             onChange={handleChangeType}
           >
-            <MenuItem value="Procument_manager">Procument Manager</MenuItem>
+            <MenuItem value="Procurement_Manager">Procurement Manager</MenuItem>
             <MenuItem value="Supervisor">Supervisor</MenuItem>
             <MenuItem value="supplier">Supplier</MenuItem>
             <MenuItem value="Procument_admin">Procument Admin</MenuItem>
