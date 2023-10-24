@@ -79,6 +79,12 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
         });
       });
 
+      socket.on("sendBudgetToSupervisor", ({ reciverId, budgetId }) => {
+        const receiver = getUser(reciverId);
+        io.to(receiver.socketId).emit("getBudgetfromStaff", {
+          budgetId
+        });
+      });
       socket.on('disconnect', () => {
         removeUser(socket.id);
       });

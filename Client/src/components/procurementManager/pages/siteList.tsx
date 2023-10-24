@@ -83,8 +83,9 @@ export default function SiteList() {
       sx={{
         paddingTop: 10,
         paddingBottom: 10,
-        width: 800,
-        paddingLeft: '150px',
+        width: 'auto',
+        paddingLeft: '100px',
+        paddingRight:'100px'
       }}
     >
       <Paper

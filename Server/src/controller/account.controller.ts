@@ -3,6 +3,7 @@ import { IAccount } from '../models/account/IAccount';
 import accountmodel from '../models/account/account.model';
 import authService from '../utils/auth.service';
 import accountService from '../services/account.service';
+import { AuthRole } from '../utils/types/IPayload';
 
 const signUp = async (req: Request, res: Response) => {
   try {
@@ -96,6 +97,10 @@ const getSupllierEmail = async (req: Request, res: Response) => {
 
 export const sum = (a:number, b:number) => a+b;
 
+const getAccountTypes = (req: Request, res: Response ) =>{
+let accountTypes = [{type:'PROCUREMENT_MANAGER'},{type:'PROCUREMENT_ADMIN'},{type:'SITE_MANAGER'},{type:'SUPERVISOR'},{type:'SUPPLIER'}]
+return res.status(200).json(accountTypes);
+}
 export default {
   signUp,
   login,
@@ -104,5 +109,6 @@ export default {
   updateAccount,
   deleteAccount,
   getCurrentUser,
-  getSupllierEmail
+  getSupllierEmail,
+  getAccountTypes
 };

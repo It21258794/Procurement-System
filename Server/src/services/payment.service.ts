@@ -44,6 +44,7 @@ const createPayment = async (dto: IPaymentItem) => {
     }
 
     const payItem = await paymentItemModel.create(dto);
+    console.log(payItem)
     return payItem;
   } catch (err: any) {
     throw err;

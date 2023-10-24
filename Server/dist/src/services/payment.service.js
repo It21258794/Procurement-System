@@ -55,6 +55,7 @@ const createPayment = (dto) => __awaiter(void 0, void 0, void 0, function* () {
             throw 'Order not found';
         }
         const payItem = yield paymentItem_model_1.default.create(dto);
+        console.log(payItem);
         return payItem;
     }
     catch (err) {

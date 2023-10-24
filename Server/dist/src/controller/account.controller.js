@@ -105,6 +105,10 @@ const getSupllierEmail = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 const sum = (a, b) => a + b;
 exports.sum = sum;
+const getAccountTypes = (req, res) => {
+    let accountTypes = [{ type: 'PROCUREMENT_MANAGER' }, { type: 'PROCUREMENT_ADMIN' }, { type: 'SITE_MANAGER' }, { type: 'SUPERVISOR' }, { type: 'SUPPLIER' }];
+    return res.status(200).json(accountTypes);
+};
 exports.default = {
     signUp,
     login,
@@ -113,5 +117,6 @@ exports.default = {
     updateAccount,
     deleteAccount,
     getCurrentUser,
-    getSupllierEmail
+    getSupllierEmail,
+    getAccountTypes
 };

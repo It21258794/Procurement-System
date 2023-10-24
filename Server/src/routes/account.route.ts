@@ -21,3 +21,4 @@ accountRoute.delete(
   accountController.deleteAccount,
 );
 accountRoute.get('/supplierEmail/:supplierId', accountController.getSupllierEmail);
+accountRoute.get('/getAccountTypes', accountController.getAccountTypes);
