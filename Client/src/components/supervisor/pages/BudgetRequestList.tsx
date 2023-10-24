@@ -103,7 +103,6 @@ export default function BudgetRequestList({socket}) {
   }, []);
 
   const handleAccept = async (budget_id:string,site_id:string,amount:number,curr_budget:number) => {
-    // request.disabled = true;
 
     // Make an API request to update the status to "Approved"
     const new_budget = amount + curr_budget;
@@ -127,11 +126,7 @@ export default function BudgetRequestList({socket}) {
             enqueueSnackbar(errorMessage, { variant: 'error' });
           
         }
-        // socket.emit("sendConfirmationToStaff", {
-        //   reciverId:"65256d95e0df4fde255ea1ef",
-        //   siteId: budgetRequests.site_id,
-        //   status:"confirmed"
-        // });
+       
       })
       .catch((error) => {
         console.error(error);
@@ -146,11 +141,8 @@ export default function BudgetRequestList({socket}) {
     // Make an API request to update the status to "Rejected"
     fetch(`http://localhost:8000/api/site/reject/${request._id}`, {
       headers,
-      method: 'DELETE', // Use the appropriate HTTP method (e.g., POST)
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   // Add any necessary headers, such as authentication headers
-      // },
+      method: 'DELETE', // Use the appropriate HTTP method 
+     
       body: JSON.stringify({ requestId: request._id, status: 'Rejected' }),
     })
       .then((response) => {
@@ -183,7 +175,7 @@ export default function BudgetRequestList({socket}) {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 1040,paddingLeft:4}}>
       <Paper
         sx={{
           width: '100%',
@@ -228,7 +220,7 @@ export default function BudgetRequestList({socket}) {
                 <TableCell key="status" align="left" style={{ minWidth: '50' }}>
                   Status
                 </TableCell>
-                <TableCell key="view" align="left" style={{ minWidth: '50' }}>
+                <TableCell key="view" align="center" style={{ minWidth: '50' }}>
                   Action
                 </TableCell>
               </TableRow>
