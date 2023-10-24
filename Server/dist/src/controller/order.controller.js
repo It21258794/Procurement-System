@@ -16,9 +16,9 @@ const order_service_1 = __importDefault(require("../services/order.service"));
 const order_model_1 = __importDefault(require("../models/order/order.model"));
 const sendOrder = (req, res) => {
     try {
-        const { order_id, email } = req.body;
+        const { order_id, email, pdf } = req.body;
         console.log(order_id, email);
-        order_service_1.default.sendOrderByEmail(order_id, email);
+        order_service_1.default.sendOrderByEmail(order_id, email, pdf);
         res.status(401).send('Order Send via Email');
     }
     catch (err) {
