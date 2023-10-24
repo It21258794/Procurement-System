@@ -13,6 +13,7 @@ import { noteRoute } from './src/routes/note.route';
 import { error } from 'console';
 import { cartRoute } from './src/routes/cart.route';
 
+//register to envrionment file
 require('dotenv').config();
 
 const app: Express = express();
@@ -27,7 +28,7 @@ app.use(
 );
 
 
-
+// register all the routes
 app.use('/api/account', accountRoute);
 app.use('/api/item', itemRoute);
 app.use('/api/payment', paymentRoute);
@@ -36,6 +37,8 @@ app.use('/api/order', orderRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/note', noteRoute);
 
+
+//register users to socket
 let onlineUsers: any= [];
 const addNewUser = (userId:string, socketId:any) => {
   !onlineUsers.some((user:any) => user.userId === userId) &&
@@ -50,6 +53,8 @@ const getUser = (userId:any) => {
   return onlineUsers.find((user:any) => user.userId === userId);
 };
 
+
+//connect to the mongodb
 mongoose.connect(process.env.MONGODB_URI).then(() => {
   logger.info('MongoDB connected');
   app.on('error', (err) => {
@@ -59,6 +64,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info(`TypeScript with Express
          http://localhost:${port}/`);
 
+         // initialize the socket to the server
     const io = new Server(server, {
       cors: {
         origin: 'http://localhost:5173',
@@ -71,7 +77,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
         console.log("socket",userId)
         addNewUser(userId, socket.id);
       });
-
+//event that get order notification from procurement manager
       socket.on("sendOrderToSupplier", ({ reciverId, orderItem }) => {
         const receiver = getUser(reciverId);
         io.to(receiver.socketId).emit("getOrderfromStaff", {
@@ -91,13 +97,12 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
           siteId,status
         });
       })
-
+//disconnect from the socket
       socket.on('disconnect', () => {
         removeUser(socket.id);
       });
 
-     
-
+  
 
     });
   });

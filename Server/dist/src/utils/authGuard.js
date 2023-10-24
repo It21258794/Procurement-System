@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const auth_service_1 = __importDefault(require("./auth.service"));
 const AuthGuard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const authToken = req.headers['authorization'];
+    const authToken = req.headers['authorization']; // getb the tokwn from req
     if (!authToken) {
         return res.status(400).send({
             err: 'Forbinded Resources1',
@@ -22,8 +22,9 @@ const AuthGuard = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
     try {
         console.log(authToken.split('Bearer ')[1]);
-        const payload = yield auth_service_1.default.verifyToken(authToken.split('Bearer ')[1]);
-        req.currentUser = payload;
+        const payload = yield auth_service_1.default.verifyToken(// verify the token and get the payload
+        authToken.split('Bearer ')[1]);
+        req.currentUser = payload; //assign the payload to the req
         next();
     }
     catch (err) {

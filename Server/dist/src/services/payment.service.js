@@ -16,6 +16,7 @@ const payment_model_1 = __importDefault(require("../models/payment/payment.model
 const account_model_1 = __importDefault(require("../models/account/account.model"));
 const order_model_1 = __importDefault(require("../models/order/order.model"));
 const paymentItem_model_1 = __importDefault(require("../models/paymentItem/paymentItem.model"));
+//service for insert payment details per supplier
 function insertPayment(dto) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -35,6 +36,7 @@ function insertPayment(dto) {
         }
     });
 }
+//get payment details by supplier services
 const getPayemtDetailsBySupplier = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const supplier = yield account_model_1.default.findById({ _id: id });
@@ -48,6 +50,7 @@ const getPayemtDetailsBySupplier = (id) => __awaiter(void 0, void 0, void 0, fun
         throw err;
     }
 });
+//service for make a payment for a single order
 const createPayment = (dto) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderItem = yield order_model_1.default.findOne({ _id: dto.order_id });

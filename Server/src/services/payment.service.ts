@@ -4,6 +4,8 @@ import orderModel from '../models/order/order.model';
 import { IPaymentItem } from '../models/paymentItem/IPayemntItem';
 import paymentItemModel from '../models/paymentItem/paymentItem.model';
 
+
+//service for insert payment details per supplier
 async function insertPayment(dto: any): Promise<any> {
   try {
     const supplier = await accountModel.findById({ _id: dto.supplierId });
@@ -22,6 +24,7 @@ async function insertPayment(dto: any): Promise<any> {
   }
 }
 
+//get payment details by supplier services
 const getPayemtDetailsBySupplier = async (id: string) => {
   try {
     const supplier = await accountModel.findById({ _id: id });
@@ -35,6 +38,7 @@ const getPayemtDetailsBySupplier = async (id: string) => {
   }
 };
 
+//service for make a payment for a single order
 const createPayment = async (dto: IPaymentItem) => {
   try {
     const orderItem = await orderModel.findOne({ _id: dto.order_id });
