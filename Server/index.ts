@@ -79,10 +79,10 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
         });
       });
 
-      socket.on("sendConfirmationToStaff", ({ reciverId, orderId ,status}) => {
+      socket.on("sendConfirmationToStaff", ({ reciverId, siteId ,status}) => {
         const staff = getUser(reciverId);
         io.to(staff.socketId).emit("getConfirmationfromSupplier", {
-          orderId,status
+          siteId,status
         });
       })
 
