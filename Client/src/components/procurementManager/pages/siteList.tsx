@@ -14,7 +14,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
-
 interface Item {
   _id: string;
   location: string;
@@ -29,17 +28,12 @@ export default function SiteList() {
   const navigate = useNavigate();
 
   let authPayload = React.useContext(AuthContext);
-  const { fromStorage } :any= authPayload;
+  const { fromStorage }: any = authPayload;
   const data = JSON.parse(fromStorage);
 
   const token = data.token;
- 
- 
 
   const headers = { Authorization: 'Bearer ' + token };
-  
-
- 
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +79,7 @@ export default function SiteList() {
         paddingBottom: 10,
         width: 'auto',
         paddingLeft: '100px',
-        paddingRight:'100px'
+        paddingRight: '100px',
       }}
     >
       <Paper

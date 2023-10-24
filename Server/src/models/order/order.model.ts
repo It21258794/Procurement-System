@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     siteId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     supplierId: {

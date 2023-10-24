@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const order_model_1 = __importDefault(require("../models/order/order.model"));
 const site_model_1 = __importDefault(require("../models/site/site.model"));
+const cart_controller_1 = __importDefault(require("../controller/cart.controller"));
 const sendOrderByEmail = (order_id, email, pdf) => {
     let msg = `Your payment receipt on ${order_id}`;
     if (pdf == null) {
@@ -39,9 +40,9 @@ const sendOrderByEmail = (order_id, email, pdf) => {
                     filename: 'attachment.pdf',
                     content: pdf,
                     contentType: 'application/pdf',
-                    encoding: 'base64'
-                }
-            ]
+                    encoding: 'base64',
+                },
+            ],
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -56,9 +57,11 @@ const sendOrderByEmail = (order_id, email, pdf) => {
         console.log(err);
     }
 };
+//create order
 const createOrder = (orderDetails) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newOrder = yield orderDetails.save();
+        cart_controller_1.default.clearCart;
         return newOrder;
     }
     catch (err) {

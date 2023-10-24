@@ -4,7 +4,6 @@ import orderModel from '../models/order/order.model';
 import { IPaymentItem } from '../models/paymentItem/IPayemntItem';
 import paymentItemModel from '../models/paymentItem/paymentItem.model';
 
-
 //service for insert payment details per supplier
 async function insertPayment(dto: any): Promise<any> {
   try {
@@ -48,7 +47,7 @@ const createPayment = async (dto: IPaymentItem) => {
     }
 
     const payItem = await paymentItemModel.create(dto);
-    console.log(payItem)
+    console.log(payItem);
     return payItem;
   } catch (err: any) {
     throw err;

@@ -11,7 +11,7 @@ const orderSchema = new mongoose_1.default.Schema({
         required: true,
     },
     siteId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
+        type: String,
         required: true,
     },
     supplierId: {

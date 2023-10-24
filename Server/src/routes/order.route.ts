@@ -5,7 +5,6 @@ import orderService from '../services/order.service';
 
 export const orderRoute = Router();
 
-
 orderRoute.post('/createOrder', orderController.createOrder);
 
 //get order per sites
@@ -38,6 +37,5 @@ orderRoute.delete(
 //get get Orders By Month
 orderRoute.get('/getOrdersByMonth', orderController.getOrders);
 
-
 //get all orders supplier
-orderRoute.get('/getAllOrders',orderController.getAllOrders)
+orderRoute.get('/getAllOrders', orderController.getAllOrders);

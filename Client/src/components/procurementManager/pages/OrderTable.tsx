@@ -22,13 +22,13 @@ interface Item {
   price: number;
 }
 
-export default function OrderTable({socket}:any) {
+export default function OrderTable({ socket }: any) {
   const { enqueueSnackbar } = useSnackbar();
-  const { id} = useParams();
+  const { id } = useParams();
   const [order, setOrder] = React.useState({
     _id: '',
     orderId: '',
-    supplierId:'',
+    supplierId: '',
     siteId: '',
     address: '',
     month_year: '',
@@ -38,12 +38,12 @@ export default function OrderTable({socket}:any) {
   const [item, setItem] = React.useState([]);
   const [cost, setCost] = React.useState({ siteBudget: 0, remBudget: 0 });
   const [supplierEmail, setSupplierEmail] = React.useState({
-    email:'',
+    email: '',
   });
-  let supplierId = ''
+  let supplierId = '';
   let authPayload = React.useContext(AuthContext);
   const navigate = useNavigate();
-  const { fromStorage } :any= authPayload;
+  const { fromStorage }: any = authPayload;
   const data = JSON.parse(fromStorage);
   const token = data.token;
   const decoded = jwt_decode(data.token);
@@ -63,8 +63,8 @@ export default function OrderTable({socket}:any) {
   const remBudget = cost.remBudget;
 
   React.useEffect(() => {
-    socket?.emit("newUser", userId);
-    console.log(socket)
+    socket?.emit('newUser', userId);
+    console.log(socket);
   }, [socket, userId]);
 
   const handleConfirmed = async (id: string) => {
@@ -80,20 +80,23 @@ export default function OrderTable({socket}:any) {
           { headers },
         )
         .then(async (res) => {
-          navigate(-1)
-           await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
-            order_id:order.orderId,
-            pdf: '',
-            email:supplierEmail.email
-          },{headers});
+          navigate(-1);
+          await axios.post(
+            'http://localhost:8000/api/payment/sendPaymentReceipt',
+            {
+              order_id: order.orderId,
+              pdf: '',
+              email: supplierEmail.email,
+            },
+            { headers },
+          );
           console.log(res);
           // socket.emit("sendOrderToSupplier", {
           //   reciverId:order.supplierId,
           //   orderItem:{order}
           // });
-         
+
           enqueueSnackbar('Order has been Confirmed', { variant: 'success' });
-          ;
         });
     } catch (err: any) {
       enqueueSnackbar(err.message, { variant: 'error' });
@@ -127,14 +130,14 @@ export default function OrderTable({socket}:any) {
           let updatedValues = {
             _id: res._id,
             orderId: res.orderId,
-            supplierId:res.supplierId,
+            supplierId: res.supplierId,
             siteId: res.siteId,
             address: res.address,
             month_year: res.month_year,
             status: res.status,
             total_cost: res.total_cost,
           };
-          supplierId = res.supplierId
+          supplierId = res.supplierId;
           setOrder((order) => ({
             ...order,
             ...updatedValues,
@@ -159,13 +162,12 @@ export default function OrderTable({socket}:any) {
         }
         const supllierRes = await fetch(
           `http://localhost:8000/api/account/supplierEmail/${supplierId}`,
-            { headers },
+          { headers },
         );
         const res3 = await supllierRes.json();
-        
+
         if (supllierRes.ok) {
-         
-          setSupplierEmail(res3)
+          setSupplierEmail(res3);
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -14,7 +14,12 @@ import SupplierDashboard from './components/supplier/supplierDashboard/supplierr
 import OrderViewPage from './components/supplier/pages/viewOrder';
 import CreateDeliveryNotice from './components/supplier/pages/addNote';
 import DeliveryNote from './components/supplier/pages/deliveryNotes';
-import { AuthGuard, ManagerAuthGuard,SupllierAuthGuard,SupervisorAuthGuard } from './auth/AuthGuard';
+import {
+  AuthGuard,
+  ManagerAuthGuard,
+  SupllierAuthGuard,
+  SupervisorAuthGuard,
+} from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React, { useState } from 'react';
 import ItemListView from './components/admin/pages/ItemView';
@@ -26,8 +31,7 @@ import AdminDashboard from './components/admin/managerDashboard/AdminDashboard';
 import BudgetForm from './components/procurementManager/pages/BudgetForm';
 import PayOrderList from './components/procurementManager/pages/PayOrderList';
 
-function ProcurementManagerRoute({socket}) {
- 
+function ProcurementManagerRoute({ socket }) {
   return (
     <ManagerAuthGuard>
       <ManagerDashboard socket={socket}>
@@ -39,7 +43,7 @@ function ProcurementManagerRoute({socket}) {
           <Route path="/payment/:id/:orderId" element={<Checkout />} />
           <Route
             path="/budgetForm/:address/:siteBudget/:remBudget/:total/:siteId"
-            element={<BudgetForm socket={socket}/>}
+            element={<BudgetForm socket={socket} />}
           />
         </Routes>
       </ManagerDashboard>
@@ -58,30 +62,36 @@ function GuestRoute() {
   );
 }
 
-function SupervisorRoute({socket}) {
+function SupervisorRoute({ socket }) {
   return (
     <SupervisorAuthGuard>
-    <SupervisorDashboard socket={socket}>
-      <Routes>
-        <Route path="/orders" element={<ApproveOrderList socket={socket} />} />
-        <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
-      </Routes>
-    </SupervisorDashboard>
+      <SupervisorDashboard socket={socket}>
+        <Routes>
+          <Route
+            path="/orders"
+            element={<ApproveOrderList socket={socket} />}
+          />
+          <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
+        </Routes>
+      </SupervisorDashboard>
     </SupervisorAuthGuard>
   );
 }
 
-function SupplierRoute({socket}) {
-  console.log(socket)
+function SupplierRoute({ socket }) {
+  console.log(socket);
   return (
     <SupllierAuthGuard>
-    <SupplierDashboard socket={socket}>
-      <Routes>
-        <Route path="/addNote/:orderId" element={<CreateDeliveryNotice />} />
-        <Route path="/viewOrders" element={<OrderViewPage socket={socket} />} />
-        <Route path="/viewNotes" element={<DeliveryNote />} />
-      </Routes>
-    </SupplierDashboard>
+      <SupplierDashboard socket={socket}>
+        <Routes>
+          <Route path="/addNote/:orderId" element={<CreateDeliveryNotice />} />
+          <Route
+            path="/viewOrders"
+            element={<OrderViewPage socket={socket} />}
+          />
+          <Route path="/viewNotes" element={<DeliveryNote />} />
+        </Routes>
+      </SupplierDashboard>
     </SupllierAuthGuard>
   );
 }
@@ -106,18 +116,23 @@ function App() {
   const [socket, setSocket] = React.useState(null);
   React.useEffect(() => {
     setSocket(io('http://localhost:8000'));
-    
   }, []);
 
- console.log(socket)
+  console.log(socket);
 
   return (
     <>
       <Routes>
-        <Route path="manager/*" element={<ProcurementManagerRoute socket={socket}/>} />
+        <Route
+          path="manager/*"
+          element={<ProcurementManagerRoute socket={socket} />}
+        />
         <Route path="*" element={<GuestRoute />} />
-        <Route path="supervisor/*" element={<SupervisorRoute socket={socket} />} />
-        <Route path="supplier/*" element={<SupplierRoute socket={socket}/>} />
+        <Route
+          path="supervisor/*"
+          element={<SupervisorRoute socket={socket} />}
+        />
+        <Route path="supplier/*" element={<SupplierRoute socket={socket} />} />
 
         <Route path="admin/*" element={<AdminRoute />} />
       </Routes>

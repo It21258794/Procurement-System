@@ -20,7 +20,7 @@ import { AuthContext } from '../../../auth/AuthProvider';
 interface deliveryNotes {
   _id: string;
   orderId: string;
-description:string
+  description: string;
 }
 
 export default function allNoteList() {
@@ -31,7 +31,6 @@ export default function allNoteList() {
   let authPayload = useContext(AuthContext);
   const ctx = authPayload.token;
   const headers = { Authorization: 'Bearer ' + ctx };
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +38,7 @@ export default function allNoteList() {
         const response = await fetch(
           'http://localhost:8000/api/note/allnotes',
           {
-            headers
+            headers,
           },
         );
         if (response.ok) {
@@ -53,7 +52,7 @@ export default function allNoteList() {
           console.error(`Error message: ${errorMessage}`);
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err:any) {
+      } catch (err: any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
@@ -73,7 +72,9 @@ export default function allNoteList() {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10,width: 800,paddingLeft:25 }}>
+    <Box
+      sx={{ paddingTop: 10, paddingBottom: 10, width: 800, paddingLeft: 25 }}
+    >
       <Paper
         sx={{
           width: '100%',
@@ -92,15 +93,14 @@ export default function allNoteList() {
                 >
                   Order ID
                 </TableCell>
-              
+
                 <TableCell
                   key="itemName"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Description      
-                            </TableCell>
-              
+                  Description
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -112,7 +112,6 @@ export default function allNoteList() {
                     {/* <TableCell align="left">{note.address}</TableCell>
                     <TableCell align="left">{note.requiredDate}</TableCell> */}
                     <TableCell align="left">{note.description}</TableCell>
-                   
                   </TableRow>
                 ))}
             </TableBody>

@@ -3,6 +3,7 @@ import ItemCard from "../components/ItemCard";
 import React, { useEffect, useState } from "react";
 import { View, Image, ScrollView } from "react-native";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { LogBox } from "react-native";
 
 import {
   Text,
@@ -14,6 +15,9 @@ import {
   Stack,
   Button,
   Fab,
+  Actionsheet,
+  useDisclose,
+  ThreeDotsIcon,
 } from "native-base";
 import axios from "axios";
 
@@ -30,7 +34,10 @@ interface CardData {
 
 function HomeScreen({ navigation }) {
   const [cards, setCards] = useState<CardData[]>([]);
+  const { isOpen, onOpen, onClose } = useDisclose();
+  LogBox.ignoreAllLogs();
 
+  //get all items
   useEffect(() => {
     axios
       .get<CardData[]>(
@@ -149,8 +156,31 @@ function HomeScreen({ navigation }) {
         renderInPortal={false}
         shadow={2}
         size="sm"
-        onPress={() => navigation.navigate("Orders")}
+        onPress={onOpen}
+        icon={<ThreeDotsIcon />}
       />
+
+      <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
+        <Actionsheet.Content borderTopRadius="0">
+          <Box w="100%" h={60} px={4} justifyContent="center">
+            <Text
+              fontSize="16"
+              color="gray.500"
+              _dark={{
+                color: "gray.300",
+              }}
+            >
+              Menu
+            </Text>
+          </Box>
+          <Actionsheet.Item onPress={() => navigation.navigate("Cart")}>
+            Cart
+          </Actionsheet.Item>
+          <Actionsheet.Item onPress={() => navigation.navigate("Orders")}>
+            Orders
+          </Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
     </View>
   );
 }

@@ -17,9 +17,11 @@ import {
   CheckIcon,
   Slider,
   TextArea,
+  Slide,
 } from "native-base";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import { LogBox } from "react-native";
 
 function ItemScreen({ navigation }) {
   const route = useRoute();
@@ -28,6 +30,8 @@ function ItemScreen({ navigation }) {
   const [service, setService] = React.useState("");
   const [onChangeValue, setOnChangeValue] = React.useState(0);
   const [description, setDescription] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
+  LogBox.ignoreAllLogs();
 
   const handleAddToCart = async () => {
     try {
@@ -47,6 +51,10 @@ function ItemScreen({ navigation }) {
       );
 
       console.log("Response:", response.data);
+      setIsOpen(true);
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 2000);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -137,6 +145,42 @@ function ItemScreen({ navigation }) {
           Cancel
         </Button>
       </Stack>
+      <Slide in={isOpen} placement="top">
+        <Box
+          w="100%"
+          position="absolute"
+          p="2"
+          borderRadius="xs"
+          bg="emerald.100"
+          alignItems="center"
+          justifyContent="center"
+          _dark={{
+            bg: "emerald.200",
+          }}
+          safeArea
+        >
+          <HStack space={2}>
+            <CheckIcon
+              size="4"
+              color="emerald.600"
+              mt="1"
+              _dark={{
+                color: "emerald.700",
+              }}
+            />
+            <Text
+              color="emerald.600"
+              textAlign="center"
+              _dark={{
+                color: "emerald.700",
+              }}
+              fontWeight="medium"
+            >
+              Order Placed Successfully.
+            </Text>
+          </HStack>
+        </Box>
+      </Slide>
     </ScrollView>
   );
 }

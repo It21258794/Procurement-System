@@ -88,10 +88,7 @@ export const SupllierAuthGuard = ({ children }) => {
       return <Navigate to="/login" />;
     }
 
-   
-      return <>{children}</>;
-    
-  
+    return <>{children}</>;
   } catch (error) {
     console.log(error);
   }
@@ -119,10 +116,7 @@ export const SupervisorAuthGuard = ({ children }) => {
       return <Navigate to="/login" />;
     }
 
-   
-      return <>{children}</>;
-    
-  
+    return <>{children}</>;
   } catch (error) {
     console.log(error);
   }

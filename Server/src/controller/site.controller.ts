@@ -49,15 +49,13 @@ const getAllBudgetRequests = async (req: Request, res: Response) => {
 
 const budgetApprove = async (req: Request, res: Response) => {
   try {
-    const { site_id, budget_id, status, budget  } = req.body;
+    const { site_id, budget_id, status, budget } = req.body;
     const isApproved = await siteService.approveBudget(
       site_id,
       budget_id,
       status,
       budget,
     );
-
-    
 
     if (isApproved) {
       res.status(200).json({ message: 'Budget approved successfully' });

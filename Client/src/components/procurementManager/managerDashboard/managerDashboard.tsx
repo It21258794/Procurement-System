@@ -29,7 +29,7 @@ import Stack from '@mui/material/Stack';
 import { useSnackbar } from 'notistack';
 // import axios from 'axios';
 import { AuthContext } from '../../../auth/AuthProvider';
-import '../../supplier/supplierDashboard/notification.css'
+import '../../supplier/supplierDashboard/notification.css';
 
 function Copyright(props: any) {
   return (
@@ -48,7 +48,6 @@ function Copyright(props: any) {
     </Typography>
   );
 }
-
 
 const drawerWidth: number = 240;
 
@@ -147,7 +146,7 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ManagerDashboard({ children,socket}: any) {
+export default function ManagerDashboard({ children, socket }: any) {
   const [open, setOpen] = React.useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = React.useState({});
@@ -157,7 +156,7 @@ export default function ManagerDashboard({ children,socket}: any) {
     setOpen(!open);
   };
 
-  console.log(socket)
+  console.log(socket);
 
   // React.useEffect(() => {
   //   socket.on("getConfirmationfromSupplier", (data) => {
@@ -165,7 +164,6 @@ export default function ManagerDashboard({ children,socket}: any) {
   //   });
   // }, [socket]);
 
-  
   let authPayload = React.useContext(AuthContext);
   const { fromStorage } = authPayload;
   const data = JSON.parse(fromStorage);
@@ -179,7 +177,7 @@ export default function ManagerDashboard({ children,socket}: any) {
   //     setNotifications((prev) => [...prev, data]);
   //   });
   // }, [socket]);
-  console.log(notifications)
+  console.log(notifications);
 
   React.useEffect(() => {
     const fetchDetails = async () => {
@@ -206,11 +204,13 @@ export default function ManagerDashboard({ children,socket}: any) {
     setNotificationOpen(false);
   };
 
-  const displayNotification =({orderItem}) =>{
+  const displayNotification = ({ orderItem }) => {
     return (
-      <span className="notification">Order {orderItem.order.orderId} from {orderItem.order.address}</span>
+      <span className="notification">
+        Order {orderItem.order.orderId} from {orderItem.order.address}
+      </span>
     );
-  }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -258,18 +258,24 @@ export default function ManagerDashboard({ children,socket}: any) {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
-            <IconButton color="black" onClick={() => setNotificationOpen(!notificationOpen)}>
-              <Badge badgeContent={notifications.length} style={{color:'orange'}}>
+            <IconButton
+              color="black"
+              onClick={() => setNotificationOpen(!notificationOpen)}
+            >
+              <Badge
+                badgeContent={notifications.length}
+                style={{ color: 'orange' }}
+              >
                 <NotificationsIcon />
               </Badge>
             </IconButton>
             {notificationOpen && (
-        <div className="notifications">
-           <button className="nButton" onClick={handleRead}>
-          {notifications.map((n) => displayNotification(n))}
-          </button>
-        </div>
-      )}
+              <div className="notifications">
+                <button className="nButton" onClick={handleRead}>
+                  {notifications.map((n) => displayNotification(n))}
+                </button>
+              </div>
+            )}
           </Toolbar>
         </AppBar>
         <Box sx={{ backgroundColor: '#F2EAE1' }}>

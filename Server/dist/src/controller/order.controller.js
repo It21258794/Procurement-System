@@ -30,6 +30,7 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const getOrderId = yield order_service_1.default.getOrderId();
         req.body.orderId = getOrderId;
         const orderDetails = new order_model_1.default(req.body);
+        console.log(orderDetails);
         const order = yield order_service_1.default.createOrder(orderDetails);
         res.status(200).json(order);
     }
@@ -102,7 +103,7 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const orderRequests = yield order_service_1.default.getAllOrders();
         if (orderRequests && orderRequests.length > 0) {
-            res.status(200).json({ orderRequests });
+            res.status(200).json(orderRequests);
         }
         else {
             res.status(404).json({ message: 'No order found' });

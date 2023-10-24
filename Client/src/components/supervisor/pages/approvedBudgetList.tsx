@@ -43,9 +43,7 @@ export default function approvedBudgetList() {
       try {
         const response = await fetch(
           'http://localhost:8000/api/site/approved', // Corrected API endpoint
-              { headers }
-
-          
+          { headers },
         );
         if (response.ok) {
           const data = await response.json();
@@ -54,7 +52,7 @@ export default function approvedBudgetList() {
           const errorMessage = await response.text();
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err:any) {
+      } catch (err: any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
@@ -68,13 +66,15 @@ export default function approvedBudgetList() {
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 1040,paddingLeft:4}}>
+    <Box
+      sx={{ paddingTop: 10, paddingBottom: 10, width: 1040, paddingLeft: 4 }}
+    >
       <Paper
         sx={{
           width: '100%',
@@ -86,7 +86,7 @@ export default function approvedBudgetList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-              <TableCell
+                <TableCell
                   key="location"
                   align="left"
                   style={{ minWidth: '50' }}
@@ -106,7 +106,7 @@ export default function approvedBudgetList() {
                 <TableCell key="amount" align="left" style={{ minWidth: '50' }}>
                   Amount
                 </TableCell>
-               
+
                 <TableCell
                   key="description"
                   align="left"
@@ -129,7 +129,7 @@ export default function approvedBudgetList() {
                     tabIndex={-1}
                     key={request._id}
                   >
-                                        <TableCell align="left">{request.location}</TableCell>
+                    <TableCell align="left">{request.location}</TableCell>
 
                     {/* <TableCell align="left">{request.site_id}</TableCell> */}
                     {/* <TableCell align="left">{request.budget_id}</TableCell> */}

@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../pages/HomeScreen";
 import Cart from "../pages/Cart";
 import ItemScreen from "../pages/ItemScreen";
-import Orders from "../pages/Orders";
+import Orders from "../pages/OrderList";
 
 const Stack = createStackNavigator();
 

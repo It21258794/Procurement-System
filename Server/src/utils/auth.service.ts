@@ -38,7 +38,7 @@ async function getToken(password: string, hash: string, payload: IPayload) {
 async function verifyToken(token: any) {
   try {
     console.log('token', token);
-    const payload = await jwt.decode(token);   //call jwt decode build in service
+    const payload = await jwt.decode(token); //call jwt decode build in service
     console.log(payload);
     return payload;
   } catch (err: any) {

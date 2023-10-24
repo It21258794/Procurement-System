@@ -23,7 +23,7 @@
 //     ];
 
 //     render(<BudgetRequestList budgetRequests={mockBudgetRequests} });
-    
+
 //     // Verify that the component renders data correctly
 //     expect(screen.getByText('Site1')).toBeInTheDocument();
 //     expect(screen.getByText('Site2')).toBeInTheDocument();
@@ -43,7 +43,7 @@
 //     };
 
 //     render(<BudgetRequestList budgetRequests={[mockBudgetRequest]} />);
-    
+
 //     // Mock API requests using jest.spyOn or similar methods
 
 //     const confirmButton = screen.getByText('Confirm');
@@ -63,4 +63,3 @@
 // function expect(arg0: any) {
 //   throw new Error('Function not implemented.');
 // }
-

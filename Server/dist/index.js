@@ -61,27 +61,28 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
             },
         });
         io.on('connection', (socket) => {
-            socket.on("newUser", (userId) => {
-                console.log("socket", userId);
+            socket.on('newUser', (userId) => {
+                console.log('socket', userId);
                 addNewUser(userId, socket.id);
             });
             //event that get order notification from procurement manager
-            socket.on("sendOrderToSupplier", ({ reciverId, orderItem }) => {
+            socket.on('sendOrderToSupplier', ({ reciverId, orderItem }) => {
                 const receiver = getUser(reciverId);
-                io.to(receiver.socketId).emit("getOrderfromStaff", {
-                    orderItem
+                io.to(receiver.socketId).emit('getOrderfromStaff', {
+                    orderItem,
                 });
             });
-            socket.on("sendBudgetToSupervisor", ({ reciverId, budgetId }) => {
+            socket.on('sendBudgetToSupervisor', ({ reciverId, budgetId }) => {
                 const receiver = getUser(reciverId);
-                io.to(receiver.socketId).emit("getBudgetfromStaff", {
-                    budgetId
+                io.to(receiver.socketId).emit('getBudgetfromStaff', {
+                    budgetId,
                 });
             });
-            socket.on("sendConfirmationToStaff", ({ reciverId, siteId, status }) => {
+            socket.on('sendConfirmationToStaff', ({ reciverId, siteId, status }) => {
                 const staff = getUser(reciverId);
-                io.to(staff.socketId).emit("getConfirmationfromSupplier", {
-                    siteId, status
+                io.to(staff.socketId).emit('getConfirmationfromSupplier', {
+                    siteId,
+                    status,
                 });
             });
             //disconnect from the socket
@@ -91,3 +92,4 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
         });
     });
 });
+exports.default = app;

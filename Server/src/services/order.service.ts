@@ -3,11 +3,12 @@ import orderModel from '../models/order/order.model';
 import siteModel from '../models/site/site.model';
 import { OrderStatus } from '../models/order/OrderStatus';
 import { ISite } from '../models/site/ISite';
+import cartController from '../controller/cart.controller';
 
-const sendOrderByEmail = (order_id:string,email: string, pdf: string) => {
-let msg = `Your payment receipt on ${order_id}`
-  if(pdf == null){
-    msg = 'You have recieved an Order From Codex Cunstruction Company'
+const sendOrderByEmail = (order_id: string, email: string, pdf: string) => {
+  let msg = `Your payment receipt on ${order_id}`;
+  if (pdf == null) {
+    msg = 'You have recieved an Order From Codex Cunstruction Company';
   }
   try {
     console.log(process.env.EMAIL_PASS);
@@ -26,12 +27,12 @@ let msg = `Your payment receipt on ${order_id}`
       text: msg,
       attachments: [
         {
-            filename: 'attachment.pdf',
-            content:pdf,
-            contentType: 'application/pdf',
-            encoding: 'base64'
-        }
-    ]
+          filename: 'attachment.pdf',
+          content: pdf,
+          contentType: 'application/pdf',
+          encoding: 'base64',
+        },
+      ],
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -45,9 +46,11 @@ let msg = `Your payment receipt on ${order_id}`
   }
 };
 
+//create order
 const createOrder = async (orderDetails: any) => {
   try {
     const newOrder = await orderDetails.save();
+    cartController.clearCart;
     return newOrder;
   } catch (err) {
     throw err;
@@ -62,6 +65,7 @@ const getOrderId = async () => {
     throw err;
   }
 };
+
 const getOrderBySite = async (id: string) => {
   try {
     const date = new Date();
@@ -94,7 +98,6 @@ const getOrderById = async (id: string) => {
   }
 };
 
-
 const changeOrderStatus = async (orderId: string, status: OrderStatus) => {
   try {
     console.log('orderId', orderId);
@@ -116,14 +119,14 @@ const getOrderAndBudget = async (id: string) => {
     if (!orderItem) {
       throw 'order not Found';
     }
-    const budget = await getBudgetByMonth(orderItem.siteId.toString());  // calling the budget calculate function
+    const budget = await getBudgetByMonth(orderItem.siteId.toString()); // calling the budget calculate function
     return { orderItem, budget };
   } catch (err: any) {
     throw err;
   }
 };
 
-//function for calculate and filter budget by month 
+//function for calculate and filter budget by month
 
 const getBudgetByMonth = async (id: string) => {
   try {
@@ -188,7 +191,6 @@ const getOrderByMonth = async () => {
   }
 };
 
-
 async function getAllOrders(): Promise<any[]> {
   try {
     const orderRequests = await orderModel.find();
@@ -197,7 +199,6 @@ async function getAllOrders(): Promise<any[]> {
     throw err;
   }
 }
-
 
 export default {
   getAllOrders,

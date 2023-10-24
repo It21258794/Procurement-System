@@ -75,7 +75,6 @@ const deleteAccount = async (req: Request, res: Response) => {
   }
 };
 
-
 //get current user detail that in the request
 const getCurrentUser = async (req: Request, res: Response) => {
   try {
@@ -87,10 +86,9 @@ const getCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
-
 const getSupllierEmail = async (req: Request, res: Response) => {
   try {
-    const {supplierId} = req.params;
+    const { supplierId } = req.params;
     const user = await accountmodel.findById(supplierId);
     return res.status(200).json({ email: user?.email });
   } catch (err: any) {
@@ -98,13 +96,19 @@ const getSupllierEmail = async (req: Request, res: Response) => {
   }
 };
 
-export const sum = (a:number, b:number) => a+b;
+export const sum = (a: number, b: number) => a + b;
 
-//controller to bet all the roles in the sytem to display on a drop doen 
-const getAccountTypes = (req: Request, res: Response ) =>{
-let accountTypes = [{type:'PROCUREMENT_MANAGER'},{type:'PROCUREMENT_ADMIN'},{type:'SITE_MANAGER'},{type:'SUPERVISOR'},{type:'SUPPLIER'}]
-return res.status(200).json(accountTypes);
-}
+//controller to bet all the roles in the sytem to display on a drop doen
+const getAccountTypes = (req: Request, res: Response) => {
+  let accountTypes = [
+    { type: 'PROCUREMENT_MANAGER' },
+    { type: 'PROCUREMENT_ADMIN' },
+    { type: 'SITE_MANAGER' },
+    { type: 'SUPERVISOR' },
+    { type: 'SUPPLIER' },
+  ];
+  return res.status(200).json(accountTypes);
+};
 export default {
   signUp,
   login,
@@ -114,5 +118,5 @@ export default {
   deleteAccount,
   getCurrentUser,
   getSupllierEmail,
-  getAccountTypes
+  getAccountTypes,
 };

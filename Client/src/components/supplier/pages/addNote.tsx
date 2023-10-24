@@ -30,15 +30,16 @@ const CreateDeliveryNotice: React.FC = () => {
   }>({
     orderId: '',
     // deliveryDate: '',
-    description: ''
+    description: '',
   });
 
   const { orderId } = useParams();
   const navigate = useNavigate();
 
-
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
+  const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>(
+    'success',
+  );
   const [alertMessage, setAlertMessage] = useState('');
 
   const validateRequired = (value: string) => {
@@ -63,31 +64,31 @@ const CreateDeliveryNotice: React.FC = () => {
     setDeliveryNotice({ ...deliveryNotice, [name]: value });
     // const error = validateRequired(value);
 
-     let error = '';
-     if (name === 'orderId') {
+    let error = '';
+    if (name === 'orderId') {
       error = validateRequired(value);
-      if (value.length !== 24) { // Check if the Order ID has exactly 24 characters
+      if (value.length !== 24) {
+        // Check if the Order ID has exactly 24 characters
         error = 'Order ID must be 24 characters';
       }
     }
-  // else if (name === 'deliveryDate') {
-  //     error = validateRequired(value);
-  //     error = validateFutureDate(value);
-  //   } 
-  else if (name === 'description') {
-    // Add a custom validation for the description field (e.g., minimum length)
-    if (value.length < 3) {
-      error = 'Description must be at least 3 characters';
+    // else if (name === 'deliveryDate') {
+    //     error = validateRequired(value);
+    //     error = validateFutureDate(value);
+    //   }
+    else if (name === 'description') {
+      // Add a custom validation for the description field (e.g., minimum length)
+      if (value.length < 3) {
+        error = 'Description must be at least 3 characters';
+      }
     }
-  }
-  
-  setErrors({ ...errors, [name]: error });
+
+    setErrors({ ...errors, [name]: error });
   };
 
   const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
     navigate(`/supplier/viewNotes`);
-
 
     // Check if any of the fields are empty
     const hasErrors = Object.values(errors).some((error) => error !== '');
@@ -109,14 +110,16 @@ const CreateDeliveryNotice: React.FC = () => {
     // }
 
     let noteDetails = {
-      orderId:orderId,
+      orderId: orderId,
       // address: deliveryNotice.deliveryAddress,
       // requiredDate: deliveryNotice.deliveryDate,
-      description: deliveryNotice.description
+      description: deliveryNotice.description,
     };
 
     console.log(noteDetails);
-    await axios.post('http://localhost:8000/api/note/notes', noteDetails, { headers });
+    await axios.post('http://localhost:8000/api/note/notes', noteDetails, {
+      headers,
+    });
 
     // If the order is created successfully, show a success alert
     setAlertSeverity('success');
@@ -124,13 +127,15 @@ const CreateDeliveryNotice: React.FC = () => {
     setAlertOpen(true);
   };
 
-  const handleCloseAlert = (event: React.SyntheticEvent | Event, reason?: string) => {
+  const handleCloseAlert = (
+    event: React.SyntheticEvent | Event,
+    reason?: string,
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
     setAlertOpen(false);
   };
-  
 
   // const checkOrderIdExists = async (orderId: string): Promise<boolean> => {
   //   try {
@@ -159,7 +164,6 @@ const CreateDeliveryNotice: React.FC = () => {
             error={Boolean(errors.orderId)}
             helperText={errors.orderId}
             disabled={true}
-
           />
           {/* <TextField
             fullWidth
@@ -202,7 +206,11 @@ const CreateDeliveryNotice: React.FC = () => {
           </Button>
         </form>
       </Paper>
-      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleCloseAlert}>
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+      >
         <MuiAlert
           elevation={6}
           variant="filled"

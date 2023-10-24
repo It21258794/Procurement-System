@@ -19,18 +19,16 @@ import { AuthContext } from '../../../auth/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-
-
 interface approvedBudget {
   _id: string;
-  orderId:string;
- 
+  orderId: string;
+
   address: string;
   total_cost: number;
   description: string;
 }
 
-export default function viewOrderList({socket}) {
+export default function viewOrderList({ socket }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
@@ -47,8 +45,8 @@ export default function viewOrderList({socket}) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    socket?.emit("newUser", userId);
-    console.log(socket)
+    socket?.emit('newUser', userId);
+    console.log(socket);
   }, [socket, userId]);
 
   useEffect(() => {
@@ -56,19 +54,17 @@ export default function viewOrderList({socket}) {
       try {
         const response = await fetch(
           'http://localhost:8000/api/order/getAllOrders', // Corrected API endpoint
-              { headers }
-
-          
+          { headers },
         );
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
+          console.log(data);
           setApprovedBudget(data.orderRequests); // Assuming your data structure has a field named 'budgetRequests'
         } else {
           const errorMessage = await response.text();
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err:any) {
+      } catch (err: any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
@@ -82,7 +78,7 @@ export default function viewOrderList({socket}) {
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -93,14 +89,15 @@ export default function viewOrderList({socket}) {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 20,width: 1040,paddingLeft:4 }}>
+    <Box
+      sx={{ paddingTop: 10, paddingBottom: 20, width: 1040, paddingLeft: 4 }}
+    >
       <Paper
         sx={{
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'transparent',
           // margin: 'auto', // Center the Paper element
-
         }}
       >
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -114,21 +111,21 @@ export default function viewOrderList({socket}) {
                 >
                   Order Id
                 </TableCell>
-              
+
                 <TableCell
                   key="location"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
-                  Address                
-                  </TableCell>
+                  Address
+                </TableCell>
                 {/* <TableCell key="budget_id" align="left" style={{ minWidth: '50' }}>
                   Budget Id
                 </TableCell> */}
                 <TableCell key="amount" align="left" style={{ minWidth: '50' }}>
                   Total Cost
                 </TableCell>
-               
+
                 <TableCell
                   key="description"
                   align="left"
@@ -136,7 +133,6 @@ export default function viewOrderList({socket}) {
                 >
                   Description
                 </TableCell>
-                
               </TableRow>
             </TableHead>
             <TableBody>
@@ -158,8 +154,8 @@ export default function viewOrderList({socket}) {
                       onClick={() => handleAccept(request.orderId)}
                       startIcon={<CheckCircleIcon style={{ color: 'green' }} />}
                     >
-      Add Note
-    </Button>
+                      Add Note
+                    </Button>
                   </TableRow>
                 ))}
             </TableBody>
@@ -178,5 +174,3 @@ export default function viewOrderList({socket}) {
     </Box>
   );
 }
-
-

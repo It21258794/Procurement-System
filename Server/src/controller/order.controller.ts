@@ -9,8 +9,8 @@ const sendOrder = (req: Request, res: Response) => {
   try {
     const { order_id, email, pdf } = req.body;
 
-    console.log(order_id, email );
-    orderService.sendOrderByEmail(order_id, email,pdf);
+    console.log(order_id, email);
+    orderService.sendOrderByEmail(order_id, email, pdf);
 
     res.status(401).send('Order Send via Email');
   } catch (err: any) {
@@ -22,7 +22,9 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     const getOrderId = await orderService.getOrderId();
     req.body.orderId = getOrderId;
+
     const orderDetails = new orderModel(req.body);
+    console.log(orderDetails);
     const order = await orderService.createOrder(orderDetails);
     res.status(200).json(order);
   } catch (err: any) {
@@ -99,7 +101,7 @@ const getAllOrders = async (req: Request, res: Response) => {
     const orderRequests = await orderService.getAllOrders();
 
     if (orderRequests && orderRequests.length > 0) {
-      res.status(200).json({ orderRequests });
+      res.status(200).json(orderRequests);
     } else {
       res.status(404).json({ message: 'No order found' });
     }
