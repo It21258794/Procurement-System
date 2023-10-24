@@ -29,7 +29,7 @@ export const AuthGuard = ({ children }) => {
     } else if (userRole === AuthRole.PROCUREMENT_ADMIN) {
       return <Navigate to="/admin" />;
     } else if (userRole === AuthRole.SUPERVISOR) {
-      return <Navigate to="/supervisor" />;
+      return <Navigate to="/supervisor/orders" />;
     } else if (userRole === AuthRole.SUPPLIER) {
       return <Navigate to="/supplier/viewOrders" />;
     }
@@ -85,6 +85,37 @@ export const SupllierAuthGuard = ({ children }) => {
     }
 
     if (userRole != AuthRole.SUPPLIER) {
+      return <Navigate to="/login" />;
+    }
+
+   
+      return <>{children}</>;
+    
+  
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const SupervisorAuthGuard = ({ children }) => {
+  try {
+    let authPayload = React.useContext(AuthContext);
+    const { fromStorage } = authPayload;
+    const data = JSON.parse(fromStorage);
+
+    if (!data || !data.token) {
+      return <Navigate to="/login" />;
+    }
+
+    const decoded = jwt_decode(data.token);
+    const userRole = decoded.role;
+
+    if (userRole === AuthRole.PROCUREMENT_ADMIN) {
+      // navigate('/manager')
+      return <Navigate to="/admin" />;
+    }
+
+    if (userRole != AuthRole.SUPERVISOR) {
       return <Navigate to="/login" />;
     }
 

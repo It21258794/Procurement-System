@@ -18,6 +18,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import io from 'socket.io-client';
 import { AuthContext } from '../../../auth/AuthProvider';
+import jwt_decode from 'jwt-decode';
+
 
 interface BudgetRequest {
   _id: string;
@@ -30,20 +32,29 @@ interface BudgetRequest {
   disabled: boolean; // Add the disabled property
 }
 
-export default function BudgetRequestList() {
+export default function BudgetRequestList({socket}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
   const [budgetRequests, setBudgetRequests] = React.useState<BudgetRequest[]>(
     [],
   );
-  let authPayload = useContext(AuthContext);
-  const ctx = authPayload.token;
-  const headers = { Authorization: 'Bearer ' + ctx };
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+  const token = data.token;
+  // const decoded = jwt_decode(data.token);
+  // const userId = decoded.id;
+  const headers = { Authorization: 'Bearer ' + token };
+
+  // React.useEffect(() => {
+  //   socket?.emit("newUser", userId);
+  //   console.log(socket)
+  // }, [socket, userId]);
+
 
 
   useEffect(() => {
-    const socket = io('http://localhost:8000'); // Replace with your server's URL
 
     const fetchData = async () => {
       try {
@@ -72,11 +83,10 @@ export default function BudgetRequestList() {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
+      console.log(socket)
 
-      socket.on('confirmationNotification', (data) => {
-    // Handle the confirmation notification, e.g., show a snackbar or update the UI
-    enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
-  });
+
+    // enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
 
   // Listen for rejection notifications
   // socket.on('rejectionNotification', (data) => {
@@ -110,12 +120,18 @@ export default function BudgetRequestList() {
           const budgetCopy = [...budgetRequests];
           const filteredBudget = budgetCopy.filter((item: any) => item._id !== budget_id);
           setBudgetRequests(filteredBudget);
+         
         } else {
           
           const errorMessage = "something went wrong"
             enqueueSnackbar(errorMessage, { variant: 'error' });
           
         }
+        // socket.emit("sendConfirmationToStaff", {
+        //   reciverId:"65256d95e0df4fde255ea1ef",
+        //   siteId: budgetRequests.site_id,
+        //   status:"confirmed"
+        // });
       })
       .catch((error) => {
         console.error(error);

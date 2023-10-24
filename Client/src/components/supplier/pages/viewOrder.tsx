@@ -17,6 +17,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 
 
 interface approvedBudget {
@@ -35,14 +37,16 @@ export default function viewOrderList({socket}) {
   const [approvedBudget, setApprovedBudget] = React.useState<approvedBudget[]>(
     [],
   );
-  let authPayload = useContext(AuthContext);
-  const ctx = authPayload.token;
-  const headers = { Authorization: 'Bearer ' + ctx };
-  const navigate = useNavigate();
-  const decoded = jwt_decode(authPayload.token);
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+  const token = data.token;
+  const decoded = jwt_decode(data.token);
   const userId = decoded.id;
+  const headers = { Authorization: 'Bearer ' + token };
+  const navigate = useNavigate();
 
-  React.useEffect(() => {44444
+  React.useEffect(() => {
     socket?.emit("newUser", userId);
     console.log(socket)
   }, [socket, userId]);
@@ -174,7 +178,5 @@ export default function viewOrderList({socket}) {
     </Box>
   );
 }
-function jwt_decode(token: any) {
-  throw new Error('Function not implemented.');
-}
+
 
