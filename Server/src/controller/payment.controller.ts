@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import paymentService from '../services/payment.service';
 import { IPaymentItem } from '../models/paymentItem/IPayemntItem';
+// import createTemplate from '../../../Client/src/components/procurementManager/payment/receipt-template'
+import orderService from '../services/order.service';
 // Function to insert a new payment
 const insertPayment = async (req: Request, res: Response) => {
   try {
@@ -34,4 +36,22 @@ const createPaymentItem = async (req: Request, res: Response) => {
   }
 };
 
-export default { insertPayment, getPayemtDetails, createPaymentItem };
+// const createReceipt = async (req:Request, res: Response) => {
+//   // Calling the template render func with dynamic data
+//   const result = await createTemplate(req.body);
+
+// };
+
+const sendReceipt = (req: Request, res: Response) => {
+  try {
+    const { order_id, email ,pdf } = req.body;
+
+    orderService.sendOrderByEmail(order_id,email,pdf);
+
+    res.status(401).send('Order Send via Email');
+  } catch (err: any) {
+    res.status(401).send({ err: err });
+  }
+};
+
+export default { insertPayment, getPayemtDetails, createPaymentItem,sendReceipt };

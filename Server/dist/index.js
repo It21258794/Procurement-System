@@ -24,9 +24,6 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
     extended: true,
 }));
-app.get('/', (req, res) => {
-    res.send('Hello, TypeScript Express!');
-});
 app.use('/api/account', account_route_1.accountRoute);
 app.use('/api/item', item_route_1.itemRoute);
 app.use('/api/payment', payment_route_1.paymentRoute);
