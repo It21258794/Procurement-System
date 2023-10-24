@@ -13,6 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const payment_service_1 = __importDefault(require("../services/payment.service"));
+// import createTemplate from '../../../Client/src/components/procurementManager/payment/receipt-template'
+const order_service_1 = __importDefault(require("../services/order.service"));
 // Function to insert a new payment
 const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -46,4 +48,18 @@ const createPaymentItem = (req, res) => __awaiter(void 0, void 0, void 0, functi
         res.status(400).json({ err: err });
     }
 });
-exports.default = { insertPayment, getPayemtDetails, createPaymentItem };
+// const createReceipt = async (req:Request, res: Response) => {
+//   // Calling the template render func with dynamic data
+//   const result = await createTemplate(req.body);
+// };
+const sendReceipt = (req, res) => {
+    try {
+        const { order_id, email, pdf } = req.body;
+        order_service_1.default.sendOrderByEmail(order_id, email, pdf);
+        res.status(401).send('Order Send via Email');
+    }
+    catch (err) {
+        res.status(401).send({ err: err });
+    }
+};
+exports.default = { insertPayment, getPayemtDetails, createPaymentItem, sendReceipt };

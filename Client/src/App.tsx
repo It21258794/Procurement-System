@@ -51,7 +51,7 @@ function GuestRoute() {
   return (
     <AuthGuard>
       <Routes>
-        <Route path="signup" element={<SignUp />} />
+        <Route path="/" element={<SignUp />} />
         <Route path="login" element={<SignIn />} />
       </Routes>
     </AuthGuard>

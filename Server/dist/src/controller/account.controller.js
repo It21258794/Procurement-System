@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sum = void 0;
 const account_model_1 = __importDefault(require("../models/account/account.model"));
 const auth_service_1 = __importDefault(require("../utils/auth.service"));
 const account_service_1 = __importDefault(require("../services/account.service"));
@@ -92,6 +93,18 @@ const getCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, function*
         throw err;
     }
 });
+const getSupllierEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { supplierId } = req.params;
+        const user = yield account_model_1.default.findById(supplierId);
+        return res.status(200).json({ email: user === null || user === void 0 ? void 0 : user.email });
+    }
+    catch (err) {
+        throw err;
+    }
+});
+const sum = (a, b) => a + b;
+exports.sum = sum;
 exports.default = {
     signUp,
     login,
@@ -100,4 +113,5 @@ exports.default = {
     updateAccount,
     deleteAccount,
     getCurrentUser,
+    getSupllierEmail
 };

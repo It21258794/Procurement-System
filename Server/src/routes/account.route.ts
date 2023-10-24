@@ -20,3 +20,4 @@ accountRoute.delete(
   '/deleteAccount/:accountid',
   accountController.deleteAccount,
 );
+accountRoute.get('/supplierEmail/:supplierId', accountController.getSupllierEmail);

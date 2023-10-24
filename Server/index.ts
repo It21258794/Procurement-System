@@ -26,9 +26,7 @@ app.use(
   }),
 );
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript Express!');
-});
+
 
 app.use('/api/account', accountRoute);
 app.use('/api/item', itemRoute);
