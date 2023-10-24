@@ -29,6 +29,8 @@ import Stack from '@mui/material/Stack';
 import { useSnackbar } from 'notistack';
 // import axios from 'axios';
 import { AuthContext } from '../../../auth/AuthProvider';
+import './notification.css'
+
 
 function Copyright(props: any) {
   return (
@@ -145,14 +147,26 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function SupplierDashboard({ children }: any) {
+export default function SupplierDashboard({ children , socket }: any) {
   const [open, setOpen] = React.useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = React.useState({});
+  const [notifications, setNotifications] = React.useState([]);
+  const [notificationOpen, setNotificationOpen] = React.useState(false);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  console.log(socket)
+
+  React.useEffect(() => {
+    socket.on("getOrderfromStaff", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }, [socket]);
+
+  console.log(notifications)
   // let authPayload = React.useContext(AuthContext);
   // const { fromStorage } = authPayload;
   // const data = JSON.parse(fromStorage);
@@ -181,6 +195,17 @@ export default function SupplierDashboard({ children }: any) {
   //   fetchDetails();
   // }, []);
 
+  
+  const handleRead = () => {
+    setNotifications([]);
+    setNotificationOpen(false);
+  };
+
+  const displayNotification =({orderItem}) =>{
+    return (
+      <span className="notification">Order {orderItem.order.orderId} from {orderItem.order.address}</span>
+    );
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -227,11 +252,18 @@ export default function SupplierDashboard({ children }: any) {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
-            <IconButton color="black">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton color="black" onClick={() => setNotificationOpen(!notificationOpen)}>
+              <Badge badgeContent={notifications.length} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            {notificationOpen && (
+        <div className="notifications">
+           <button className="nButton" onClick={handleRead}>
+          {notifications.map((n) => displayNotification(n))}
+          </button>
+        </div>
+      )}
           </Toolbar>
         </AppBar>
         <Box sx={{ backgroundColor: '#F2EAE1' }}>

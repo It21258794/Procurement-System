@@ -98,16 +98,23 @@ const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(401).send({ err: err });
     }
 });
+//get all orders
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const orderList = yield order_service_1.default.getAllOrders();
-        res.status(200).json(orderList);
+        const orderRequests = yield order_service_1.default.getAllOrders();
+        if (orderRequests && orderRequests.length > 0) {
+            res.status(200).json(orderRequests);
+        }
+        else {
+            res.status(404).json({ message: 'No order found' });
+        }
     }
     catch (err) {
-        res.status(401).send({ err: err });
+        res.status(400).json({ err: err.message });
     }
 });
 exports.default = {
+    getAllOrders,
     sendOrder,
     createOrder,
     getOrderBySite,
@@ -116,5 +123,4 @@ exports.default = {
     getOrderAndBudget,
     deleteOrderById,
     getOrders,
-    getAllOrders,
 };

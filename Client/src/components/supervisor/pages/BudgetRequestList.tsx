@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,11 +16,13 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import io from 'socket.io-client';
+import { AuthContext } from '../../../auth/AuthProvider';
 
 interface BudgetRequest {
   _id: string;
+  curr_budget:number;
   site_id: string;
-  budget_id: string;
   amount: number;
   location: string;
   description: string;
@@ -35,68 +37,91 @@ export default function BudgetRequestList() {
   const [budgetRequests, setBudgetRequests] = React.useState<BudgetRequest[]>(
     [],
   );
+  let authPayload = useContext(AuthContext);
+  const ctx = authPayload.token;
+  const headers = { Authorization: 'Bearer ' + ctx };
+
 
   useEffect(() => {
+    const socket = io('http://localhost:8000'); // Replace with your server's URL
+
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'http://localhost:8000/api/site/requst', // Corrected API endpoint
-          {
-            method: 'GET', // Make a GET request to fetch data
-            headers: {
-              Authorization:
-                'Bearer ' +
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Make sure you have the 'token' variable defined
-              'Content-Type': 'application/json',
-            },
-          },
+          'http://localhost:8000/api/site/requst',{headers} // Corrected API endpoint
+          // {
+          //   method: 'GET', // Make a GET request to fetch data
+          //   headers: {
+          //     Authorization:
+          //       'Bearer ' +
+          //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjhlZjc2MWE0MmJlOGExNTEzYWU4OCIsImVtYWlsIjoib3NoYWRoaWFuamFuYUBnbWFpbC5jb20iLCJpYXQiOjE2OTcxODE2MTksImV4cCI6MTY5NzE4MjIyM30.XoS1QKm-m95r1iWQVdP-Nn2bRskbtRfSao9ur9Jzp9c', // Make sure you have the 'token' variable defined
+          //     'Content-Type': 'application/json',
+          //   },
+          // },
         );
         if (response.ok) {
           const data = await response.json();
+          console.log(data)
           setBudgetRequests(data.budgetRequests); // Assuming your data structure has a field named 'budgetRequests'
         } else {
           const errorMessage = await response.text();
+          
           enqueueSnackbar(errorMessage, { variant: 'error' });
         }
-      } catch (err) {
+      } catch (err:any) {
         console.error(err);
         enqueueSnackbar(err.message, { variant: 'error' });
       }
+
+      socket.on('confirmationNotification', (data) => {
+    // Handle the confirmation notification, e.g., show a snackbar or update the UI
+    enqueueSnackbar(`Budget request ${data.budget_id} has been confirmed.`, { variant: 'success' });
+  });
+
+  // Listen for rejection notifications
+  socket.on('rejectionNotification', (data) => {
+    // Handle the rejection notification, e.g., show a snackbar or update the UI
+    enqueueSnackbar(`Budget request ${data.budget_id} has been rejected.`, { variant: 'error' });
+  });
+
+  return () => {
+    // Clean up the socket connection when the component unmounts
+    socket.disconnect();
+  };
     };
     fetchData();
   }, []);
 
-  const handleAccept = async (request: BudgetRequest) => {
-    request.disabled = true;
+  const handleAccept = async (budget_id:string,site_id:string,amount:number,curr_budget:number) => {
+    // request.disabled = true;
 
     // Make an API request to update the status to "Approved"
+    const new_budget = amount + curr_budget;
     await axios
       .put('http://localhost:8000/api/site/approve', {
-        site_id: budgetRequests.site_id,
-        budget_id: budgetRequests._id,
+        site_id: site_id,
+        budget_id: budget_id,
         status: 'confirmed',
-        // budget:budgetRequests.
-      })
-      .then((response) => {
-        if (response.ok) {
+        budget:new_budget
+      },{headers})
+      .then(async (response) => {
+        if (response.status == 200 ) {
           // Update the status in the state
-          const updatedBudgetRequests = budgetRequests.map((item) => {
-            if (item._id === request._id) {
-              item.status = 'confirmed';
-            }
-            return item;
-          });
-          setBudgetRequests(updatedBudgetRequests);
+          const budgetCopy = [...budgetRequests];
+          const filteredBudget = budgetCopy.filter((item: any) => item._id !== budget_id);
+          setBudgetRequests(filteredBudget);
         } else {
-          return response.text().then((errorMessage) => {
+          
+          const errorMessage = "something went wrong"
             enqueueSnackbar(errorMessage, { variant: 'error' });
-          });
+          
         }
       })
       .catch((error) => {
         console.error(error);
         enqueueSnackbar(error.message, { variant: 'error' });
       });
+      
   };
 
   const handleReject = (request: BudgetRequest) => {
@@ -104,23 +129,20 @@ export default function BudgetRequestList() {
 
     // Make an API request to update the status to "Rejected"
     fetch(`http://localhost:8000/api/site/reject/${request._id}`, {
+      headers,
       method: 'DELETE', // Use the appropriate HTTP method (e.g., POST)
-      headers: {
-        'Content-Type': 'application/json',
-        // Add any necessary headers, such as authentication headers
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   // Add any necessary headers, such as authentication headers
+      // },
       body: JSON.stringify({ requestId: request._id, status: 'Rejected' }),
     })
       .then((response) => {
         if (response.ok) {
           // Update the status in the state
-          const updatedBudgetRequests = budgetRequests.map((item) => {
-            if (item._id === request._id) {
-              item.status = 'Rejected';
-            }
-            return item;
-          });
-          setBudgetRequests(updatedBudgetRequests);
+          const budgetCopy = [...budgetRequests];
+          const filteredBudget = budgetCopy.filter((item: any) => item._id !==  request._id);
+          setBudgetRequests(filteredBudget);
         } else {
           return response.text().then((errorMessage) => {
             enqueueSnackbar(errorMessage, { variant: 'error' });
@@ -212,7 +234,7 @@ export default function BudgetRequestList() {
                       {/* {request.status === 'Pending' && ( */}
                       <div>
                         <Button
-                          onClick={() => handleAccept(request)}
+                          onClick={() => handleAccept(request._id,request.site_id,request.amount,request.curr_budget)}
                           startIcon={
                             <CheckCircleIcon style={{ color: 'green' }} />
                           }

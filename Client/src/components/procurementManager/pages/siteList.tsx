@@ -14,6 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
+
 interface Item {
   _id: string;
   location: string;
@@ -32,8 +33,13 @@ export default function SiteList() {
   const data = JSON.parse(fromStorage);
 
   const token = data.token;
+ 
+ 
 
   const headers = { Authorization: 'Bearer ' + token };
+  
+
+ 
 
   React.useEffect(() => {
     const fetchData = async () => {

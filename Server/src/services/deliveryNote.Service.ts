@@ -4,10 +4,10 @@ import orderModel from '../models/order/order.model';
 
 const createNote = async (noteDetails: INote) => {
   try {
-    const order = await orderModel.findOne({ orderId: noteDetails.orderId });
-    if (!order) {
-      throw new Error('Order not found');
-    }
+    // const order = await orderModel.findOne({ orderId: noteDetails.orderId });
+    // if (!order) {
+    //   throw new Error('Order not found');
+    // }
     const newNote = await noteModel.create(noteDetails);
     return newNote;
   } catch (err) {

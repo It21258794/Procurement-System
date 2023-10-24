@@ -4,6 +4,7 @@ import noteService from '../services/deliveryNote.Service';
 const createDeliveryNote = async (req: Request, res: Response) => {
   try {
     const noteDetails = req.body;
+    console.log(noteDetails)
     const createdDeliveryNote = await noteService.createNote(noteDetails);
     res.status(201).json(createdDeliveryNote);
   } catch (err: any) {

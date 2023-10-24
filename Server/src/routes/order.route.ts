@@ -30,4 +30,5 @@ orderRoute.delete(
 );
 orderRoute.get('/getOrdersByMonth', orderController.getOrders);
 
+//get all orders supplier
 orderRoute.get('/getAllOrders', orderController.getAllOrders);

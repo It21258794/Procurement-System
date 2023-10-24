@@ -98,7 +98,7 @@ export default function Review({ orderId, id }) {
     { name: 'Bank', detail: payment.bankName },
   ];
 
-  const submitHandle = async () => {
+  const submitHandle = async (id:string) => {
     try {
       const dto = {
         order_id: orderId,
@@ -111,9 +111,9 @@ export default function Review({ orderId, id }) {
         .post('http://localhost:8000/api/payment/createPaymentItem', dto, {
           headers,
         })
-        .then((res) => {
-          console.log(res);
-          enqueueSnackbar('Succesfully Submited', { variant: 'success' });
+        .then(async(res) => {
+          await axios.put('http://localhost:8000/api/order/setStatus',{orderId:orderId,status:'completed'},{headers})
+          enqueueSnackbar('Succesfully paid', { variant: 'success' });
           navigate('/manager/sites');
         });
     } catch (err: any) {
@@ -137,7 +137,7 @@ export default function Review({ orderId, id }) {
           </ListItem>
         ))}
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
+          <ListItemText primary="Total"  style={{fontWeight:'bold'}}/>
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
             {order.total_cost}
           </Typography>
@@ -152,24 +152,24 @@ export default function Review({ orderId, id }) {
             {payments.map((payment) => (
               <React.Fragment key={payment.name}>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
+                  <Typography style={{fontStyle:'italic', color:'grey'}} gutterBottom>{payment.name}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
+                  <Typography style={{fontStyle:'italic', color:'grey'}} gutterBottom>{payment.detail}</Typography>
                 </Grid>
               </React.Fragment>
             ))}
           </Grid>
         </Grid>
       </Grid>
-      <div style={{ paddingTop: '30px' }}>
+      <div style={{ paddingTop: '30px' , display:'flex',  width:'auto',flexDirection:'row', justifyContent:'flex-end'}}>
         <Button
           type="submit"
           variant="contained"
-          style={{ width: '100px', backgroundColor: 'orange' }}
-          onClick={submitHandle}
+          style={{ width: 'auto', backgroundColor: 'orange',display:'flex', }}
+          onClick={() =>submitHandle(orderId)}
         >
-          Pay
+          Pay Now
         </Button>
       </div>
     </React.Fragment>

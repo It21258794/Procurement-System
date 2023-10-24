@@ -17,7 +17,7 @@ function getStepContent(step: number) {
   const { id, orderId } = useParams();
   switch (step) {
     case 0:
-      return <PaymentForm id={id} />;
+      return <PaymentForm id={id} orderId={orderId} />;
     case 1:
       return <Review orderId={orderId} id={id} />;
     default:
@@ -69,17 +69,16 @@ export default function Checkout() {
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1,color:'orange'}}>
                     Back
                   </Button>
                 )}
                 <Button
-                  variant="contained"
                   onClick={handleNext}
-                  sx={{ mt: 3, ml: 1, backgroundColor: 'orange' }}
+                  sx={{ mt: 3, ml: 1, backgroundColor: 'white', color:'orange' }}
                   disabled={activeStep == 1}
                 >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                  {activeStep === steps.length - 1 ? '' : 'Next'}
                 </Button>
               </Box>
             </React.Fragment>

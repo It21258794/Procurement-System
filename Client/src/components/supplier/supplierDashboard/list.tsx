@@ -36,7 +36,7 @@ export default function ListItems() {
     <React.Fragment>
       <ListItemButton
         onClick={() => {
-          navigate('//supplier/viewOrders');
+          navigate('/supplier/viewOrders');
         }}
       >
         <ListItemIcon>

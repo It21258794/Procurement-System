@@ -17,6 +17,15 @@ import IconButton from '@mui/material/IconButton';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import OfflinePinIcon from '@mui/icons-material/OfflinePin';
+import PaidIcon from '@mui/icons-material/Paid';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import AlarmOnIcon from '@mui/icons-material/AlarmOn';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 
 interface Item {
   _id: string;
@@ -76,6 +85,7 @@ export default function PayOrderList() {
   };
 
   const handelProps = (id: any, orderId: string) => {
+    console.log(orderId)
     navigate(`/manager/payment/${id}/${orderId}`);
   };
 
@@ -145,13 +155,22 @@ export default function PayOrderList() {
                           <TableCell align="left">{item.orderId}</TableCell>
                           <TableCell align="left">{date}</TableCell>
                           <TableCell align="left">{item.total_cost}</TableCell>
-                          <TableCell align="left">{item.status}</TableCell>
+                          <TableCell align="left">{item.status == 'confirmed'? <div style={{display:'flex', flexDirection:'row'}}><OfflinePinIcon style={{ color: 'green'  }}/> <Typography style={{paddingLeft:'3px'}}>Confirmed</Typography></div>  :
+                           item.status == 'pending' ? <div style={{display:'flex', flexDirection:'row'}}><AutorenewIcon style={{ color: 'yellow'  }}/> <Typography style={{paddingLeft:'3px'}}>Pending</Typography></div> :
+                           item.status == 'accepted' ? <div style={{display:'flex', flexDirection:'row'}}><ThumbUpAltIcon style={{ color: 'blue'  }}/> <Typography style={{paddingLeft:'3px'}}>Accepted</Typography></div> :
+                           item.status == 'rejected' ? <div style={{display:'flex', flexDirection:'row'}}><HighlightOffIcon style={{ color: 'red'  }}/> <Typography style={{paddingLeft:'3px'}}>Rejected</Typography></div> :
+                           item.status == 'on-going' ? <div style={{display:'flex', flexDirection:'row'}}><ConstructionIcon style={{ color: 'orange'  }}/> <Typography style={{paddingLeft:'3px'}}>OnGoing</Typography></div> :
+                           item.status == 'ready' ? <div style={{display:'flex', flexDirection:'row'}}><AlarmOnIcon style={{ color: 'purple'  }}/> <Typography style={{paddingLeft:'3px'}}>Ready</Typography></div> :
+                           item.status == 'on-the-way' ? <div style={{display:'flex', flexDirection:'row'}}><LocalShippingIcon style={{ color: 'brown'  }}/> <Typography style={{paddingLeft:'3px'}}>On the Way</Typography></div> :
+                           item.status == 'checked' ? <div style={{display:'flex', flexDirection:'row'}}><RadioButtonCheckedIcon style={{ color: '#4B527E'  }}/> <Typography style={{paddingLeft:'3px'}}>Checked</Typography></div> :
+                           item.status == 'completed' ?<div style={{display:'flex', flexDirection:'row'}}><PaidIcon style={{ color: '#D83F31'  }}/> <Typography style={{paddingLeft:'3px'}}>Completed</Typography></div>:
+                           <Typography style={{paddingLeft:'3px'}}>Invalid status</Typography>}</TableCell>
                           <TableCell align="left">
                             <Button
                               type="submit"
                               style={{ backgroundColor: 'orange' }}
                               variant="contained"
-                              disabled={item.status == 'checked'}
+                              disabled={item.status != 'checked'}
                               onClick={() =>
                                 handelProps(item.supplierId, item._id)
                               }

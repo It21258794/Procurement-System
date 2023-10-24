@@ -9,35 +9,19 @@ const noteSchema = new mongoose.Schema(
       ref: 'order',
       required: true,
     },
-    address: {
+    // address: {
+    //   type: String,
+    //   required: true,
+    // },
+    // requiredDate: {
+    //   type: Date,
+    //   required: true,
+    // },
+    description: {
       type: String,
       required: true,
     },
-    requiredDate: {
-      type: Date,
-      required: true,
-    },
 
-    items: [
-      {
-        itemName: {
-          type: String,
-          required: true,
-        },
-        type: {
-          type: String,
-          required: false,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
-    price: {
-      type: Number,
-      required: true,
-    },
   },
   { timestamps: false },
 );

@@ -173,17 +173,16 @@ const getOrderByMonth = async () => {
 };
 
 async function getAllOrders(): Promise<any[]> {
-  console.log('Fetching all items');
   try {
-    const orders = await orderModel.find({});
-    console.log('Found items:', orders);
-    return orders;
+    const orderRequests = await orderModel.find();
+    return orderRequests;
   } catch (err) {
     throw err;
   }
 }
 
 export default {
+  getAllOrders,
   sendOrderByEmail,
   createOrder,
   getOrderId,
@@ -193,5 +192,4 @@ export default {
   getOrderAndBudget,
   deleteOrder,
   getOrderByMonth,
-  getAllOrders,
 };
