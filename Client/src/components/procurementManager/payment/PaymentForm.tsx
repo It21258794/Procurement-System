@@ -18,7 +18,7 @@ export default function PaymentForm({ id, orderId }) {
     bankName: '',
     accountNumber: '',
   });
-  const [amount, setAmount] = React.useState(0)
+  const [amount, setAmount] = React.useState(0);
   let authPayload = React.useContext(AuthContext);
   const { fromStorage } = authPayload;
   const data = JSON.parse(fromStorage);
@@ -28,7 +28,7 @@ export default function PaymentForm({ id, orderId }) {
   const headers = { Authorization: 'Bearer ' + token };
 
   React.useEffect(() => {
-    const fetchData = async (id: any, orderId:any) => {
+    const fetchData = async (id: any, orderId: any) => {
       console.log(orderId);
       try {
         const response = await fetch(
@@ -43,12 +43,10 @@ export default function PaymentForm({ id, orderId }) {
           const item = await fetch(
             `http://localhost:8000/api/order/getOrderById/${orderId}`,
             { headers },
-          ).then(async (itemRes) =>{
+          ).then(async (itemRes) => {
             const res = await itemRes.json();
-            setAmount(res.total_cost)
-          }
-          )
-          
+            setAmount(res.total_cost);
+          });
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -56,7 +54,7 @@ export default function PaymentForm({ id, orderId }) {
         enqueueSnackbar(err.message, { variant: 'error' });
       }
     };
-    fetchData(id,orderId);
+    fetchData(id, orderId);
   }, []);
 
   return (
@@ -116,7 +114,11 @@ export default function PaymentForm({ id, orderId }) {
         <Grid item xs={12} md={6}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DatePicker']}>
-              <DatePicker  label="Enter the Date"  defaultValue={dayjs(new Date())}  disabled={true}/>
+              <DatePicker
+                label="Enter the Date"
+                defaultValue={dayjs(new Date())}
+                disabled={true}
+              />
             </DemoContainer>
           </LocalizationProvider>
         </Grid>

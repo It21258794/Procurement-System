@@ -41,20 +41,25 @@ export default function ItemForm() {
         if (supplierData.length > 0) {
           // Check if the account is a Supplier
           const isSupplier = supplierData.find(
-            (account) => account.role === 'supplier'
+            (account) => account.role === 'supplier',
           );
           return isSupplier !== undefined;
         }
       }
       return false;
     } catch (error) {
-      console.error('An error occurred while checking supplier existence:', error);
+      console.error(
+        'An error occurred while checking supplier existence:',
+        error,
+      );
       return false;
     }
   };
 
   const handleSubmit = async () => {
-    const isSupplierValid = await checkSupplierExistence(itemDetails.supplierUsername);
+    const isSupplierValid = await checkSupplierExistence(
+      itemDetails.supplierUsername,
+    );
 
     if (isSupplierValid) {
       const quantity = parseFloat(itemDetails.quantity);
@@ -71,7 +76,9 @@ export default function ItemForm() {
         })
           .then((response) => {
             if (response.ok) {
-              enqueueSnackbar('Item created successfully', { variant: 'success' });
+              enqueueSnackbar('Item created successfully', {
+                variant: 'success',
+              });
               console.log('Item created successfully');
               // Reset the form fields if needed
               setItemDetails({
@@ -89,10 +96,14 @@ export default function ItemForm() {
             console.error('An error occurred:', error);
           });
       } else {
-        enqueueSnackbar('Quantity and price should be greater than 0', { variant: 'error' });
+        enqueueSnackbar('Quantity and price should be greater than 0', {
+          variant: 'error',
+        });
       }
     } else {
-      enqueueSnackbar('Supplier does not exist or is not a valid supplier', { variant: 'error' });
+      enqueueSnackbar('Supplier does not exist or is not a valid supplier', {
+        variant: 'error',
+      });
     }
   };
 

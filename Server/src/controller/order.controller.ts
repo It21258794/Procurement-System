@@ -9,8 +9,8 @@ const sendOrder = (req: Request, res: Response) => {
   try {
     const { order_id, email, pdf } = req.body;
 
-    console.log(order_id, email );
-    orderService.sendOrderByEmail(order_id, email,pdf);
+    console.log(order_id, email);
+    orderService.sendOrderByEmail(order_id, email, pdf);
 
     res.status(401).send('Order Send via Email');
   } catch (err: any) {
@@ -120,5 +120,4 @@ export default {
   getOrderAndBudget,
   deleteOrderById,
   getOrders,
-
- };
+};

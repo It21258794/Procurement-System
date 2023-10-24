@@ -15,7 +15,6 @@ const insertPayment = async (req: Request, res: Response) => {
   }
 };
 
-
 //get paymnet details controller
 const getPayemtDetails = async (req: Request, res: Response) => {
   try {
@@ -39,13 +38,12 @@ const createPaymentItem = async (req: Request, res: Response) => {
   }
 };
 
-
 //controller to call email service
 const sendReceipt = (req: Request, res: Response) => {
   try {
-    const { order_id, email ,pdf } = req.body;
+    const { order_id, email, pdf } = req.body;
 
-    orderService.sendOrderByEmail(order_id,email,pdf);
+    orderService.sendOrderByEmail(order_id, email, pdf);
 
     res.status(401).send('Order Send via Email');
   } catch (err: any) {
@@ -53,4 +51,9 @@ const sendReceipt = (req: Request, res: Response) => {
   }
 };
 
-export default { insertPayment, getPayemtDetails, createPaymentItem,sendReceipt };
+export default {
+  insertPayment,
+  getPayemtDetails,
+  createPaymentItem,
+  sendReceipt,
+};

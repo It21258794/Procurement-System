@@ -39,7 +39,7 @@ export default function PayOrderList() {
   const navigate = useNavigate();
 
   let authPayload = React.useContext(AuthContext);
-  const { fromStorage } :any= authPayload;
+  const { fromStorage }: any = authPayload;
   const data = JSON.parse(fromStorage);
 
   const token = data.token;
@@ -80,7 +80,7 @@ export default function PayOrderList() {
   };
 
   const handelProps = (id: any, orderId: string) => {
-    console.log(orderId)
+    console.log(orderId);
     navigate(`/manager/payment/${id}/${orderId}`);
   };
 
@@ -150,16 +150,123 @@ export default function PayOrderList() {
                           <TableCell align="left">{item.orderId}</TableCell>
                           <TableCell align="left">{date}</TableCell>
                           <TableCell align="left">{item.total_cost}</TableCell>
-                          <TableCell align="left">{item.status == 'confirmed'? <div style={{display:'flex', flexDirection:'row'}}><OfflinePinIcon style={{ color: 'green'  }}/> <Typography style={{paddingLeft:'3px'}}>Confirmed</Typography></div>  :
-                           item.status == 'pending' ? <div style={{display:'flex', flexDirection:'row'}}><AutorenewIcon style={{ color: 'yellow'  }}/> <Typography style={{paddingLeft:'3px'}}>Pending</Typography></div> :
-                           item.status == 'accepted' ? <div style={{display:'flex', flexDirection:'row'}}><ThumbUpAltIcon style={{ color: 'blue'  }}/> <Typography style={{paddingLeft:'3px'}}>Accepted</Typography></div> :
-                           item.status == 'rejected' ? <div style={{display:'flex', flexDirection:'row'}}><HighlightOffIcon style={{ color: 'red'  }}/> <Typography style={{paddingLeft:'3px'}}>Rejected</Typography></div> :
-                           item.status == 'on-going' ? <div style={{display:'flex', flexDirection:'row'}}><ConstructionIcon style={{ color: 'orange'  }}/> <Typography style={{paddingLeft:'3px'}}>OnGoing</Typography></div> :
-                           item.status == 'ready' ? <div style={{display:'flex', flexDirection:'row'}}><AlarmOnIcon style={{ color: 'purple'  }}/> <Typography style={{paddingLeft:'3px'}}>Ready</Typography></div> :
-                           item.status == 'on-the-way' ? <div style={{display:'flex', flexDirection:'row'}}><LocalShippingIcon style={{ color: 'brown'  }}/> <Typography style={{paddingLeft:'3px'}}>On the Way</Typography></div> :
-                           item.status == 'checked' ? <div style={{display:'flex', flexDirection:'row'}}><RadioButtonCheckedIcon style={{ color: '#4B527E'  }}/> <Typography style={{paddingLeft:'3px'}}>Checked</Typography></div> :
-                           item.status == 'completed' ?<div style={{display:'flex', flexDirection:'row'}}><PaidIcon style={{ color: '#D83F31'  }}/> <Typography style={{paddingLeft:'3px'}}>Completed</Typography></div>:
-                           <Typography style={{paddingLeft:'3px'}}>Invalid status</Typography>}</TableCell>
+                          <TableCell align="left">
+                            {item.status == 'confirmed' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <OfflinePinIcon style={{ color: 'green' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Confirmed
+                                </Typography>
+                              </div>
+                            ) : item.status == 'pending' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <AutorenewIcon style={{ color: 'yellow' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Pending
+                                </Typography>
+                              </div>
+                            ) : item.status == 'accepted' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <ThumbUpAltIcon style={{ color: 'blue' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Accepted
+                                </Typography>
+                              </div>
+                            ) : item.status == 'rejected' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <HighlightOffIcon style={{ color: 'red' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Rejected
+                                </Typography>
+                              </div>
+                            ) : item.status == 'on-going' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <ConstructionIcon style={{ color: 'orange' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  OnGoing
+                                </Typography>
+                              </div>
+                            ) : item.status == 'ready' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <AlarmOnIcon style={{ color: 'purple' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Ready
+                                </Typography>
+                              </div>
+                            ) : item.status == 'on-the-way' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <LocalShippingIcon style={{ color: 'brown' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  On the Way
+                                </Typography>
+                              </div>
+                            ) : item.status == 'checked' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <RadioButtonCheckedIcon
+                                  style={{ color: '#4B527E' }}
+                                />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Checked
+                                </Typography>
+                              </div>
+                            ) : item.status == 'completed' ? (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <PaidIcon style={{ color: '#D83F31' }} />{' '}
+                                <Typography style={{ paddingLeft: '3px' }}>
+                                  Completed
+                                </Typography>
+                              </div>
+                            ) : (
+                              <Typography style={{ paddingLeft: '3px' }}>
+                                Invalid status
+                              </Typography>
+                            )}
+                          </TableCell>
                           <TableCell align="left">
                             <Button
                               type="submit"

@@ -5,7 +5,6 @@ import orderService from '../services/order.service';
 
 export const orderRoute = Router();
 
-
 orderRoute.post('/createOrder', orderController.createOrder);
 
 //get order per sites

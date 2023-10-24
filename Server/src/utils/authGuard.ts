@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from 'express';
 import authService from './auth.service';
 import { IPayload } from './types/IPayload';
 
-
 //type decalration for request
 declare module 'express-serve-static-core' {
   interface Request {
@@ -22,10 +21,11 @@ const AuthGuard = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     console.log(authToken.split('Bearer ')[1]);
-    const payload = await authService.verifyToken(   // verify the token and get the payload
+    const payload = await authService.verifyToken(
+      // verify the token and get the payload
       authToken.split('Bearer ')[1],
     );
-    req.currentUser = payload;   //assign the payload to the req
+    req.currentUser = payload; //assign the payload to the req
     next();
   } catch (err) {
     return res.status(400).send({

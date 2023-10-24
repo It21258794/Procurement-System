@@ -78,14 +78,17 @@ export default function ItemListView() {
         if (supplierData.length > 0) {
           // Check if the account is a Supplier
           const isSupplier = supplierData.find(
-            (account) => account.role === 'supplier'
+            (account) => account.role === 'supplier',
           );
           return isSupplier !== undefined;
         }
       }
       return false;
     } catch (error) {
-      console.error('An error occurred while checking supplier existence:', error);
+      console.error(
+        'An error occurred while checking supplier existence:',
+        error,
+      );
       return false;
     }
   };
@@ -106,7 +109,9 @@ export default function ItemListView() {
           });
 
           if (response.ok) {
-            enqueueSnackbar('Item updated successfully', { variant: 'success' });
+            enqueueSnackbar('Item updated successfully', {
+              variant: 'success',
+            });
             setEditDialogOpen(false); // Close the edit dialog
             fetchItems(); // Refresh the item list after the update
           } else {
@@ -116,10 +121,14 @@ export default function ItemListView() {
           console.error('An error occurred:', error);
         }
       } else {
-        enqueueSnackbar('Quantity and price should be greater than 0', { variant: 'error' });
+        enqueueSnackbar('Quantity and price should be greater than 0', {
+          variant: 'error',
+        });
       }
     } else {
-      enqueueSnackbar('Supplier does not exist or is not a valid supplier', { variant: 'error' });
+      enqueueSnackbar('Supplier does not exist or is not a valid supplier', {
+        variant: 'error',
+      });
     }
   };
 
@@ -246,7 +255,6 @@ export default function ItemListView() {
             sx={{ marginBottom: 2 }}
           />
           <TextField
-            
             label="Supplier Name" // Placeholder for Supplier ID field
             fullWidth
             value={updatedItem ? updatedItem.supplierUsername : ''}

@@ -75,7 +75,7 @@ const useStyles = makeStyles()((theme) => ({
 export default function SignUp() {
   const navigate = useNavigate();
   const { classes } = useStyles();
-  const [type,setType] = React.useState([])
+  const [type, setType] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -316,9 +316,9 @@ export default function SignUp() {
                       : null
                   }
                 /> */}
-                 <InputLabel>Select Role</InputLabel>
-                 <Select
-                 fullWidth
+                <InputLabel>Select Role</InputLabel>
+                <Select
+                  fullWidth
                   value={formik.values.role}
                   onChange={handleChange}
                   name="role"

@@ -38,14 +38,14 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const BudgetForm = ({socket}:any) => {
+const BudgetForm = ({ socket }: any) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { address, siteBudget, remBudget, total, siteId } = useParams();
   let authPayload = useContext(AuthContext);
   const ctx = authPayload.token;
-  
+
   const headers = { Authorization: 'Bearer ' + ctx };
   const depAmount = remBudget - total;
   const [state, setState] = useState({

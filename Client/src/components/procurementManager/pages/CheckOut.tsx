@@ -69,13 +69,21 @@ export default function Checkout() {
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1,color:'orange'}}>
+                  <Button
+                    onClick={handleBack}
+                    sx={{ mt: 3, ml: 1, color: 'orange' }}
+                  >
                     Back
                   </Button>
                 )}
                 <Button
                   onClick={handleNext}
-                  sx={{ mt: 3, ml: 1, backgroundColor: 'white', color:'orange' }}
+                  sx={{
+                    mt: 3,
+                    ml: 1,
+                    backgroundColor: 'white',
+                    color: 'orange',
+                  }}
                   disabled={activeStep == 1}
                 >
                   {activeStep === steps.length - 1 ? '' : 'Next'}
