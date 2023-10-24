@@ -86,26 +86,27 @@ export default function approvedBudgetList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell
+              <TableCell
+                  key="location"
+                  align="left"
+                  style={{ minWidth: '50' }}
+                >
+                  Site
+                </TableCell>
+                {/* <TableCell
                   key="site_id"
                   align="left"
                   style={{ minWidth: '50' }}
                 >
                   Site Id
-                </TableCell>
+                </TableCell> */}
                 {/* <TableCell key="budget_id" align="left" style={{ minWidth: '50' }}>
                   Budget Id
                 </TableCell> */}
                 <TableCell key="amount" align="left" style={{ minWidth: '50' }}>
                   Amount
                 </TableCell>
-                <TableCell
-                  key="location"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Location
-                </TableCell>
+               
                 <TableCell
                   key="description"
                   align="left"
@@ -128,10 +129,11 @@ export default function approvedBudgetList() {
                     tabIndex={-1}
                     key={request._id}
                   >
-                    <TableCell align="left">{request.site_id}</TableCell>
+                                        <TableCell align="left">{request.location}</TableCell>
+
+                    {/* <TableCell align="left">{request.site_id}</TableCell> */}
                     {/* <TableCell align="left">{request.budget_id}</TableCell> */}
                     <TableCell align="left">{request.amount}</TableCell>
-                    <TableCell align="left">{request.location}</TableCell>
                     <TableCell align="left">{request.description}</TableCell>
                     <TableCell align="left">{request.status}</TableCell>
                   </TableRow>

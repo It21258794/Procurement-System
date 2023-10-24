@@ -14,7 +14,7 @@ import SupplierDashboard from './components/supplier/supplierDashboard/supplierr
 import OrderViewPage from './components/supplier/pages/viewOrder';
 import CreateDeliveryNotice from './components/supplier/pages/addNote';
 import DeliveryNote from './components/supplier/pages/deliveryNotes';
-import { AuthGuard, ManagerAuthGuard,SupllierAuthGuard } from './auth/AuthGuard';
+import { AuthGuard, ManagerAuthGuard,SupllierAuthGuard,SupervisorAuthGuard } from './auth/AuthGuard';
 import { io } from 'socket.io-client';
 import React, { useState } from 'react';
 import ItemListView from './components/admin/pages/ItemView';
@@ -58,14 +58,16 @@ function GuestRoute() {
   );
 }
 
-function SupervisorRoute() {
+function SupervisorRoute({socket}) {
   return (
-    <SupervisorDashboard>
+    <SupervisorAuthGuard>
+    <SupervisorDashboard socket={socket}>
       <Routes>
-        <Route path="/orders" element={<ApproveOrderList />} />
+        <Route path="/orders" element={<ApproveOrderList socket={socket} />} />
         <Route path="/allApprovedOrders" element={<AllApprovedOrders />} />
       </Routes>
     </SupervisorDashboard>
+    </SupervisorAuthGuard>
   );
 }
 
@@ -75,8 +77,8 @@ function SupplierRoute({socket}) {
     <SupllierAuthGuard>
     <SupplierDashboard socket={socket}>
       <Routes>
+        <Route path="/addNote/:orderId" element={<CreateDeliveryNotice />} />
         <Route path="/viewOrders" element={<OrderViewPage socket={socket} />} />
-        <Route path="/addNote" element={<CreateDeliveryNotice />} />
         <Route path="/viewNotes" element={<DeliveryNote />} />
       </Routes>
     </SupplierDashboard>
@@ -92,7 +94,7 @@ function AdminRoute() {
         <Route path="/sites" element={<SiteList />} />
         <Route path="/items" element={<ItemListView />} />
         <Route path="/accountList" element={<AccountListView />} />
-        <Route path="/createAccount" element={<AccountForm />} />
+        {/* <Route path="/createAccount" element={<AccountForm />} /> */}
         <Route path="/insertItem" element={<ItemForm />} />
         <Route path="/insertSite" element={<SiteForm />} />
       </Routes>
@@ -114,7 +116,7 @@ function App() {
       <Routes>
         <Route path="manager/*" element={<ProcurementManagerRoute socket={socket}/>} />
         <Route path="*" element={<GuestRoute />} />
-        <Route path="supervisor/*" element={<SupervisorRoute />} />
+        <Route path="supervisor/*" element={<SupervisorRoute socket={socket} />} />
         <Route path="supplier/*" element={<SupplierRoute socket={socket}/>} />
 
         <Route path="admin/*" element={<AdminRoute />} />

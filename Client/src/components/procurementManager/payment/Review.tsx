@@ -139,12 +139,12 @@ const createPdf = async () => {
   doc.setFontSize(80);
   doc.text('Codex (PVT) Ltd', 40, doc.internal.pageSize.height , {angle: 45, });
   const pdf = doc.save(`${order.address}_order${order.orderId}.pdf`);
-  // const out = pdf.output('datauristring');
-  // const response = await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
-  //   order_id:order.orderId,
-  //   pdf: out.split('base64,')[1],
-  //   email:supplierEmail.email
-  // },{headers});
+  const out = pdf.output('datauristring');
+  const response = await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
+    order_id:order.orderId,
+    pdf: out.split('base64,')[1],
+    email:supplierEmail.email
+  },{headers});
   }
 
   const submitHandle = async () => {

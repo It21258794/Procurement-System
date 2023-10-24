@@ -16,6 +16,10 @@ import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { AuthContext } from '../../../auth/AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
+
 
 interface approvedBudget {
   _id: string;
@@ -33,11 +37,15 @@ export default function viewOrderList({socket}) {
   const [approvedBudget, setApprovedBudget] = React.useState<approvedBudget[]>(
     [],
   );
-  let authPayload = useContext(AuthContext);
-  const ctx = authPayload.token;
-  const headers = { Authorization: 'Bearer ' + ctx };
+  let authPayload = React.useContext(AuthContext);
+  const { fromStorage } = authPayload;
+  const data = JSON.parse(fromStorage);
+  const token = data.token;
+  const decoded = jwt_decode(data.token);
+  const userId = decoded.id;
+  const headers = { Authorization: 'Bearer ' + token };
+  const navigate = useNavigate();
 
-  const userId = '651573942be0d990f78c78cf'
   React.useEffect(() => {
     socket?.emit("newUser", userId);
     console.log(socket)
@@ -79,6 +87,11 @@ export default function viewOrderList({socket}) {
     setPage(0);
   };
 
+  const handleAccept = (orderId: string) => {
+    // Navigate to the "Add Note" page with the order ID as a parameter
+    navigate(`/supplier/addNote/${orderId}`);
+  };
+
   return (
     <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
       <Paper
@@ -86,6 +99,8 @@ export default function viewOrderList({socket}) {
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'transparent',
+          margin: 'auto', // Center the Paper element
+
         }}
       >
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -99,21 +114,7 @@ export default function viewOrderList({socket}) {
                 >
                   Order Id
                 </TableCell>
-                <TableCell
-                  key="site_id"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Site Id
-                </TableCell>
-                <TableCell
-                  key="supplier_id"
-                  align="left"
-                  style={{ minWidth: '50' }}
-                >
-                  Supplier Id
-                </TableCell>
-
+              
                 <TableCell
                   key="location"
                   align="left"
@@ -135,6 +136,7 @@ export default function viewOrderList({socket}) {
                 >
                   Description
                 </TableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>
@@ -152,6 +154,12 @@ export default function viewOrderList({socket}) {
                     <TableCell align="left">{request.address}</TableCell>
                     <TableCell align="left">{request.total_cost}</TableCell>
                     <TableCell align="left">{request.description}</TableCell>
+                    <Button
+                      onClick={() => handleAccept(request.orderId)}
+                      startIcon={<CheckCircleIcon style={{ color: 'green' }} />}
+                    >
+      Add Note
+    </Button>
                   </TableRow>
                 ))}
             </TableBody>
@@ -170,3 +178,5 @@ export default function viewOrderList({socket}) {
     </Box>
   );
 }
+
+

@@ -80,19 +80,20 @@ export default function OrderTable({socket}:any) {
           { headers },
         )
         .then(async (res) => {
+          navigate(-1)
            await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
             order_id:order.orderId,
             pdf: '',
             email:supplierEmail.email
           },{headers});
           console.log(res);
-          socket.emit("sendOrderToSupplier", {
-            reciverId:order.supplierId,
-            orderItem:{order}
-          });
+          // socket.emit("sendOrderToSupplier", {
+          //   reciverId:order.supplierId,
+          //   orderItem:{order}
+          // });
          
           enqueueSnackbar('Order has been Confirmed', { variant: 'success' });
-          navigate(-1);
+          ;
         });
     } catch (err: any) {
       enqueueSnackbar(err.message, { variant: 'error' });

@@ -74,10 +74,10 @@ const BudgetForm = ({socket}:any) => {
         .post('http://localhost:8000/api/site/budgetRequest', dto, { headers })
         .then((res) => {
           console.log(res.data._id);
-          socket.emit("sendBudgetToSupervisor", {
-            reciverId:'',
-            budgetId:res.data._id
-          });
+          // socket.emit("sendBudgetToSupervisor", {
+          //   reciverId:'',
+          //   budgetId:res.data._id
+          // });
           enqueueSnackbar('Succesfully Submited', { variant: 'success' });
 
           if (res.data.success) {
