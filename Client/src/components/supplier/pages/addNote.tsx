@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { AuthContext } from '../../../auth/AuthProvider';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface Item {
   id: string;
@@ -34,6 +34,8 @@ const CreateDeliveryNotice: React.FC = () => {
   });
 
   const { orderId } = useParams();
+  const navigate = useNavigate();
+
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
@@ -84,6 +86,8 @@ const CreateDeliveryNotice: React.FC = () => {
 
   const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
+    navigate(`/supplier/viewNotes`);
+
 
     // Check if any of the fields are empty
     const hasErrors = Object.values(errors).some((error) => error !== '');

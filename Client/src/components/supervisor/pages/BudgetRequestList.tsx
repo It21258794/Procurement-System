@@ -173,9 +173,12 @@ export default function BudgetRequestList() {
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'transparent',
+          margin: 'auto', // Center the Paper element
+
         }}
       >
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 440,          margin: 'auto', // Center the Paper element
+ }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

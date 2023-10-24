@@ -48,6 +48,7 @@ function Copyright(props: any) {
   );
 }
 
+
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -145,14 +146,25 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ManagerDashboard({ children }: any) {
+export default function ManagerDashboard({ children,socket}: any) {
   const [open, setOpen] = React.useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = React.useState({});
+  const [notificationOpen, setNotificationOpen] = React.useState(false);
+  const [notifications, setNotifications] = React.useState([]);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  console.log(socket)
+
+  React.useEffect(() => {
+    socket.on("getConfirmationfromSupplier", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }, [socket]);
+
+  
   let authPayload = React.useContext(AuthContext);
   const { fromStorage } = authPayload;
   const data = JSON.parse(fromStorage);
@@ -160,6 +172,12 @@ export default function ManagerDashboard({ children }: any) {
   const token = data.token;
 
   const headers = { Authorization: 'Bearer ' + token };
+
+  React.useEffect(() => {
+    socket.on("getOrderfromStaff", (data) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }, [socket]);
 
   React.useEffect(() => {
     const fetchDetails = async () => {
@@ -180,6 +198,17 @@ export default function ManagerDashboard({ children }: any) {
     };
     fetchDetails();
   }, []);
+
+  const handleRead = () => {
+    setNotifications([]);
+    setNotificationOpen(false);
+  };
+
+  const displayNotification =({orderItem}) =>{
+    return (
+      <span className="notification">Order {orderItem.order.orderId} from {orderItem.order.address}</span>
+    );
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -215,7 +244,7 @@ export default function ManagerDashboard({ children }: any) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              {/* Name */}
+              Procurement Manager
             </Typography>
 
             <Search>
@@ -227,11 +256,18 @@ export default function ManagerDashboard({ children }: any) {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
-            <IconButton color="black">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton color="black" onClick={() => setNotificationOpen(!notificationOpen)}>
+              <Badge badgeContent={notifications.length} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            {notificationOpen && (
+        <div className="notifications">
+           <button className="nButton" onClick={handleRead}>
+          {notifications.map((n) => displayNotification(n))}
+          </button>
+        </div>
+      )}
           </Toolbar>
         </AppBar>
         <Box sx={{ backgroundColor: '#F2EAE1' }}>

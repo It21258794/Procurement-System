@@ -28,7 +28,7 @@ interface approvedBudget {
   description: string;
 }
 
-export default function viewOrderList() {
+export default function viewOrderList({socket}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { enqueueSnackbar } = useSnackbar();
@@ -39,7 +39,13 @@ export default function viewOrderList() {
   const ctx = authPayload.token;
   const headers = { Authorization: 'Bearer ' + ctx };
   const navigate = useNavigate();
+  const decoded = jwt_decode(authPayload.token);
+  const userId = decoded.id;
 
+  React.useEffect(() => {44444
+    socket?.emit("newUser", userId);
+    console.log(socket)
+  }, [socket, userId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,6 +95,8 @@ export default function viewOrderList() {
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'transparent',
+          margin: 'auto', // Center the Paper element
+
         }}
       >
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -166,3 +174,7 @@ export default function viewOrderList() {
     </Box>
   );
 }
+function jwt_decode(token: any) {
+  throw new Error('Function not implemented.');
+}
+

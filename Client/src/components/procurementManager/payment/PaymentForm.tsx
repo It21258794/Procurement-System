@@ -8,8 +8,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { useSnackbar } from 'notistack';
+import dayjs from 'dayjs';
 
-export default function PaymentForm({ id }) {
+export default function PaymentForm({ id, orderId }) {
   console.log(id);
   const { enqueueSnackbar } = useSnackbar();
   const [payment, setPayment] = React.useState({
@@ -17,6 +18,7 @@ export default function PaymentForm({ id }) {
     bankName: '',
     accountNumber: '',
   });
+  const [amount, setAmount] = React.useState(0)
   let authPayload = React.useContext(AuthContext);
   const { fromStorage } = authPayload;
   const data = JSON.parse(fromStorage);
@@ -26,8 +28,8 @@ export default function PaymentForm({ id }) {
   const headers = { Authorization: 'Bearer ' + token };
 
   React.useEffect(() => {
-    const fetchData = async (id: any) => {
-      console.log(id);
+    const fetchData = async (id: any, orderId:any) => {
+      console.log(orderId);
       try {
         const response = await fetch(
           `http://localhost:8000/api/payment/getPaymentBySupplierId/${id}`,
@@ -38,6 +40,15 @@ export default function PaymentForm({ id }) {
 
         if (response.ok) {
           setPayment(res);
+          const item = await fetch(
+            `http://localhost:8000/api/order/getOrderById/${orderId}`,
+            { headers },
+          ).then(async (itemRes) =>{
+            const res = await itemRes.json();
+            setAmount(res.total_cost)
+          }
+          )
+          
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -45,7 +56,7 @@ export default function PaymentForm({ id }) {
         enqueueSnackbar(err.message, { variant: 'error' });
       }
     };
-    fetchData(id);
+    fetchData(id,orderId);
   }, []);
 
   return (
@@ -95,15 +106,17 @@ export default function PaymentForm({ id }) {
             required
             id="amount"
             label="Amount"
+            value={amount}
             fullWidth
             autoComplete="cc-exp"
             variant="standard"
+            disabled={true}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DatePicker']}>
-              <DatePicker label="Enter the Date" />
+              <DatePicker  label="Enter the Date"  defaultValue={dayjs(new Date())}  disabled={true}/>
             </DemoContainer>
           </LocalizationProvider>
         </Grid>
