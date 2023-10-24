@@ -83,6 +83,7 @@ const deleteAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(400).json({ err: err.message });
     }
 });
+//get current user detail that in the request
 const getCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.currentUser.id;
@@ -105,6 +106,11 @@ const getSupllierEmail = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 const sum = (a, b) => a + b;
 exports.sum = sum;
+//controller to bet all the roles in the sytem to display on a drop doen 
+const getAccountTypes = (req, res) => {
+    let accountTypes = [{ type: 'PROCUREMENT_MANAGER' }, { type: 'PROCUREMENT_ADMIN' }, { type: 'SITE_MANAGER' }, { type: 'SUPERVISOR' }, { type: 'SUPPLIER' }];
+    return res.status(200).json(accountTypes);
+};
 exports.default = {
     signUp,
     login,
@@ -113,5 +119,6 @@ exports.default = {
     updateAccount,
     deleteAccount,
     getCurrentUser,
-    getSupllierEmail
+    getSupllierEmail,
+    getAccountTypes
 };

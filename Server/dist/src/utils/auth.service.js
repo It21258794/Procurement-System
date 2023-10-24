@@ -15,14 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const account_model_1 = __importDefault(require("../models/account/account.model"));
+//create hash password
 function createPasswordHash(password) {
     return bcrypt_1.default.hash(password, 10);
 }
+//validate hashed password
 function validatePassword(password, hash) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield bcrypt_1.default.compare(password, hash);
     });
 }
+//create the jwt token for login
 function getToken(password, hash, payload) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(payload);
@@ -31,7 +34,6 @@ function getToken(password, hash, payload) {
             throw new Error('Invalid Password');
         }
         try {
-            console.log('kkkk');
             const token = jsonwebtoken_1.default.sign(payload, process.env.APP_SECRET, {
                 expiresIn: process.env.APP_ACCESS_TOKEN_EXP_SECS,
             });
@@ -46,11 +48,12 @@ function getToken(password, hash, payload) {
         }
     });
 }
+//verify jwt token
 function verifyToken(token) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log('token', token);
-            const payload = yield jsonwebtoken_1.default.decode(token);
+            const payload = yield jsonwebtoken_1.default.decode(token); //call jwt decode build in service
             console.log(payload);
             return payload;
         }

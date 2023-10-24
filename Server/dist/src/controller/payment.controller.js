@@ -27,6 +27,7 @@ const insertPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(400).json({ err: err });
     }
 });
+//get paymnet details controller
 const getPayemtDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { supplierId } = req.params;
@@ -37,6 +38,7 @@ const getPayemtDetails = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(400).json({ err: err });
     }
 });
+// make a payment controller
 const createPaymentItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dto = req.body;
@@ -48,10 +50,7 @@ const createPaymentItem = (req, res) => __awaiter(void 0, void 0, void 0, functi
         res.status(400).json({ err: err });
     }
 });
-// const createReceipt = async (req:Request, res: Response) => {
-//   // Calling the template render func with dynamic data
-//   const result = await createTemplate(req.body);
-// };
+//controller to call email service
 const sendReceipt = (req, res) => {
     try {
         const { order_id, email, pdf } = req.body;
