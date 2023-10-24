@@ -66,6 +66,12 @@ mongoose_1.default.connect(process.env.MONGODB_URI).then(() => {
                     orderItem
                 });
             });
+            socket.on("sendConfirmationToStaff", ({ reciverId, siteId, status }) => {
+                const staff = getUser(reciverId);
+                io.to(staff.socketId).emit("getConfirmationfromSupplier", {
+                    siteId, status
+                });
+            });
             socket.on('disconnect', () => {
                 removeUser(socket.id);
             });

@@ -45,16 +45,6 @@ export default function ListItems() {
         <ListItemText primary="View Orders" />
       </ListItemButton>
 
-      <ListItemButton
-        onClick={() => {
-          navigate('/supplier/addNote');
-        }}
-      >
-        <ListItemIcon>
-          <NearMeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Add Delivery Note" />
-      </ListItemButton>
 
       <ListItemButton
         onClick={() => {

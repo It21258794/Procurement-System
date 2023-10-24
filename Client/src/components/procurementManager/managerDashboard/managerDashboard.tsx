@@ -49,6 +49,7 @@ function Copyright(props: any) {
   );
 }
 
+
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -157,6 +158,14 @@ export default function ManagerDashboard({ children,socket}: any) {
   };
 
   console.log(socket)
+
+  // React.useEffect(() => {
+  //   socket.on("getConfirmationfromSupplier", (data) => {
+  //     setNotifications((prev) => [...prev, data]);
+  //   });
+  // }, [socket]);
+
+  
   let authPayload = React.useContext(AuthContext);
   const { fromStorage } = authPayload;
   const data = JSON.parse(fromStorage);
@@ -165,11 +174,12 @@ export default function ManagerDashboard({ children,socket}: any) {
 
   const headers = { Authorization: 'Bearer ' + token };
 
-  React.useEffect(() => {
-    socket.on("getOrderfromStaff", (data) => {
-      setNotifications((prev) => [...prev, data]);
-    });
-  }, [socket]);
+  // React.useEffect(() => {
+  //   socket.on("getOrderfromStaff", (data) => {
+  //     setNotifications((prev) => [...prev, data]);
+  //   });
+  // }, [socket]);
+  console.log(notifications)
 
   React.useEffect(() => {
     const fetchDetails = async () => {
