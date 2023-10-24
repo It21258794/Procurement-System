@@ -84,6 +84,18 @@ const getCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
+const getSupllierEmail = async (req: Request, res: Response) => {
+  try {
+    const {supplierId} = req.params;
+    const user = await accountmodel.findById(supplierId);
+    return res.status(200).json({ email: user?.email });
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const sum = (a:number, b:number) => a+b;
+
 export default {
   signUp,
   login,
@@ -92,4 +104,5 @@ export default {
   updateAccount,
   deleteAccount,
   getCurrentUser,
+  getSupllierEmail
 };

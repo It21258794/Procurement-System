@@ -15,7 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const order_model_1 = __importDefault(require("../models/order/order.model"));
 const site_model_1 = __importDefault(require("../models/site/site.model"));
-const sendOrderByEmail = (order_id, email) => {
+const sendOrderByEmail = (order_id, email, pdf) => {
+    let msg = `Your payment receipt on ${order_id}`;
+    if (pdf == null) {
+        msg = 'You have recieved an Order From Codex Cunstruction Company';
+    }
     try {
         console.log(process.env.EMAIL_PASS);
         let transporter = nodemailer_1.default.createTransport({
@@ -28,8 +32,16 @@ const sendOrderByEmail = (order_id, email) => {
         let mailOptions = {
             from: process.env.USER_EMAIL,
             to: email,
-            subject: `Order No :${order_id}`,
-            text: 'You have recied an Order From Codex Cunstruction Company',
+            subject: `Order No : ${order_id}`,
+            text: msg,
+            attachments: [
+                {
+                    filename: 'attachment.pdf',
+                    content: pdf,
+                    contentType: 'application/pdf',
+                    encoding: 'base64'
+                }
+            ]
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {

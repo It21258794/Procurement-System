@@ -253,7 +253,7 @@ export default function SupplierDashboard({ children , socket }: any) {
               />
             </Search>
             <IconButton color="black" onClick={() => setNotificationOpen(!notificationOpen)}>
-              <Badge badgeContent={notifications.length} color="secondary">
+            <Badge badgeContent={notifications.length} style={{color:'orange'}}>
                 <NotificationsIcon />
               </Badge>
             </IconButton>

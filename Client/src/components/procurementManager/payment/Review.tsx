@@ -9,6 +9,8 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import axios from 'axios';
+import { jsPDF } from "jspdf";
+
 
 interface Item {
   _id: string;
@@ -34,6 +36,9 @@ export default function Review({ orderId, id }) {
     accountHolderName: '',
     bankName: '',
     accountNumber: '',
+  });
+  const [supplierEmail, setSupplierEmail] = React.useState({
+    email:'',
   });
 
   let authPayload = React.useContext(AuthContext);
@@ -76,11 +81,23 @@ export default function Review({ orderId, id }) {
             { headers },
           );
           const res2 = await response.json();
-          console.log(res2);
+          console.log(res2)
 
           if (response.ok) {
             setPayment(res2);
           }
+
+          const supllierRes = await fetch(
+            `http://localhost:8000/api/account/supplierEmail/${supplierId}`,
+            { headers },
+          );
+          const res3 = await supllierRes.json();
+          
+          if (supllierRes.ok) {
+           
+            setSupplierEmail(res3)
+          }
+
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,7 +115,39 @@ export default function Review({ orderId, id }) {
     { name: 'Bank', detail: payment.bankName },
   ];
 
-  const submitHandle = async (id:string) => {
+const createPdf = async () => {
+  const doc = new jsPDF('l', 'mm', 'a5');
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  doc.setFont("Calibri", "bold");
+  doc.text(`Receipt Of Order_${order.orderId}`, 70, 10);
+  doc.setFont('Helvertica','bold')
+  doc.text('Name', 60, 40);
+  doc.text('Account No', 60, 50);
+  doc.text('Bank Name',  60, 60);
+  doc.text('Amount',  60, 70);
+  doc.text('Date',  60, 80);
+  doc.setFont('Helvertica','Normal')
+  doc.text(`${payment.accountHolderName}`, 100, 40);
+  doc.text(`${payment.accountNumber}`, 100,50);
+  doc.text(`${payment.bankName}`,  100, 60);
+  doc.text(`Rs ${order.total_cost}`,  100, 70);
+  doc.text(`${date}`,  100, 80);
+  doc.setFont("Calibri", "bolditalic");
+  doc.text(`Codex (PVT) Ltd`, 120, 120);
+  doc.setGState(new doc.GState({opacity: 0.2}));
+  doc.setFontSize(80);
+  doc.text('Codex (PVT) Ltd', 40, doc.internal.pageSize.height , {angle: 45, });
+  const pdf = doc.save(`${order.address}_order${order.orderId}.pdf`);
+  // const out = pdf.output('datauristring');
+  // const response = await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
+  //   order_id:order.orderId,
+  //   pdf: out.split('base64,')[1],
+  //   email:supplierEmail.email
+  // },{headers});
+  }
+
+  const submitHandle = async () => {
     try {
       const dto = {
         order_id: orderId,
@@ -113,7 +162,9 @@ export default function Review({ orderId, id }) {
         })
         .then(async(res) => {
           await axios.put('http://localhost:8000/api/order/setStatus',{orderId:orderId,status:'completed'},{headers})
+          createPdf()
           enqueueSnackbar('Succesfully paid', { variant: 'success' });
+          
           navigate('/manager/sites');
         });
     } catch (err: any) {
@@ -167,7 +218,7 @@ export default function Review({ orderId, id }) {
           type="submit"
           variant="contained"
           style={{ width: 'auto', backgroundColor: 'orange',display:'flex', }}
-          onClick={() =>submitHandle(orderId)}
+          onClick={submitHandle}
         >
           Pay Now
         </Button>

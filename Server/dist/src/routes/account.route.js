@@ -15,3 +15,4 @@ exports.accountRoute.get('/findAccountByUserName/:username', account_controller_
 exports.accountRoute.get('/currentUser', authGuard_1.default, account_controller_1.default.getCurrentUser);
 exports.accountRoute.put('/updateAccount/:accountid', account_controller_1.default.updateAccount);
 exports.accountRoute.delete('/deleteAccount/:accountid', account_controller_1.default.deleteAccount);
+exports.accountRoute.get('/supplierEmail/:supplierId', account_controller_1.default.getSupllierEmail);
