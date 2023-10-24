@@ -17,7 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import ConfirmDialog from './confirmDialog';
+import ConfirmDialog from './ConfirmDialog';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import OfflinePinIcon from '@mui/icons-material/OfflinePin';
@@ -50,7 +50,7 @@ export default function OrderList() {
   const navigate = useNavigate();
 
   let authPayload = React.useContext(AuthContext);
-  const { fromStorage } = authPayload;
+  const { fromStorage }:any = authPayload;
   const data = JSON.parse(fromStorage);
 
   const token = data.token;
@@ -80,7 +80,7 @@ export default function OrderList() {
     fetchData(id);
   }, []);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = ( newPage: number) => {
     setPage(newPage);
   };
 

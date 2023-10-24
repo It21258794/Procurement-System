@@ -22,7 +22,7 @@ interface Item {
   price: number;
 }
 
-export default function OrderTable({socket}) {
+export default function OrderTable({socket}:any) {
   const { enqueueSnackbar } = useSnackbar();
   const { id} = useParams();
   const [order, setOrder] = React.useState({
@@ -43,7 +43,7 @@ export default function OrderTable({socket}) {
   let supplierId = ''
   let authPayload = React.useContext(AuthContext);
   const navigate = useNavigate();
-  const { fromStorage } = authPayload;
+  const { fromStorage } :any= authPayload;
   const data = JSON.parse(fromStorage);
   const token = data.token;
   const decoded = jwt_decode(data.token);
@@ -80,19 +80,20 @@ export default function OrderTable({socket}) {
           { headers },
         )
         .then(async (res) => {
-          const response = await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
+          navigate(-1)
+           await axios.post("http://localhost:8000/api/payment/sendPaymentReceipt", {
             order_id:order.orderId,
             pdf: '',
             email:supplierEmail.email
           },{headers});
           console.log(res);
-          socket.emit("sendOrderToSupplier", {
-            reciverId:order.supplierId,
-            orderItem:{order}
-          });
+          // socket.emit("sendOrderToSupplier", {
+          //   reciverId:order.supplierId,
+          //   orderItem:{order}
+          // });
          
           enqueueSnackbar('Order has been Confirmed', { variant: 'success' });
-          navigate(-1);
+          ;
         });
     } catch (err: any) {
       enqueueSnackbar(err.message, { variant: 'error' });

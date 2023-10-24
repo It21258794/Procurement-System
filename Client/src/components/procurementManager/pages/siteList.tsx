@@ -29,7 +29,7 @@ export default function SiteList() {
   const navigate = useNavigate();
 
   let authPayload = React.useContext(AuthContext);
-  const { fromStorage } = authPayload;
+  const { fromStorage } :any= authPayload;
   const data = JSON.parse(fromStorage);
 
   const token = data.token;
@@ -63,7 +63,7 @@ export default function SiteList() {
     fetchData();
   }, []);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (newPage: number) => {
     setPage(newPage);
   };
 
@@ -83,8 +83,9 @@ export default function SiteList() {
       sx={{
         paddingTop: 10,
         paddingBottom: 10,
-        width: 800,
-        paddingLeft: '150px',
+        width: 'auto',
+        paddingLeft: '100px',
+        paddingRight:'100px'
       }}
     >
       <Paper

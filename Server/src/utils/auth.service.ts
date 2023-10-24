@@ -4,14 +4,16 @@ import { AuthRole, IPayload } from './types/IPayload';
 import { IAccount } from '../models/account/IAccount';
 import accountModel from '../models/account/account.model';
 
+//create hash password
 function createPasswordHash(password: string) {
   return bcrypt.hash(password, 10);
 }
-
+//validate hashed password
 async function validatePassword(password: string, hash: string) {
   return await bcrypt.compare(password, hash);
 }
 
+//create the jwt token for login
 async function getToken(password: string, hash: string, payload: IPayload) {
   console.log(payload);
   const isValidPassword = await validatePassword(password, hash);
@@ -20,7 +22,6 @@ async function getToken(password: string, hash: string, payload: IPayload) {
   }
 
   try {
-    console.log('kkkk');
     const token = jwt.sign(payload, process.env.APP_SECRET, {
       expiresIn: process.env.APP_ACCESS_TOKEN_EXP_SECS,
     });
@@ -33,11 +34,11 @@ async function getToken(password: string, hash: string, payload: IPayload) {
     throw err;
   }
 }
-
+//verify jwt token
 async function verifyToken(token: any) {
   try {
     console.log('token', token);
-    const payload = await jwt.decode(token);
+    const payload = await jwt.decode(token);   //call jwt decode build in service
     console.log(payload);
     return payload;
   } catch (err: any) {

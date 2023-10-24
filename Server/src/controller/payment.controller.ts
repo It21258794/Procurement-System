@@ -15,6 +15,8 @@ const insertPayment = async (req: Request, res: Response) => {
   }
 };
 
+
+//get paymnet details controller
 const getPayemtDetails = async (req: Request, res: Response) => {
   try {
     const { supplierId } = req.params;
@@ -25,6 +27,7 @@ const getPayemtDetails = async (req: Request, res: Response) => {
   }
 };
 
+// make a payment controller
 const createPaymentItem = async (req: Request, res: Response) => {
   try {
     const dto = req.body;
@@ -36,12 +39,8 @@ const createPaymentItem = async (req: Request, res: Response) => {
   }
 };
 
-// const createReceipt = async (req:Request, res: Response) => {
-//   // Calling the template render func with dynamic data
-//   const result = await createTemplate(req.body);
 
-// };
-
+//controller to call email service
 const sendReceipt = (req: Request, res: Response) => {
   try {
     const { order_id, email ,pdf } = req.body;

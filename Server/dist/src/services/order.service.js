@@ -113,19 +113,21 @@ const changeOrderStatus = (orderId, status) => __awaiter(void 0, void 0, void 0,
         throw err;
     }
 });
+//get monthly budget for a single site
 const getOrderAndBudget = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderItem = yield order_model_1.default.findById(id);
         if (!orderItem) {
             throw 'order not Found';
         }
-        const budget = yield getBudgetByMonth(orderItem.siteId.toString());
+        const budget = yield getBudgetByMonth(orderItem.siteId.toString()); // calling the budget calculate function
         return { orderItem, budget };
     }
     catch (err) {
         throw err;
     }
 });
+//function for calculate and filter budget by month 
 const getBudgetByMonth = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let priceList = [];

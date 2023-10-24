@@ -9,4 +9,6 @@ paymentRoute.get(
   paymentController.getPayemtDetails,
 );
 paymentRoute.post('/createPaymentItem',AuthGuard, paymentController.createPaymentItem);
- paymentRoute.post('/sendPaymentReceipt', AuthGuard, paymentController.sendReceipt);
+
+//send email to supplier after creating a payment and after make a payment with and with attachments
+paymentRoute.post('/sendPaymentReceipt', AuthGuard, paymentController.sendReceipt);

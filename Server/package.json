@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@jest/types": "^29.6.3",
+    "@shelf/jest-mongodb": "^4.1.7",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",

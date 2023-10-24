@@ -39,7 +39,7 @@ function ProcurementManagerRoute({socket}) {
           <Route path="/payment/:id/:orderId" element={<Checkout />} />
           <Route
             path="/budgetForm/:address/:siteBudget/:remBudget/:total/:siteId"
-            element={<BudgetForm />}
+            element={<BudgetForm socket={socket}/>}
           />
         </Routes>
       </ManagerDashboard>
