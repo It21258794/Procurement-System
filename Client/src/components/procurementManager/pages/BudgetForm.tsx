@@ -13,7 +13,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 // import './RditForm.css';
 import { AuthContext } from '../../../auth/AuthProvider';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -38,7 +38,7 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const BudgetForm = ({socket}) => {
+const BudgetForm = ({socket}:any) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();

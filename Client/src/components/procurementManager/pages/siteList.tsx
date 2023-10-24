@@ -29,7 +29,7 @@ export default function SiteList() {
   const navigate = useNavigate();
 
   let authPayload = React.useContext(AuthContext);
-  const { fromStorage } = authPayload;
+  const { fromStorage } :any= authPayload;
   const data = JSON.parse(fromStorage);
 
   const token = data.token;
@@ -63,7 +63,7 @@ export default function SiteList() {
     fetchData();
   }, []);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (newPage: number) => {
     setPage(newPage);
   };
 
