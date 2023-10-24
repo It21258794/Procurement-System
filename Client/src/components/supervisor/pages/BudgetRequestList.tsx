@@ -183,7 +183,7 @@ export default function BudgetRequestList({socket}) {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 1040,paddingLeft:4}}>
       <Paper
         sx={{
           width: '100%',
@@ -228,7 +228,7 @@ export default function BudgetRequestList({socket}) {
                 <TableCell key="status" align="left" style={{ minWidth: '50' }}>
                   Status
                 </TableCell>
-                <TableCell key="view" align="left" style={{ minWidth: '50' }}>
+                <TableCell key="view" align="center" style={{ minWidth: '50' }}>
                   Action
                 </TableCell>
               </TableRow>

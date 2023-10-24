@@ -74,7 +74,7 @@ export default function approvedBudgetList() {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 1040,paddingLeft:4}}>
       <Paper
         sx={{
           width: '100%',

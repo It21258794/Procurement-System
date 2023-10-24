@@ -76,7 +76,7 @@ export default function allNoteList() {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 10,width: 800,paddingLeft:25 }}>
       <Paper
         sx={{
           width: '100%',
