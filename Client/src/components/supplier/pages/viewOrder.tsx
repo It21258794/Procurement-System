@@ -93,13 +93,13 @@ export default function viewOrderList({socket}) {
   };
 
   return (
-    <Box sx={{ paddingTop: 10, paddingBottom: 10, width: 800 }}>
+    <Box sx={{ paddingTop: 10, paddingBottom: 20,width: 1040,paddingLeft:4 }}>
       <Paper
         sx={{
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'transparent',
-          margin: 'auto', // Center the Paper element
+          // margin: 'auto', // Center the Paper element
 
         }}
       >
